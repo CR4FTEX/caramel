@@ -1,0 +1,61 @@
+name: Art / texture
+description: Request a texture, model, sound or other art asset for Caramel, or submit one you made.
+labels:
+  - art
+body:
+  - type: markdown
+    attributes:
+      value: |
+        All art in Caramel must be original. Do not copy, rip or trace textures, models or sounds from Minecraft Dungeons, Legends, Earth, Story Mode or any other game or mod. Recreating a concept in new, original art is fine.
+
+        Art contributed to Caramel is licensed under CC BY-NC-SA 4.0. Caramel is a fan project and is not affiliated with or endorsed by Mojang Studios or Microsoft.
+  - type: textarea
+    id: subject
+    attributes:
+      label: What needs art
+      description: What is it, and where is it seen or heard in game? Link the related issue if there is one.
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      description: Pick all that apply.
+      multiple: true
+      options:
+        - Block texture
+        - Item texture
+        - Entity texture / model
+        - GUI
+        - Sound
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: specs
+    attributes:
+      label: Size and animation notes
+      description: Optional. Resolution (vanilla block and item textures are 16x16), whether it is animated (frame count and timing), and any variants needed.
+    validations:
+      required: false
+  - type: textarea
+    id: files
+    attributes:
+      label: Files
+      description: Optional. If you are submitting art, attach one `.zip` with all your files, including the editable source files. GitHub does not accept `.ogg` or `.mcmeta` files as issue attachments, but it accepts a `.zip`.
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Optional. Images or links that show the mood, palette or concept. References are for inspiration only; all art must be original.
+    validations:
+      required: false
+  - type: checkboxes
+    id: originality
+    attributes:
+      label: Originality
+      options:
+        - label: I understand that references are for inspiration only and that all art for Caramel must be original.
+          required: true

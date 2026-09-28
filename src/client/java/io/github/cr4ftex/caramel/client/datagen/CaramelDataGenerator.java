@@ -1,0 +1,12 @@
+package io.github.cr4ftex.caramel.client.datagen;
+
+import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+
+public class CaramelDataGenerator implements DataGeneratorEntrypoint {
+	@Override
+	public void onInitializeDataGenerator(FabricDataGenerator generator) {
+		FabricDataGenerator.Pack pack = generator.createPack();
+		// Register data providers here, e.g. pack.addProvider(CaramelModelProvider::new);
+	}
+}

@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "caramel",
+	"version": "${version}",
+	"name": "Caramel",
+	"description": "Streamlines and improves Minecraft's existing features, and brings content from the spin-off games to barren areas and neglected concepts in every dimension.",
+	"authors": [
+		"CR4FTEX"
+	],
+	"contact": {
+		"sources": "https://github.com/CR4FTEX/caramel",
+		"issues": "https://github.com/CR4FTEX/caramel/issues"
+	},
+	"license": [
+		"MIT",
+		"CC-BY-NC-SA-4.0"
+	],
+	"icon": "assets/caramel/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.cr4ftex.caramel.Caramel"
+		],
+		"client": [
+			"io.github.cr4ftex.caramel.client.CaramelClient"
+		],
+		"fabric-datagen": [
+			"io.github.cr4ftex.caramel.client.datagen.CaramelDataGenerator"
+		]
+	},
+	"mixins": [
+		"caramel.mixins.json",
+		{
+			"config": "caramel.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

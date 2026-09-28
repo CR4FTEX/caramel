@@ -1,0 +1,97 @@
+name: Bug report
+description: Report a crash or something in Caramel that does not work as intended.
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please search the existing issues first, and report one bug per issue.
+  - type: input
+    id: caramel-version
+    attributes:
+      label: Caramel version
+      description: Taken from the jar file name (caramel-<version>.jar), or the commit hash if you built it yourself.
+      placeholder: 0.1.0+26.3
+    validations:
+      required: true
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: Minecraft version
+      value: '26.3'
+    validations:
+      required: true
+  - type: input
+    id: loader-version
+    attributes:
+      label: Fabric Loader version
+      placeholder: 0.19.5
+    validations:
+      required: true
+  - type: input
+    id: fabric-api-version
+    attributes:
+      label: Fabric API version
+      placeholder: 0.161.0+26.3
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where does it happen?
+      options:
+        - Singleplayer
+        - Multiplayer (dedicated server)
+        - Development environment (./gradlew runClient or runServer)
+        - Not sure
+    validations:
+      required: false
+  - type: textarea
+    id: other-mods
+    attributes:
+      label: Other mods installed
+      description: List every other mod in the instance with its version, or write "None".
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or crash report
+      description: |
+        Paste the relevant part of `logs/latest.log`, or the crash report from `crash-reports/`, found in the game folder. In the dev environment these are under `run/`.
+        This box is formatted as code automatically, so do not add backticks. Attach long files under "Additional context" instead.
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Optional. Screenshots, videos, attached log files, or anything else that helps.
+    validations:
+      required: false

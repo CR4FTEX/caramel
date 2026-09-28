@@ -1,0 +1,26 @@
+# caramel-vault: how the Caramel Fabric mod works (build, datagen, mixins, CI, licensing, the
+# GitHub repository) and the traps each one hides. Read by the /gold skill and its vault_lint.py.
+#
+# dates = forbidden. The owner's ruling: a note says how Caramel works for anyone building it,
+# so it has no date. A claim bound to a version names the version (Minecraft 26.3, Loom 1.18.2);
+# git keeps the when. The owner's quoted words stay in docs/DESIGN.md, where they are the reason
+# for a choice.
+#
+# No status_lives_in: the vault holds no status. Session state and next steps live in the
+# passdown, docs/SETUP_REPORT.md. The state of each idea lives in its entry in the idea log in
+# docs/DESIGN.md (a Status field, never a folder per state). CLAUDE.md holds the working
+# agreement with the owner. All three are outside the vault.
+#
+# The vault lives inside the repository and goes into the same commits as the code it
+# describes. .obsidian/ is gitignored.
+#
+# Checkers (gold step 0), run from the repository root:
+#   ./gradlew build                         must pass; rebuild before trusting a jar in build/libs/
+#   ./gradlew runDatagen && git status --porcelain src/main/generated
+#                                           only the changes you expect
+#   unzip -l build/libs/caramel-*[0-9].jar  the mod jar (not -sources) lists LICENSE_caramel
+#                                           and LICENSE-ASSETS_caramel
+# Beyond those, verification is reading build.gradle, gradle.properties, fabric.mod.json, the
+# mixin configs and .github/, and reproducing a trap in a scratch copy of the project before
+# writing its error message down.
+dates = forbidden

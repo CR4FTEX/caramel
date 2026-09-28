@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Design document
+    url: https://github.com/CR4FTEX/caramel/blob/main/docs/DESIGN.md
+    about: Check the ideas already recorded before suggesting something new.

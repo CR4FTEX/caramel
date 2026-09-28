@@ -1,0 +1,61 @@
+# Build the mod on every push to main and on every pull request, and upload
+# the jar so it can be downloaded from the workflow run and playtested.
+#
+# The repository is private, so Actions minutes are limited:
+# - push runs only on main; pull request branches are built once, through the
+#   pull_request trigger, not a second time on push.
+# - changes that only touch Markdown files skip the build.
+# - a newer commit on the same branch or pull request cancels the older run.
+# - Gradle and Loom caches are restored between runs by setup-gradle.
+
+name: build
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+      - name: setup jdk
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'microsoft'
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          # 'basic' is the open-source (MIT) cache provider built on the GitHub
+          # Actions cache. It is free for private repositories; the default
+          # 'enhanced' provider is only a free preview for private repositories.
+          cache-provider: basic
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: build
+        run: ./gradlew build
+      - name: capture build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: caramel-jar
+          path: build/libs/
+          if-no-files-found: error
+          # Artifacts count against the private repository's storage quota.
+          retention-days: 14

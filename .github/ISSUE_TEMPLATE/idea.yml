@@ -1,0 +1,67 @@
+name: Idea / feature
+description: Suggest a change to an existing feature or new content for Caramel.
+labels:
+  - idea
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Caramel has two goals:
+
+        1. Streamline and improve concepts and features the game already has (the Deep Dark, crafting and smithing, recipes, blocks and items, world generation, and so on) without steering too far from the game's core identity and gameplay loop.
+        2. Bring in content from the Minecraft spin-offs to improve barren areas and neglected established concepts of the original game, giving each dimension a fresh coat of paint and more incentives to explore and risk to be rewarded.
+
+        One idea per issue, please. A contributor's idea is only a suggestion until the owner takes it on. Ideas the owner pitches or takes on are logged in [docs/DESIGN.md](https://github.com/CR4FTEX/caramel/blob/main/docs/DESIGN.md).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the game does this idea touch? Pick all that apply.
+      multiple: true
+      options:
+        - The Deep Dark
+        - Crafting and Smithing
+        - Recipes
+        - Blocks and Items
+        - World Generation
+        - Overworld
+        - Nether
+        - End
+        - Other / new area
+    validations:
+      required: true
+  - type: dropdown
+    id: spin-off
+    attributes:
+      label: Spin-off source
+      description: Is this idea based on something from a spin-off game? Pick "No spin-off (vanilla change)" for a change to vanilla itself.
+      options:
+        - No spin-off (vanilla change)
+        - Minecraft Dungeons
+        - Minecraft Legends
+        - Minecraft Earth
+        - Minecraft Story Mode
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What should change or be added, and how does it work in game?
+    validations:
+      required: true
+  - type: textarea
+    id: vanilla-fit
+    attributes:
+      label: Why it fits vanilla's identity
+      description: How does it avoid steering too far from the game's core identity and gameplay loop? Which existing feature, barren area or neglected concept does it improve? If it adds risk or reward, describe it.
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Optional. Links, wiki pages, screenshots or videos that explain the idea. References are for context only; any art made for Caramel must be original.
+    validations:
+      required: false
