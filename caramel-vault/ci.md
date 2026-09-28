@@ -12,6 +12,7 @@
 
 - Validates the Gradle wrapper, installs Microsoft's JDK 25, and runs `./gradlew build`, with a 30-minute job timeout.
 - `gradle/actions/setup-gradle` with `cache-provider: basic` restores `~/.gradle/caches`, which holds Loom's shared cache, and `~/.gradle/wrapper`. Those paths are fixed (gradle/actions `docs/setup-gradle.md`, "Basic Caching"), so Loom's per-project `.gradle/loom-cache` is rebuilt on every run. Only runs on `main` write the cache; pull request runs only read it.
+- The run log shows what the cache did. A miss prints "Basic caching did not find an entry to restore. Will start with empty state." in the "setup gradle" step. A save prints "Basic caching saved entry with key: setup-java-Linux-x64-gradle-..." in "Post setup gradle". `gh api repos/CR4FTEX/caramel/actions/caches` lists the saved entries and their branch.
 - Uploads `build/libs/` as the artifact `caramel-jar`, kept 14 days, and fails the run if that folder is empty. The artifact holds both jars. The `-sources` jar carries a `fabric.mod.json` too (`unzip -l`), so only the mod jar goes in a `mods` folder.
 - The job's token can only read the repository (`permissions: contents: read`).
 

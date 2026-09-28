@@ -47,7 +47,9 @@ Choices I made that you can change:
 - **Docs:** `README.md`, `CONTRIBUTING.md`, `docs/DESIGN.md` (your vision and the idea log), `docs/TEXTURES.md` (art guide), `CLAUDE.md` (rules for AI sessions), `art-source/README.md`, the two license files, and `.github/` (issue forms, pull request checklist, build workflow).
 - **All 28 review fixes applied** (Part 2). A second review of the fixed docs, through four lenses, found 21 more problems, all fixed; a skeptic rejected 9 others. The GitHub, git and Actions behaviour the fixes rely on was checked against official docs.
 - **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
-- **`/gold` installed** at `~/.claude/skills/gold/`, outside the repository: `SKILL.md`, `vault_lint.py` and `vault-rot-patterns.md`, with nothing tied to one machine. The vault lints clean (`exit: 0`).
+- **`/gold` installed** at `~/.claude/skills/gold/`, outside the repository: `SKILL.md`, `vault_lint.py` and `vault-rot-patterns.md`, with nothing tied to one machine. The vault lints clean (`exit: 0`). An older `bindings.md` from your other machine is still in that folder; the skill does not need it, and you can delete it.
+- **First commit pushed:** `88b1a56` on `main` at https://github.com/CR4FTEX/caramel, signed with your noreply address. The `idea` and `art` labels exist on GitHub.
+- **First CI run passed** (run 36375456105, 1m21s). The `caramel-jar` artifact is downloadable from the run until 2026-10-12. The run saved a 460 MB Gradle cache on `main`.
 
 ### Found while checking
 
@@ -55,11 +57,9 @@ Choices I made that you can change:
 - **Hand edits to generated files are not lost on the next run,** as CONTRIBUTING said. Datagen keeps a hand edit until the provider's output for that file changes, and a fresh clone loses it. It also deletes any file in `src/main/generated/` that no provider made. CONTRIBUTING now says so.
 - **`blank_issues_enabled: false` restricts nobody here.** On a private repository owned by a personal account, every collaborator has write access, and write access keeps the "Blank issue" option. The forms are the default, not a gate.
 
-### Still to do in this session
+### Still open
 
-1. First commit on `main`, then push to GitHub.
-2. Create the `idea` and `art` labels.
-3. Watch the first CI run. It settles the vault's open question about `cache-provider: basic`.
+- **Does the Gradle cache restore?** The first run saved it. The next push to `main` that changes a non-Markdown file shows whether it restores: see the open questions at the end of `caramel-vault/_map.md`. Markdown-only pushes, like the one that recorded this, start no run.
 
 ### Open suggestions (your call)
 

@@ -30,5 +30,5 @@ The vault links to those files and does not restate them.
 
 ## What is still unknown, and what would settle it
 
-- Whether the `basic` Gradle cache saves and restores for this repository. `setup-gradle@v6` accepts `cache-provider: basic` (its `setup-gradle/action.yml`), and only a run on `main` writes the cache, in its "Post setup gradle" step. A cache hit in the "setup gradle" step of the next run on `main` settles it.
+- Whether the `basic` Gradle cache restores for this repository. Runs on `main` save it (the log lines are in [[ci]]). The "setup gradle" step of the next run on `main` settles it: a restore no longer prints "did not find an entry to restore". A Markdown-only push starts no run, so only a push that changes another file can settle it.
 - Whether the client mixin config fails the same way as the common one ([[mixins]] reproduced only the common config). The same broken `@Inject`, listed in the `client` array of `caramel.client.mixins.json` against a client-only class that loads during `./gradlew runDatagen`, settles it.
