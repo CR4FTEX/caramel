@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "sulfur_stairs",
+  "key": {
+    "#": "minecraft:sulfur"
+  },
+  "pattern": [
+    "# ",
+    "##"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:sulfur_stairs"
+  }
+}

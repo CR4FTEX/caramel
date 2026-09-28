@@ -1,0 +1,12 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:false"
+    }
+  ],
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:lime_concrete",
+  "result": {
+    "id": "minecraft:lime_concrete_stairs"
+  }
+}

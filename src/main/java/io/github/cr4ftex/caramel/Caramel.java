@@ -1,5 +1,7 @@
 package io.github.cr4ftex.caramel;
 
+import io.github.cr4ftex.caramel.stairs.StairsFuel;
+
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.resources.Identifier;
@@ -15,6 +17,7 @@ public class Caramel implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Caramel is melting in.");
+		StairsFuel.register();
 	}
 
 	public static Identifier id(String path) {

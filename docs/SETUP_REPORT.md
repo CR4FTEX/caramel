@@ -2,7 +2,7 @@
 
 The passdown between sessions: where the project stands, what you decided, and what comes next. Part 1 is the current state and is rewritten each session. Part 2 is the record of the first review of the docs and how each finding was handled.
 
-Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit.
+Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28.
 
 ---
 
@@ -27,6 +27,8 @@ Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the re
 | Knowledge vault | `caramel-vault/` at the repository root, committed with the code. Not `docs/` |
 | Vault dates | None. A note says how Caramel works; git keeps the when |
 | Gold passes | You call `/gold` on the vault when you choose, usually mid-session |
+| Other mods | Vanilla first. Compatibility with other mods is not a priority yet (`docs/DESIGN.md`, "Priorities") |
+| Game tests | Run in every build and in CI, through Fabric's game-test mode; `eula.txt` stays `eula=false` |
 
 Choices I made that you can change:
 
@@ -46,7 +48,7 @@ Choices I made that you can change:
 - **Placeholder icon:** a 32x32 pixel-art caramel cube with drips. Replace it whenever you like.
 - **Docs:** `README.md`, `CONTRIBUTING.md`, `docs/DESIGN.md` (your vision and the idea log), `docs/TEXTURES.md` (art guide), `CLAUDE.md` (rules for AI sessions), `art-source/README.md`, the two license files, and `.github/` (issue forms, pull request checklist, build workflow).
 - **All 28 review fixes applied** (Part 2). A second review of the fixed docs, through four lenses, found 21 more problems, all fixed; a skeptic rejected 9 others. The GitHub, git and Actions behaviour the fixes rely on was checked against official docs.
-- **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
+- **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, recipes, game tests, fuel, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
 - **`/gold` installed** at `~/.claude/skills/gold/`, outside the repository: `SKILL.md`, `vault_lint.py` and `vault-rot-patterns.md`, with nothing tied to one machine. The vault lints clean (`exit: 0`). An older `bindings.md` from your other machine is still in that folder; the skill does not need it, and you can delete it.
 - **First commit pushed:** `88b1a56` on `main` at https://github.com/CR4FTEX/caramel, signed with your noreply address. The `idea` and `art` labels exist on GitHub.
 - **First CI run passed** (run 36375456105, 1m21s). The `caramel-jar` artifact is downloadable from the run until 2026-10-12. The run saved a 460 MB Gradle cache on `main`.
@@ -56,6 +58,10 @@ Choices I made that you can change:
 - **The session 1 jar was stale.** It was built before the license files existed and held neither. A rebuild fixed it. Gradle drops a missing license file from the jar without any error; `caramel-vault/licensing.md` has the check.
 - **Hand edits to generated files are not lost on the next run,** as CONTRIBUTING said. Datagen keeps a hand edit until the provider's output for that file changes, and a fresh clone loses it. It also deletes any file in `src/main/generated/` that no provider made. CONTRIBUTING now says so.
 - **`blank_issues_enabled: false` restricts nobody here.** On a private repository owned by a personal account, every collaborator has write access, and write access keeps the "Blank issue" option. The forms are the default, not a gate.
+
+### Ideas
+
+- **C-001, cheaper stairs and recycling: Done.** You playtested all 12 checks with no issues. Committed and pushed to `main`. The entry in `docs/DESIGN.md` has every decision and the implementation notes.
 
 ### Still open
 
@@ -76,13 +82,13 @@ None of these is started. Say the word for any of them.
 
 - **Private repo limits:** on a free GitHub account, private repositories get 2,000 build minutes a month and 500 MB of artifact storage. Each Caramel build should take a few minutes, so that's plenty for now. The build workflow skips Markdown-only changes and cancels outdated runs to save minutes.
 - **Inviting contributors:** because the repo is private, people can only help once you invite them. On the GitHub website, open the repo, then Settings > Collaborators > Add people. Artists don't need git or Java: the art guide explains how to submit through GitHub issues or the website.
-- **Automated in-game tests** are not set up yet. Fabric can run tests inside a real Minecraft world without a window, which would let me check features myself before you playtest. The test server requires accepting Minecraft's EULA, so I'll ask you before turning it on.
+- **Automated in-game tests** run in every `./gradlew build` and in CI, since C-001: a Minecraft test server with no window loads the mod's data and checks it before you playtest. You chose Fabric's game-test mode, which skips the EULA check by design; `eula.txt` stays `eula=false`, and nothing accepts the EULA for you. `caramel-vault/gametest.md` has the details.
 - **Updating Minecraft:** Mojang releases a new version every few months. The plan is to stay on 26.3 while building and move to newer versions at milestones. `CLAUDE.md` has the step-by-step update procedure.
 - **Vault and passdown:** durable knowledge (how things work, traps, decisions with their reasons) goes in `caramel-vault/`. Status goes here and in the idea log. Around the middle of a session, you can call `/gold` on the vault.
 
 ### Next step
 
-Send me your first idea.
+Send me the next idea.
 
 ---
 

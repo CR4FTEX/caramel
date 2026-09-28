@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"id": "caramel-gametest",
+	"version": "1.0.0",
+	"name": "Caramel game tests",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.cr4ftex.caramel.gametest.OtherModStairs"
+		],
+		"fabric-gametest": [
+			"io.github.cr4ftex.caramel.gametest.StairsRecipeGameTest"
+		]
+	},
+	"depends": {
+		"caramel": "*",
+		"fabric-gametest-api-v1": "*"
+	}
+}

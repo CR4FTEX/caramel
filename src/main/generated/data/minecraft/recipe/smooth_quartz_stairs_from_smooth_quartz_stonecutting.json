@@ -1,0 +1,12 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:false"
+    }
+  ],
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:smooth_quartz",
+  "result": {
+    "id": "minecraft:smooth_quartz_stairs"
+  }
+}

@@ -14,6 +14,7 @@ Caramel (mod id `caramel`) is a Fabric mod for Minecraft Java Edition, owned by 
 - Ask the owner about genuine design decisions instead of guessing. Record the answers in the entry.
 - Do not steer too far from the game's core identity and gameplay loop. The owner has the final say on their own ideas.
 - Never build features the owner did not ask for. Suggesting them is welcome; implementing them is not.
+- Vanilla first: compatibility with other mods is not a priority yet (`docs/DESIGN.md`, "Priorities"). Scope changes to the base game's content, and don't build for other mods unless the owner asks.
 
 ## Toolchain
 
@@ -25,7 +26,8 @@ Caramel (mod id `caramel`) is a Fabric mod for Minecraft Java Edition, owned by 
 
 ## Commands
 
-- `./gradlew build`: compile and package. The jar lands in `build/libs/` as `caramel-<mod_version>+<minecraft_version>.jar` (currently `0.1.0+26.3`).
+- `./gradlew build`: compile, package, and run the server game tests. The jar lands in `build/libs/` as `caramel-<mod_version>+<minecraft_version>.jar` (currently `0.1.0+26.3`).
+- `./gradlew runGameTest`: run only the server game tests in `src/gametest` (a separate mod, `caramel-gametest`, that never ships in the jar). Read the expected values from the vanilla data pack, never from Caramel's own output. Never set `eula = true` or turn on client game tests in `build.gradle`: that is how Loom would accept the Minecraft EULA on the owner's behalf.
 - `./gradlew runDatagen`: regenerate JSON into `src/main/generated/`.
 - `./gradlew runClient`: start a dev client.
 - `./gradlew runServer`: start a dev server.

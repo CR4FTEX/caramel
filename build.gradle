@@ -33,6 +33,17 @@ fabricApi {
 	configureDataGeneration {
 		client = true
 	}
+
+	// Server game tests in src/gametest, run by ./gradlew runGameTest and by every build (check depends on it).
+	// They are a mod of their own, so none of their classes reach the Caramel jar. Keep eula false and client
+	// game tests off: those settings are how Loom would accept the Minecraft EULA on the owner's behalf.
+	configureTests {
+		createSourceSet = true
+		modId = "caramel-gametest"
+		enableGameTests = true
+		enableClientGameTests = false
+		eula = false
+	}
 }
 
 dependencies {

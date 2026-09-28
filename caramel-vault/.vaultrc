@@ -15,7 +15,8 @@
 # describes. .obsidian/ is gitignored.
 #
 # Checkers (gold step 0), run from the repository root:
-#   ./gradlew build                         must pass; rebuild before trusting a jar in build/libs/
+#   ./gradlew build                         must pass, game tests included ("All N required tests
+#                                           passed"); rebuild before trusting a jar in build/libs/
 #   ./gradlew runDatagen && git status --porcelain src/main/generated
 #                                           only the changes you expect
 #   unzip -l build/libs/caramel-*[0-9].jar  the mod jar (not -sources) lists LICENSE_caramel

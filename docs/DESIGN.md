@@ -27,6 +27,14 @@ These come only from the owner's words above. Check every idea against them.
 - **Risk should be rewarded.** Caramel gives more incentives to explore, and risk is rewarded.
 - **Every dimension gets attention.** The Overworld, the Nether and the End each get a fresh coat of paint.
 
+## Priorities
+
+Set by the owner while playtesting C-001:
+
+> "the topic of compatibility with the other mods is not really a priority right now, as I would like to focus our efforts into the Vanilla game first before covering cross-compatibility with other mods."
+
+In short: Caramel targets the base game first. Compatibility with other mods comes later.
+
 ## Target areas
 
 These are the areas the owner has named as targets. The owner's list ended with "etc.", so more areas will be added as ideas come in. Under each heading, list the IDs of the idea log entries that affect it.
@@ -37,11 +45,11 @@ No ideas yet.
 
 ### Crafting and Smithing
 
-No ideas yet.
+- C-001: Cheaper stairs, and stairs back into blocks
 
 ### Recipes
 
-No ideas yet.
+- C-001: Cheaper stairs, and stairs back into blocks
 
 ### Blocks and Items
 
@@ -123,4 +131,43 @@ IDs are sequential (C-001, C-002, ...) and never reused. Entries are listed in I
 
 ### Entries
 
-No entries yet.
+### C-001: Cheaper stairs, and stairs back into blocks
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every stairs of every block family (for example Oak, Cobblestone, Nether Bricks, Lime Wool) is crafted from 3 of its base block instead of 6, and still gives 4 stairs. The recipe keeps its L shape, now 3 blocks in a 2x2 grid, and works in all 4 rotations.
+- This deletes and replaces the base-game stairs recipes.
+- Why: stairs become a cheaper and more accessible recipe.
+- A new recipe for every stairs of every family turns 4 stairs, in a 2x2 square, back into 3 of its base block: the same 3 it costs to craft them.
+- Why: stairs already crafted can be recycled back into blocks, so crafting too many wastes nothing.
+
+As pictured: 3 oak planks in a 2x2 L (top left, bottom left, bottom right) make 4 oak stairs, and 4 oak stairs in a 2x2 square make 3 oak planks.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 97 stairs have a shaped crafting recipe, all 6 blocks to 4 stairs in the 3x3 staircase pattern, and they are exactly the 97 stairs in the `#minecraft:stairs` tag. 26.3 has wool stairs in all 16 colours, so Lime Wool is one of the families.
+- Four base-game stairs recipes accept more than one block: quartz stairs (quartz block, chiseled quartz block, quartz pillar), purpur stairs (purpur block, purpur pillar), sandstone and red sandstone stairs (plain, chiseled, cut). The new recipes keep those alternatives, since the pitch changes only the amount and the shape. Recycling gives the family's base block: quartz block, purpur block, sandstone, red sandstone.
+- No clash with existing recipes: nothing in the base game uses 3 of one item in a 2x2 L, or 4 stairs in a 2x2 square.
+- No duplication: crafting and recycling trade 3 blocks for 4 stairs both ways. The stonecutter's best case is 4 cut copper stairs from one copper block. Those recycle into 3 cut copper, fewer than the 4 cut copper the same block gives directly.
+- Stonecutter (asked, owner's answer): crafting now gives 4 stairs for 3 blocks, which makes the stonecutter's 1 block to 1 stairs the worse way. The owner chose to remove every stonecutter recipe that makes stairs, 103 in the base game, the copper ones included. Crafting becomes the only way to make stairs.
+- Removing a stonecutter recipe also removes its unlock advancement. In 26.3 a recipe's unlock advancement names it as a registry entry, so a removed recipe whose advancement stays makes every world fail to load ("Unbound values in registry ... minecraft:recipe"). Verified in a scratch copy.
+- Recipe ids. The first L (empty cell on top, and its mirror) keeps the base-game id, `minecraft:<stairs>`, so it replaces the old recipe. The second L (empty cell at the bottom, and its mirror) is `caramel:<stairs>_flipped`. Recycling is `caramel:<base>_from_<stairs>`. Shaped recipes already match their mirror image, so these two recipes cover all 4 rotations.
+- Recipe book: the 48 stairs with no recipe group in the base game get their own id as the group, so both L recipes show as one button. This follows the base game's waxed copper stairs, which already do this.
+- Left alone: the 16 recipes that dye wool stairs and the 4 that wax copper stairs with honeycomb. They turn stairs into other stairs rather than crafting them from blocks.
+- Automated test (asked, owner's answer): a Fabric game test checks all 97 stairs in a headless test server, and runs in `./gradlew build` and CI. Fabric's game-test mode skips the EULA check by design; `eula.txt` stays `eula=false`.
+- Furnace fuel (found in review, asked, owner's answer). Wooden and wool stairs burn as long as a plank or a wool block, so at 4 stairs per 3 blocks crafting stairs would add a third more fuel, and wooden stairs would become the best wood fuel (1600 ticks per log, as much as charcoal). The owner chose to match the cost, as the base game does for slabs: wooden stairs burn 3/4 of a plank (225 ticks instead of 300) and wool stairs 3/4 of wool (75 instead of 100), so crafting stairs never adds fuel.
+- Fuel scope (asked, owner's answer): only the base game's stairs get the new burn times, because C-001 changes only their recipes. Another mod's wooden or wool stairs keeps its recipe and its fuel. The owner answered no to changing them, and set compatibility with other mods aside for now (see "Priorities").
+- Playtest (owner): all 12 in-game checks passed with no issues: the four L rotations in the 2x2 and 3x3 grids, the old staircase gone, several families, quartz alternatives, recycling, mixed stairs refused, the stonecutter offering no stairs, one recipe book button per stairs, and fuel in the furnace, blast furnace and smoker.
+
+**Implementation notes**
+
+- No mixin was needed.
+- Recipes: `CaramelRecipeProvider` (datagen, `src/client/java/io/github/cr4ftex/caramel/client/datagen/`). It writes 97 recipes at `minecraft:<stairs>`, 97 at `caramel:<stairs>_flipped`, 97 at `caramel:<base>_from_<stairs>`, and removes the 103 stonecutter recipes and their 103 unlock advancements with Fabric's always-false load condition. Datagen stops if Minecraft's stairs count stops being 97 or the stonecutter count 103.
+- Fuel: `CaramelBurnTimeProvider` (datagen) writes `caramel:cooking/time_wood_stairs` (225) and `caramel:cooking/time_wool_stairs` (75), built like vanilla's burn times, so a blast furnace or smoker halves them (112 and 37). `io.github.cr4ftex.caramel.stairs.StairsFuel`, called from `Caramel.onInitialize`, points the 28 stairs that burned in the base game at them (12 wooden, bamboo and bamboo mosaic included, and 16 wool) through Fabric's `DefaultItemComponentEvents.MODIFY`.
+- Game test: `src/gametest/java/io/github/cr4ftex/caramel/gametest/StairsRecipeGameTest.java`, a separate mod `caramel-gametest`, wired by `configureTests` in `build.gradle`. `./gradlew build` and CI run its 11 checks. They read the expected values from the vanilla data pack and check every L rotation and placement, the old staircase, recycling, mixed stairs, the stonecutter, recipe groups and categories, which vanilla ids Caramel's pack touches, and every item's fuel. `OtherModStairs` registers a test-only stairs in the game-test mod to prove other mods' stairs keep their fuel; it is not on `runClient`'s classpath and not in the mod jar.
+- Generated files: 790 in `src/main/generated/data`. They must be committed, because CI does not run datagen.
+- No placeholder textures.

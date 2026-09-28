@@ -8,6 +8,9 @@ How Caramel works, for a reader who was not there: how the build, datagen, mixin
 | -------------------------------------------------- | ------------- |
 | Gradle, Loom, source sets, what goes in the jar    | [[build]]     |
 | Data generation and `src/main/generated/`          | [[datagen]]   |
+| Replacing, adding and removing recipes             | [[recipes]]   |
+| Server game tests and the EULA                     | [[gametest]]  |
+| Furnace fuel and burn times                        | [[fuel]]      |
 | Mixin configs and how they fail                    | [[mixins]]    |
 | The GitHub Actions build                           | [[ci]]        |
 | Code and art licenses, and how the jars carry them | [[licensing]] |

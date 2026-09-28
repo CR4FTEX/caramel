@@ -7,6 +7,7 @@ public class CaramelDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator generator) {
 		FabricDataGenerator.Pack pack = generator.createPack();
-		// Register data providers here, e.g. pack.addProvider(CaramelModelProvider::new);
+		pack.addProvider(CaramelRecipeProvider::new);
+		pack.addProvider(CaramelBurnTimeProvider::new);
 	}
 }

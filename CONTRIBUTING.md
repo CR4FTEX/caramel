@@ -42,7 +42,8 @@ Gradle tasks, run from the project root (on Windows, use `gradlew.bat` in place 
 | `./gradlew runClient` | Starts a dev client with Caramel and Fabric API loaded. Game files go in `run/`, which git ignores. |
 | `./gradlew runServer` | Starts a dev dedicated server. The first start stops until you set `eula=true` in `run/eula.txt`. |
 | `./gradlew runDatagen` | Regenerates the JSON files in `src/main/generated/`. |
-| `./gradlew build` | Compiles and packages the mod. The jar lands in `build/libs/` (currently `caramel-0.1.0+26.3.jar`). |
+| `./gradlew build` | Compiles and packages the mod, then runs the game tests. The jar lands in `build/libs/` (currently `caramel-0.1.0+26.3.jar`). |
+| `./gradlew runGameTest` | Runs only the game tests: a Minecraft test server with no window loads the mod's data and checks it, then exits. |
 
 ## Where things go
 
@@ -63,6 +64,7 @@ src/client/java/io/github/cr4ftex/caramel/client/  Client-only code (rendering, 
     model/                                          Entity model and animation code (art license, see below)
 src/client/resources/
     caramel.client.mixins.json                      Client mixin config
+src/gametest/                                       Game tests, a separate mod (caramel-gametest) that never ships in the jar
 art-source/                                         Editable source art (.bbmodel, .aseprite, layered images), never shipped
 caramel-vault/                                      How the build, datagen, mixins, CI, licensing and the GitHub repository work, and their traps
 ```

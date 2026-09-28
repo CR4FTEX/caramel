@@ -29,3 +29,10 @@ Loom registers `runClient`, `runServer` and `runDatagen` from `loom.runConfigs`,
 - `build/libs/` holds the mod jar and a `-sources` jar (`withSourcesJar()` in `build.gradle`).
 - The `jar` block copies `LICENSE` and `LICENSE-ASSETS` into the mod jar under new names. What that protects, and how it fails silently, is in [[licensing]].
 - A jar in `build/libs/` is only as fresh as the last build: one built before a file existed lacks that file, and nothing flags it. Rebuild before checking a jar's contents.
+
+## Scratch copies
+
+Reproducing a trap happens in a copy of the project, never in the project itself. `gradle.properties` turns on Gradle's configuration cache, and its entries in `.gradle/configuration-cache` hold absolute paths.
+
+- **A copy that includes `.gradle/` builds the real project.** Gradle in the copy reuses the real entries ("Reusing configuration cache."), so it compiles the real sources into the real `build/` and runs datagen into the real `src/main/generated`. Seen once; the output happened to be byte-identical.
+- Copy without it, and pass `--no-configuration-cache` in the copy: `tar --exclude=./build --exclude=./.gradle --exclude=./run --exclude=./.git -C <project> -cf - . | tar -xf - -C <copy>`.
