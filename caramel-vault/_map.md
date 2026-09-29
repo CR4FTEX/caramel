@@ -33,4 +33,4 @@ The vault links to those files and does not restate them.
 
 ## Open questions
 
-Each open question closes the note that owns its topic, with the test that settles it: [[ci]] and [[mixins]].
+Each open question closes the note that owns its topic, with the test that settles it: [[mixins]].

@@ -51,7 +51,7 @@ Choices I made that you can change:
 - **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, recipes, game tests, fuel, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
 - **`/gold` installed** at `~/.claude/skills/gold/`, outside the repository: `SKILL.md`, `vault_lint.py` and `vault-rot-patterns.md`, with nothing tied to one machine. The vault lints clean (`exit: 0`). An older `bindings.md` is still in that folder; the skill does not need it, its Caramel entry now points at the vault's `.vaultrc`, and you can delete it.
 - **First commit pushed:** `88b1a56` on `main` at https://github.com/CR4FTEX/caramel, signed with your noreply address. The `idea` and `art` labels exist on GitHub.
-- **First CI run passed** (run 36375456105, 1m21s). The `caramel-jar` artifact is downloadable from the run until 2026-10-12. The run saved a 460 MB Gradle cache on `main`.
+- **First CI run passed** (run 36375456105, 1m21s). The `caramel-jar` artifact is downloadable from the run until 2026-10-12. The run saved a 460 MB Gradle cache on `main`. CI caching works: a run whose Gradle build files are unchanged restores it (the gold-pass run did, and took 1m30s against 2m05s cold); a change to `build.gradle` starts cold and saves a new entry.
 
 ### Found while checking
 
@@ -62,10 +62,6 @@ Choices I made that you can change:
 ### Ideas
 
 - **C-001, cheaper stairs and recycling: Done.** You playtested all 12 checks with no issues. Committed and pushed to `main`. The entry in `docs/DESIGN.md` has every decision and the implementation notes.
-
-### Still open
-
-- **Does the Gradle cache restore?** The C-001 push missed it: that push changed `build.gradle`, and the cache key hashes the Gradle build files. A `main` run with unchanged build files settles it; the question closes `caramel-vault/ci.md`.
 
 ### Open suggestions (your call)
 
