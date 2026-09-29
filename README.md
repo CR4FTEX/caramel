@@ -10,7 +10,7 @@ improve barren areas and neglected established concepts of the original game,
 giving each dimension a fresh coat of paint and more incentives to explore and
 risk to be rewarded.
 
-**Status:** early development. Nothing is playable yet.
+**Status:** early development.
 
 ## Requirements
 

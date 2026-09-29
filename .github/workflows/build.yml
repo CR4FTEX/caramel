@@ -6,7 +6,8 @@
 #   pull_request trigger, not a second time on push.
 # - changes that only touch Markdown files skip the build.
 # - a newer commit on the same branch or pull request cancels the older run.
-# - Gradle and Loom caches are restored between runs by setup-gradle.
+# - setup-gradle's basic cache restores ~/.gradle/caches and ~/.gradle/wrapper when no
+#   Gradle build file changed; see caramel-vault/ci.md.
 
 name: build
 on:

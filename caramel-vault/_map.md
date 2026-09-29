@@ -1,6 +1,6 @@
 # Caramel vault
 
-How Caramel works, for a reader who was not there: how the build, datagen, mixins, CI, licensing and the GitHub repository behave, and the traps each one hides. Each trap gives the error message it produces, or says that it fails silently. Every fact names the file or the check it came from. Each topic has one owning note; other notes link to it instead of explaining it again.
+How Caramel works, for a reader who was not there, and the traps each part hides. Each trap gives the error message it produces, or says that it fails silently. Every fact names the file or the check it came from. Each topic has one owning note; other notes link to it instead of explaining it again.
 
 ## Owning notes
 
@@ -31,7 +31,6 @@ The vault links to those files and does not restate them.
 
 `.vaultrc` declares the vault's rules, and its comments give the reason for each and list the checkers a gold pass runs first. Lint with the `/gold` skill's `vault_lint.py` (`python3 <skill-dir>/vault_lint.py caramel-vault`); its last line, `exit: N`, is the result, and 0 is gold.
 
-## What is still unknown, and what would settle it
+## Open questions
 
-- Whether the `basic` Gradle cache restores for this repository. Runs on `main` save it (the log lines are in [[ci]]). The "setup gradle" step of the next run on `main` settles it: a restore no longer prints "did not find an entry to restore". A Markdown-only push starts no run, so only a push that changes another file can settle it.
-- Whether the client mixin config fails the same way as the common one ([[mixins]] reproduced only the common config). The same broken `@Inject`, listed in the `client` array of `caramel.client.mixins.json` against a client-only class that loads during `./gradlew runDatagen`, settles it.
+Each open question closes the note that owns its topic, with the test that settles it: [[ci]] and [[mixins]].

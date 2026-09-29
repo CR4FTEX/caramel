@@ -50,7 +50,7 @@ Caramel (mod id `caramel`) is a Fabric mod for Minecraft Java Edition, owned by 
 
 ## Vault and status
 
-- `caramel-vault/` is the knowledge vault: how the build, datagen, mixins, CI, licensing and the GitHub repository work, and the traps each one hides. Each trap names the error it produces, or says that it fails silently. Start at `caramel-vault/_map.md`, which names the one note that owns each topic, and read that note before changing its part of the project.
+- `caramel-vault/` is the knowledge vault: how Caramel's build and tooling work, and the traps each part hides. Each trap names the error it produces, or says that it fails silently. Start at `caramel-vault/_map.md`, which names the one note that owns each topic, and read that note before changing its part of the project.
 - When you learn something durable (a mechanism, a trap and the error it prevents, a decision and its reason), write it into its owning note and cite the file or experiment it came from. No dates in the vault (`caramel-vault/.vaultrc`); git keeps the when.
 - Status never goes in the vault. Session state and next steps go in the passdown, `docs/SETUP_REPORT.md`. The state of each idea goes in its entry in `docs/DESIGN.md`.
 - The owner runs `/gold` on the vault when they choose, usually mid-session. Do not start a gold pass yourself. After writing vault notes, lint them with the skill's `vault_lint.py` if it is installed (`python3 <skill folder>/vault_lint.py caramel-vault`); its last line must read `exit: 0`.
@@ -66,7 +66,7 @@ Caramel (mod id `caramel`) is a Fabric mod for Minecraft Java Edition, owned by 
 
 - Private GitHub repo `CR4FTEX/caramel`, branch `main`. Contributors are collaborators invited by the owner.
 - Collaborators work on branches and open pull requests into `main`. The owner may commit to `main` directly. Only commit when the owner asks you to, and then commit straight to `main`.
-- CI: `.github/workflows/build.yml` runs `./gradlew build` on JDK 25 for every pull request and every push to `main`, skips changes that only touch Markdown (`.md`) files, and uploads `build/libs/` as the `caramel-jar` artifact, which can be downloaded from each run for 14 days.
+- CI: `.github/workflows/build.yml` must pass on every pull request and push to `main`. When it runs, what it caches and what it uploads is in `caramel-vault/ci.md`.
 - Commits use the owner's GitHub noreply email, set in the repo's local git config (`git config user.email`). Never replace it with another email.
 
 ## Updating Minecraft

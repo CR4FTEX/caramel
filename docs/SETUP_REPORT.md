@@ -49,7 +49,7 @@ Choices I made that you can change:
 - **Docs:** `README.md`, `CONTRIBUTING.md`, `docs/DESIGN.md` (your vision and the idea log), `docs/TEXTURES.md` (art guide), `CLAUDE.md` (rules for AI sessions), `art-source/README.md`, the two license files, and `.github/` (issue forms, pull request checklist, build workflow).
 - **All 28 review fixes applied** (Part 2). A second review of the fixed docs, through four lenses, found 21 more problems, all fixed; a skeptic rejected 9 others. The GitHub, git and Actions behaviour the fixes rely on was checked against official docs.
 - **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, recipes, game tests, fuel, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
-- **`/gold` installed** at `~/.claude/skills/gold/`, outside the repository: `SKILL.md`, `vault_lint.py` and `vault-rot-patterns.md`, with nothing tied to one machine. The vault lints clean (`exit: 0`). An older `bindings.md` from your other machine is still in that folder; the skill does not need it, and you can delete it.
+- **`/gold` installed** at `~/.claude/skills/gold/`, outside the repository: `SKILL.md`, `vault_lint.py` and `vault-rot-patterns.md`, with nothing tied to one machine. The vault lints clean (`exit: 0`). An older `bindings.md` is still in that folder; the skill does not need it, its Caramel entry now points at the vault's `.vaultrc`, and you can delete it.
 - **First commit pushed:** `88b1a56` on `main` at https://github.com/CR4FTEX/caramel, signed with your noreply address. The `idea` and `art` labels exist on GitHub.
 - **First CI run passed** (run 36375456105, 1m21s). The `caramel-jar` artifact is downloadable from the run until 2026-10-12. The run saved a 460 MB Gradle cache on `main`.
 
@@ -65,7 +65,7 @@ Choices I made that you can change:
 
 ### Still open
 
-- **Does the Gradle cache restore?** The first run saved it. The next push to `main` that changes a non-Markdown file shows whether it restores: see the open questions at the end of `caramel-vault/_map.md`. Markdown-only pushes, like the one that recorded this, start no run.
+- **Does the Gradle cache restore?** The C-001 push missed it: that push changed `build.gradle`, and the cache key hashes the Gradle build files. A `main` run with unchanged build files settles it; the question closes `caramel-vault/ci.md`.
 
 ### Open suggestions (your call)
 
@@ -75,12 +75,13 @@ None of these is started. Say the word for any of them.
 - **Merge conflicts.** When `git pull --no-rebase --no-edit origin main` hits a conflict, `git commit --no-edit` finishes it without opening an editor. CONTRIBUTING could say so.
 - **CI action versions.** `actions/checkout@v7` and `actions/setup-java@v6` exist. `build.yml` uses `@v6` and `@v5`, which still work.
 - **CI minutes.** Only Markdown-only changes skip the build. A change under `art-source/`, or to `caramel-vault/.vaultrc`, still starts one. Both could go in `paths-ignore`.
-- **The `-sources` jar.** It carries no license files, and once a datagen provider exists it also carries `src/main/generated/.cache/`. CI uploads it next to the mod jar. It could be left out of the artifact, or given the license files.
+- **The `-sources` jar.** It carries no license files, and a local build's copy carries `src/main/generated/.cache/`. CI uploads it next to the mod jar. It could be left out of the artifact, or given the license files.
+- **Generated art and the art license.** The `LICENSE-ASSETS` preamble covers art under `src/main/resources/assets/caramel/`, but datagen writes block and item models and blockstates into `src/main/generated/assets/caramel/`, which it does not name. Nothing is generated there yet. Should the preamble name that folder too, before the first generated model?
 - **A scope line in `LICENSE`.** `LICENSE` is the plain MIT text; only `LICENSE-ASSETS` says the entity model code is not MIT. One line above the MIT text would make both files say the same thing.
 
 ### Things you should know
 
-- **Private repo limits:** on a free GitHub account, private repositories get 2,000 build minutes a month and 500 MB of artifact storage. Each Caramel build should take a few minutes, so that's plenty for now. The build workflow skips Markdown-only changes and cancels outdated runs to save minutes.
+- **Private repo limits:** on a free GitHub account, private repositories get 2,000 build minutes a month and 500 MB of artifact storage. The two CI builds so far took 1m24s and 2m05s. The build workflow skips Markdown-only changes and cancels outdated runs to save minutes.
 - **Inviting contributors:** because the repo is private, people can only help once you invite them. On the GitHub website, open the repo, then Settings > Collaborators > Add people. Artists don't need git or Java: the art guide explains how to submit through GitHub issues or the website.
 - **Automated in-game tests** run in every `./gradlew build` and in CI, since C-001: a Minecraft test server with no window loads the mod's data and checks it before you playtest. You chose Fabric's game-test mode, which skips the EULA check by design; `eula.txt` stays `eula=false`, and nothing accepts the EULA for you. `caramel-vault/gametest.md` has the details.
 - **Updating Minecraft:** Mojang releases a new version every few months. The plan is to stay on 26.3 while building and move to newer versions at milestones. `CLAUDE.md` has the step-by-step update procedure.
