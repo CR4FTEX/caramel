@@ -46,10 +46,12 @@ No ideas yet.
 ### Crafting and Smithing
 
 - C-001: Cheaper stairs, and stairs back into blocks
+- C-002: Cheaper slabs, and slabs back into blocks
 
 ### Recipes
 
 - C-001: Cheaper stairs, and stairs back into blocks
+- C-002: Cheaper slabs, and slabs back into blocks
 
 ### Blocks and Items
 
@@ -168,6 +170,58 @@ As pictured: 3 oak planks in a 2x2 L (top left, bottom left, bottom right) make 
 - No mixin was needed.
 - Recipes: `CaramelRecipeProvider` (datagen, `src/client/java/io/github/cr4ftex/caramel/client/datagen/`). It writes 97 recipes at `minecraft:<stairs>`, 97 at `caramel:<stairs>_flipped`, 97 at `caramel:<base>_from_<stairs>`, and removes the 103 stonecutter recipes and their 103 unlock advancements with Fabric's always-false load condition. Datagen stops if Minecraft's stairs count stops being 97 or the stonecutter count 103.
 - Fuel: `CaramelBurnTimeProvider` (datagen) writes `caramel:cooking/time_wood_stairs` (225) and `caramel:cooking/time_wool_stairs` (75), built like vanilla's burn times, so a blast furnace or smoker halves them (112 and 37). `io.github.cr4ftex.caramel.stairs.StairsFuel`, called from `Caramel.onInitialize`, points the 28 stairs that burned in the base game at them (12 wooden, bamboo and bamboo mosaic included, and 16 wool) through Fabric's `DefaultItemComponentEvents.MODIFY`.
-- Game test: `src/gametest/java/io/github/cr4ftex/caramel/gametest/StairsRecipeGameTest.java`, a separate mod `caramel-gametest`, wired by `configureTests` in `build.gradle`. `./gradlew build` and CI run its 11 checks. They read the expected values from the vanilla data pack and check every L rotation and placement, the old staircase, recycling, mixed stairs, the stonecutter, recipe groups and categories, which vanilla ids Caramel's pack touches, and every item's fuel. `OtherModStairs` registers a test-only stairs in the game-test mod to prove other mods' stairs keep their fuel; it is not on `runClient`'s classpath and not in the mod jar.
+- Game test: `src/gametest/java/io/github/cr4ftex/caramel/gametest/StairsRecipeGameTest.java`, a separate mod `caramel-gametest`, wired by `configureTests` in `build.gradle`. `./gradlew build` and CI run its 10 checks. They read the expected values from the vanilla data pack and check every L rotation and placement, the old staircase, recycling, mixed stairs, the stonecutter, recipe groups and categories, and every item's fuel. Which vanilla ids Caramel's pack touches is checked by `VanillaOverridesGameTest`, shared with C-002. `OtherModStairs` registers a test-only stairs in the game-test mod to prove other mods' stairs keep their fuel; it is not on `runClient`'s classpath and not in the mod jar.
 - Generated files: 790 in `src/main/generated/data`. They must be committed, because CI does not run datagen.
 - No placeholder textures.
+
+### C-002: Cheaper slabs, and slabs back into blocks
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every slab of every block family (for example Spruce, Andesite, Bricks, Orange Wool) is crafted from 2 of its base block instead of 3. The recipe keeps its straight-line shape.
+- This deletes and replaces the base-game slab, pressure plate and chiseled block recipes.
+- The pressure plate recipes that had this shape will get a new recipe in the owner's next idea, after the slabs.
+- Why: slabs become a cheaper and more accessible recipe, with no crafting table needed.
+- A new recipe for every slab of every family turns 2 of the same slab, stacked on top of each other in the crafting grid, back into 1 of its base block.
+- Why: slabs already crafted can be recycled back into blocks, so crafting too many wastes nothing.
+- Some slabs, such as the stone brick slab, have a base-game recipe where 2 stacked slabs make the chiseled version of their block. The owner asked to remove these chiseled recipes too.
+
+As pictured: 2 oak planks side by side in the bottom row of the 2x2 grid make 4 oak slabs, and 2 oak slabs stacked in the left column make 1 oak planks.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 100 slabs have a shaped crafting recipe, all 3 blocks in a row to 6 slabs. The `#minecraft:slabs` tag has 101; the other one, the petrified oak slab, has no recipe. 26.3 has wool slabs in all 16 colours, so Orange Wool is one of the families.
+- The pitch's first highlight named the stairs recipes. The owner confirmed it meant the slab recipes, a copy-paste slip.
+- The rate stays the same: 2 blocks for 4 slabs is 2 slabs per block, as in the base game (3 for 6), and recycling gives 1 block for 2 slabs. So nothing can be duplicated, and fuel does not change: slabs burn the same per block as before. The new recipe fits the inventory's 2x2 grid.
+- The stonecutter also makes 2 slabs per block (8 cut copper slabs per copper block, which is 4 cut copper), as good as crafting. The pitch does not change it, so its 108 slab recipes stay.
+- Four base-game slab recipes accept more than one block: quartz slab (quartz block, chiseled quartz block, quartz pillar), purpur slab (purpur block, purpur pillar), sandstone and red sandstone slabs (plain and chiseled). As in C-001, the new recipes keep those alternatives, and recycling gives the family's base block.
+- Recipes the new shapes take over, found in the game data:
+  - 2 base blocks in a row: 15 pressure plates (the 13 wooden ones, stone, polished blackstone) and the 16 carpets (2 wool make 3 carpets). The two weighted pressure plates use gold and iron ingots, which have no slabs.
+  - 2 stacked slabs: 20 chiseled blocks (stone bricks, sandstone, red sandstone, quartz, nether bricks, polished blackstone, deepslate from cobbled deepslate slabs, tuff, tuff bricks, resin bricks, cinnabar, sulfur, and the 8 chiseled coppers, waxed ones included). The stonecutter still makes every one of them. Also the purpur pillar, which the stonecutter also makes, and bamboo mosaic, which has no other recipe.
+- Pressure plates (asked, owner's answer): all 17 pressure plate recipes are removed, the two weighted plates (2 gold or 2 iron ingots) included, although ingots have no slabs. No pressure plate can be crafted until the owner's next idea gives them a new recipe.
+- Carpets (asked, owner's answer): the 16 wool carpet recipes are removed for now, and wool slabs get the new recipe as pitched. No carpet can be crafted from wool until a later idea gives them a new recipe. Moss and pale moss carpets keep theirs: those blocks have no slabs. The recipes that dye a carpet another colour stay. Shepherds still sell carpets, but each one offers only 2 trades at level 2, drawn from 37 (16 of them carpets), so one shepherd sells at most 2 colours.
+- Bamboo mosaic (asked, owner's answer): its recipe is removed, so bamboo slabs recycle like every other slab. Bamboo mosaic, and with it its slab and stairs, cannot be crafted until a later idea gives it a recipe.
+- Purpur pillar (asked, owner's answer): removed like the chiseled recipes, so purpur slabs recycle into purpur blocks. The stonecutter still makes the pillar.
+- What can no longer be made (found in review, from the 26.3 recipes, loot tables, villager trades and structure files):
+  - None of the 17 pressure plates has a recipe. Only a few can still be found: the oak, spruce and acacia plates in villages (oak also in trial chambers), the stone plate in ancient cities and desert pyramids, and the light weighted plate in ruined portal chests. The other 12 cannot be obtained in survival.
+  - Detector rails need a stone pressure plate, so each batch of 6 needs a stone plate found in the world.
+  - Bamboo mosaic, its slab and its stairs cannot be obtained in survival at all: no structure, chest or trade has them. Their recipes stay, but each needs bamboo mosaic to start.
+  - Every chiseled block and the purpur pillar can still be cut on the stonecutter, and the waxed chiseled coppers still come from honeycomb.
+- Playtest (owner): all 12 in-game checks passed as intended: slabs from 2 blocks in the 2x2 and 3x3 grids, the old row of 3 gone, several families, alternative blocks, recycling in both columns and in the crafting table, stacked slabs giving the base block instead of the chiseled block, mixed slabs refused, pressure plates and carpets no longer crafted, the stonecutter unchanged, the recipe book, and the detector rail.
+
+**Implementation notes**
+
+- No mixin was needed. No fuel change, and no placeholder textures.
+- Recipes: `CaramelRecipeProvider.replaceSlabs()` (datagen). It writes 100 recipes at `minecraft:<slab>`, for the 99 block families with slabs and the smooth stone slab, which vanilla crafts outside any family, and 100 at `caramel:<base>_from_<slab>`. It removes 55 recipes and their unlock advancements with Fabric's always-false load condition. The families' variants give 15 pressure plates, the 16 carpets and 16 chiseled blocks. The two weighted plates, the four waxed chiseled coppers, the purpur pillar and bamboo mosaic are removed by name. Datagen stops if the number of families with slabs (99), pressure plates (15), carpets (16) or chiseled blocks (16) changes.
+- The removed files carry vanilla's recipe bodies. Four removed unlock advancements (chiseled stone bricks, chiseled quartz block, chiseled sandstone, chiseled red sandstone) carry simpler criteria than vanilla's; Fabric drops them before reading.
+- Game tests, in `src/gametest/java/io/github/cr4ftex/caramel/gametest/`:
+  - `SlabsRecipeGameTest` has 9 checks, with expected values read from the vanilla data pack: every slab found, the new recipe in every placement of the 2x2 and 3x3 grids, the vanilla group and category, the old row of 3 gone, recycling in every placement, mixed pairs, the removed recipes gone, the chiseled blocks still cut, and fuel.
+  - `VanillaOverridesGameTest` checks which vanilla ids Caramel's pack replaces or removes, for C-001 and C-002 together. It works the list out from the vanilla pack: pressure plates by the `#minecraft:pressure_plates` block tag, and every other recipe that the new grids would also match.
+  - `UnlockAdvancementsGameTest` checks that every recipe in the `caramel` namespace has exactly one unlock advancement.
+  - `RecipeTestSupport` holds the helpers these tests and C-001's share.
+  - Five deliberate breaks to the generated files each failed the build, then were undone: a carpet removal deleted, a recycling recipe deleted, the light weighted plate's removal deleted, a slab count changed, the chiseled stone bricks removal deleted.
+- Generated files: 1300 in `src/main/generated/data`, 510 of them new with C-002. They must be committed, because CI does not run datagen.

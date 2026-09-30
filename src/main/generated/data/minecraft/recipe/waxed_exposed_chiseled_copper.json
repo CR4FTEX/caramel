@@ -1,0 +1,20 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:false"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "waxed_exposed_chiseled_copper",
+  "key": {
+    "M": "minecraft:waxed_exposed_cut_copper_slab"
+  },
+  "pattern": [
+    " M ",
+    " M "
+  ],
+  "result": {
+    "id": "minecraft:waxed_exposed_chiseled_copper"
+  }
+}

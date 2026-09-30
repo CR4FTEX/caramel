@@ -2,7 +2,7 @@
 
 The passdown between sessions: where the project stands, what you decided, and what comes next. Part 1 is the current state and is rewritten each session. Part 2 is the record of the first review of the docs and how each finding was handled.
 
-Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28.
+Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29.
 
 ---
 
@@ -62,6 +62,7 @@ Choices I made that you can change:
 ### Ideas
 
 - **C-001, cheaper stairs and recycling: Done.** You playtested all 12 checks with no issues. Committed and pushed to `main`. The entry in `docs/DESIGN.md` has every decision and the implementation notes.
+- **C-002, cheaper slabs and recycling: Done.** You playtested all 12 checks and they all worked as intended. Committed and pushed to `main`. Your four answers (all 17 pressure plates, carpets removed for now, bamboo mosaic removed, purpur pillar removed) and what can no longer be made are in the entry in `docs/DESIGN.md`. Until a later idea, no pressure plate or wool carpet can be crafted, detector rails need a stone plate found in the world, and bamboo mosaic cannot be obtained in survival.
 
 ### Open suggestions (your call)
 
@@ -85,7 +86,7 @@ None of these is started. Say the word for any of them.
 
 ### Next step
 
-Send me the next idea.
+Send me the next idea. You said it gives pressure plates a new recipe.
 
 ---
 

@@ -24,7 +24,7 @@ Caramel's server game tests start a headless Minecraft test server with every da
 
 A test that takes its expected values from the merged data passes silently, because it checks Caramel against itself. Vanilla's own values have two sources:
 
-- Data: `StairsRecipeGameTest` opens `server.getPackRepository().getPack("vanilla")` and parses the vanilla recipe files.
+- Data: `RecipeTestSupport` opens `server.getPackRepository().getPack("vanilla")` and parses the vanilla recipe files (`vanillaVariants`, `vanillaRecipes`), or lists one pack's files in one namespace (`packFiles`). Each idea's test class (`StairsRecipeGameTest` for C-001, `SlabsRecipeGameTest` for C-002) builds its expectations from it; `VanillaOverridesGameTest` and `UnlockAdvancementsGameTest` check both ideas together.
 - Item components: `BuiltInRegistries.DATA_COMPONENT_INITIALIZERS.build(...)` returns vanilla's defaults, which Fabric's modify event never touches (see [[fuel]]).
 
 ## Traps

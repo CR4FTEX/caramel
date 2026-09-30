@@ -1,0 +1,18 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:false"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "minecraft:polished_blackstone"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "minecraft:polished_blackstone_pressure_plate"
+  }
+}
