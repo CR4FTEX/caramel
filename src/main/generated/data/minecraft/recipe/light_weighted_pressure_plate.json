@@ -1,9 +1,4 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:false"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
@@ -13,6 +8,7 @@
     "##"
   ],
   "result": {
+    "count": 16,
     "id": "minecraft:light_weighted_pressure_plate"
   }
 }

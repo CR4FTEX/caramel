@@ -3,7 +3,7 @@ package io.github.cr4ftex.caramel.client.datagen;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-import io.github.cr4ftex.caramel.stairs.StairsFuel;
+import io.github.cr4ftex.caramel.fuel.CraftedFuel;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
@@ -31,8 +31,11 @@ public class CaramelBurnTimeProvider extends FabricCodecDataProvider<ContextIntP
 		Holder.Reference<ContextIntProvider> fast = burnTimes.getOrThrow(ContextIntProviders.COOKING_FAST_BURN_TIME_REDUCTION_FACTOR);
 		// C-001: 3/4 of a plank's 300 ticks and of wool's 100, built the way vanilla builds every burn time, so a blast
 		// furnace or smoker halves them too.
-		provider.accept(StairsFuel.COOKING_TIME_WOOD_STAIRS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 225));
-		provider.accept(StairsFuel.COOKING_TIME_WOOL_STAIRS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 75));
+		provider.accept(CraftedFuel.COOKING_TIME_WOOD_STAIRS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 225));
+		provider.accept(CraftedFuel.COOKING_TIME_WOOL_STAIRS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 75));
+		// C-003: 1/16 of a plank's 300 ticks and of wool's 100, rounded down so 16 never burn longer than the block.
+		provider.accept(CraftedFuel.COOKING_TIME_WOOD_PRESSURE_PLATES.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 18));
+		provider.accept(CraftedFuel.COOKING_TIME_WOOL_CARPETS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 6));
 	}
 
 	@Override

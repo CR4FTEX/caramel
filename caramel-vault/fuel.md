@@ -1,21 +1,28 @@
-# Furnace fuel
+# Furnace fuel and compost
 
-How an item's burn time is set in Minecraft 26.3, and how Caramel changes it. The code is `io.github.cr4ftex.caramel.stairs.StairsFuel` and the datagen provider `CaramelBurnTimeProvider`; the decision behind them is in idea C-001 in `docs/DESIGN.md`. Checked in bytecode and in game tests.
+How an item's burn time and compost chance are set in Minecraft 26.3, and how Caramel changes them. The code is `io.github.cr4ftex.caramel.fuel.CraftedFuel` and `io.github.cr4ftex.caramel.compost.CraftedCompost`, with the datagen providers `CaramelBurnTimeProvider` and `CaramelCompostProvider`; the decisions behind them are in ideas C-001 and C-003 in `docs/DESIGN.md`. Checked in bytecode and in game tests.
 
 ## How fuel works
 
 - Fuel is the item data component `minecraft:cooking_fuel` (`DataComponents.COOKING_FUEL`), a `CookingFuel(ResolvableInt burnTime, ResolvableFloat speedMultiplier)`. Items get it through `Item.Properties.cookingFuel(key)`.
-- The burn time is a reference into the reloadable registry `context_int_provider`: for example `minecraft:cooking/time_wood_blocks` (planks, wooden stairs) and `minecraft:cooking/time_wool` (wool, wool stairs). Slabs have their own entries, at half their block's value.
+- The burn time is a reference into the reloadable registry `context_int_provider`: for example `minecraft:cooking/time_wood_blocks` (planks, wooden stairs, wooden pressure plates) and `minecraft:cooking/time_wool` (wool, wool stairs). Slabs have their own entries, at half their block's value, and wool carpets theirs, 67 ticks.
 - Each `cooking/time_*` entry is `div(n, ...)`. The divisor is `cooking/fast_burn_time_reduction_factor` (2) where `minecraft:block/fast_cooking` matches (the blast furnace and the smoker), and `cooking/normal_burn_time_reduction_factor` (1) elsewhere. The division is integer division (`Quotient`, `idiv`). `ContextIntProviders.cooking(predicates, normal, fast, n)` builds one exactly like vanilla does.
 - A furnace reads the burn time through `AbstractFurnaceBlockEntity.getBurnDuration(ServerLevel, ItemStack)`, in its own loot context. Its fuel slot accepts any item that has the component (`canPlaceItem`), and it lights and consumes the item only for a burn time above 0 (`serverTick`). The client never computes a burn time: no class in the client-only jar references `CookingFuel` or `ResolvableInt`.
 
-## How Caramel changes it
+## How compost works
 
-- New burn times are data, generated into `data/caramel/context_int_provider/cooking/` by `CaramelBurnTimeProvider` (`FabricCodecDataProvider` with `ContextIntProviders.DIRECT_CODEC`).
+- Compost is the item data component `minecraft:compostable` (`DataComponents.COMPOSTABLE`), a `Compostable(ResolvableInt layers)` referencing a `context_int_provider` entry: `minecraft:compostable/low` (30%), `low_medium` (50%), `medium` (65%), `medium_high` (85%) or `always_add_one`. Moss and pale moss carpets are `low`, their blocks `medium` (read from the components in a game test).
+- Each chance is a `number_dispatcher`: 1 when the composter's `level` is 0, so the first item into an empty composter always adds a layer, and otherwise a `weighted_list` of 1 (weight n) and 0 (weight 100 - n). `ContextIntProviders.compostable(blocks, n)` builds one exactly like vanilla's.
+
+## How Caramel changes them
+
+- New burn times and compost chances are data, generated into `data/caramel/context_int_provider/cooking/` by `CaramelBurnTimeProvider` and `data/caramel/context_int_provider/compostable/` by `CaramelCompostProvider` (each a `FabricCodecDataProvider` with `ContextIntProviders.DIRECT_CODEC`).
 - Items are pointed at them with Fabric API's `DefaultItemComponentEvents.MODIFY` from common init, not a mixin. The event runs every time the item components are bound, on the server and on a connected client alike, after vanilla binds its defaults, so a change never stacks.
-- Only vanilla items are changed: the predicate checks the `minecraft` namespace rather than `#minecraft:stairs`, because any mod can add its stairs to that tag. The scope is the owner's answer under "Fuel scope" in C-001, `docs/DESIGN.md`.
-- Vanilla's own fuel for an item comes from `BuiltInRegistries.DATA_COMPONENT_INITIALIZERS.build(...)`, which Fabric's modify event never touches; the game tests read it there (see [[gametest]]).
+- `CraftedFuel` matches an item by a pair: its block's class (`StairBlock`, `PressurePlateBlock`, `WoolCarpetBlock`) and vanilla's burn-time key. The class is needed because `time_wood_blocks` is shared by planks, stairs, plates and more. `CraftedCompost` names its two items and changes them only while their value is vanilla's `compostable/low`.
+- A component belongs to the item, not to a stack, so a change reaches every stack: a found or looted wooden plate burns the new 18 ticks, and a moss carpet from bone meal composts at the new 4%.
+- Only vanilla items are changed: the predicate checks the `minecraft` namespace rather than a tag such as `#minecraft:stairs`, because any mod can add its items to a tag. The scope is the owner's answer under "Fuel scope" in C-001, `docs/DESIGN.md`.
+- Vanilla's own fuel and compost for an item come from `BuiltInRegistries.DATA_COMPONENT_INITIALIZERS.build(...)`, which Fabric's modify event never touches; the game tests read them there (see [[gametest]]).
 
 ## Traps
 
-- **A missing burn-time file makes the item useless as fuel, silently.** A `CookingFuel` whose key does not resolve falls back to 0 (`ResolvableInt$Reference.get`). The fuel slot still takes the item, but the furnace never lights and never consumes it, and no log line names the missing file. The game tests `craftingStairsNeverAddsFuel` and `stairsThatBurnedStillBurn` catch it (see [[gametest]]); generated files left uncommitted are one way it goes missing (see [[datagen]]).
+- **A missing burn-time file makes the item useless as fuel, silently.** A `CookingFuel` whose key does not resolve falls back to 0 (`ResolvableInt$Reference.get`). The fuel slot still takes the item, but the furnace never lights and never consumes it, and no log line names the missing file. The game tests `craftingStairsNeverAddsFuel`, `stairsThatBurnedStillBurn`, `craftingPressurePlatesAndCarpetsNeverAddsFuel` and `pressurePlatesAndCarpetsThatBurnedStillBurn` catch it (see [[gametest]]); generated files left uncommitted are one way it goes missing (see [[datagen]]).

@@ -5,18 +5,16 @@ import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.craftingRecip
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.firstInput;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.furnaces;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.name;
-import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.packFiles;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.placements;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.report;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.vanillaComponents;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.vanillaVariants;
+import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.withVanillaFuel;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.IntStream;
 
@@ -28,27 +26,22 @@ import io.github.cr4ftex.caramel.gametest.RecipeTestSupport.Variant;
 
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
-import net.minecraft.world.level.block.StairBlock;
 
 // C-001. What each stairs should cost and give back is read from the vanilla data pack's own recipe files,
 // never from Caramel's, so a wrong generated recipe cannot also make its own expectation. Whether a stairs burned
@@ -256,14 +249,8 @@ public class StairsRecipeGameTest {
 		int changed = 0;
 		for (Variant stairs : vanillaStairs(helper)) {
 			ItemStack now = new ItemStack(stairs.item());
-			ItemStack before = now.copy();
-			CookingFuel vanillaFuel = vanilla.get(stairs.item()).get(DataComponents.COOKING_FUEL);
-			if (vanillaFuel == null) {
-				before.remove(DataComponents.COOKING_FUEL);
-			} else {
-				before.set(DataComponents.COOKING_FUEL, vanillaFuel);
-			}
-			if (!Objects.equals(vanillaFuel, now.get(DataComponents.COOKING_FUEL))) {
+			ItemStack before = withVanillaFuel(now, vanilla);
+			if (!Objects.equals(before.get(DataComponents.COOKING_FUEL), now.get(DataComponents.COOKING_FUEL))) {
 				changed++;
 			}
 			if (furnaces.getFirst().burns(level, before)) {
@@ -298,47 +285,6 @@ public class StairsRecipeGameTest {
 		}
 		Caramel.LOGGER.info("C-001 game test: {} stairs burned in vanilla, {} have a different fuel now", burned, changed);
 		report(helper, IDEA, "stairs fuel checks", checked, failures);
-	}
-
-	// Of every item, only the vanilla stairs that burned have a new fuel: not the blocks stairs are made from, which the
-	// burn time checks above measure stairs against, and not other mods' stairs, whose recipes C-001 leaves alone.
-	// Caramel's data pack replaces none of vanilla's burn times, cooking speeds or the predicates they use either.
-	@GameTest
-	public void onlyVanillaStairsThatBurnedHaveNewFuel(GameTestHelper helper) {
-		Map<Item, DataComponentMap> vanilla = vanillaComponents(helper);
-		Set<Item> expected = new HashSet<>();
-		for (Variant stairs : vanillaStairs(helper)) {
-			if (vanilla.containsKey(stairs.item()) && vanilla.get(stairs.item()).has(DataComponents.COOKING_FUEL)) {
-				expected.add(stairs.item());
-			}
-		}
-		// Without other mods' stairs that burn, nothing here would tell vanilla's stairs from any others.
-		Item otherModStairs = BuiltInRegistries.ITEM.getValue(OtherModStairs.ITEM);
-		if (!(otherModStairs instanceof BlockItem blockItem && blockItem.getBlock() instanceof StairBlock)
-				|| !vanilla.containsKey(otherModStairs) || !vanilla.get(otherModStairs).has(DataComponents.COOKING_FUEL)) {
-			helper.fail("The game test mod's stand-in " + OtherModStairs.ITEM.identifier() + " is missing, or is not stairs that burn");
-		}
-		List<String> failures = new ArrayList<>();
-		int checked = 0;
-		for (Item item : BuiltInRegistries.ITEM) {
-			checked++;
-			if (!vanilla.containsKey(item)) {
-				failures.add(name(item) + " has no components as vanilla builds them");
-				continue;
-			}
-			CookingFuel vanillaFuel = vanilla.get(item).get(DataComponents.COOKING_FUEL);
-			CookingFuel fuel = item.components().get(DataComponents.COOKING_FUEL);
-			boolean changed = !Objects.equals(vanillaFuel, fuel);
-			if (changed != expected.contains(item)) {
-				failures.add(name(item) + (changed ? " has fuel " + fuel + ", vanilla's is " + vanillaFuel : " still has vanilla's fuel " + vanillaFuel));
-			}
-		}
-		for (ResourceKey<? extends Registry<?>> registry : List.of(Registries.CONTEXT_INT_PROVIDER, Registries.CONTEXT_FLOAT_PROVIDER, Registries.PREDICATE)) {
-			checked++;
-			packFiles(helper, Caramel.MOD_ID, registry).keySet().forEach(id -> failures.add("Caramel's data pack replaces " + registry.identifier().getPath() + " " + id));
-		}
-		Caramel.LOGGER.info("C-001 game test: {} items have a new fuel", expected.size());
-		report(helper, IDEA, "item fuel checks", checked, failures);
 	}
 
 	// Each stairs in #minecraft:stairs, sorted by id, with the blocks its vanilla recipe accepts.

@@ -47,11 +47,13 @@ No ideas yet.
 
 - C-001: Cheaper stairs, and stairs back into blocks
 - C-002: Cheaper slabs, and slabs back into blocks
+- C-003: Pressure plates and carpets from slabs
 
 ### Recipes
 
 - C-001: Cheaper stairs, and stairs back into blocks
 - C-002: Cheaper slabs, and slabs back into blocks
+- C-003: Pressure plates and carpets from slabs
 
 ### Blocks and Items
 
@@ -169,8 +171,8 @@ As pictured: 3 oak planks in a 2x2 L (top left, bottom left, bottom right) make 
 
 - No mixin was needed.
 - Recipes: `CaramelRecipeProvider` (datagen, `src/client/java/io/github/cr4ftex/caramel/client/datagen/`). It writes 97 recipes at `minecraft:<stairs>`, 97 at `caramel:<stairs>_flipped`, 97 at `caramel:<base>_from_<stairs>`, and removes the 103 stonecutter recipes and their 103 unlock advancements with Fabric's always-false load condition. Datagen stops if Minecraft's stairs count stops being 97 or the stonecutter count 103.
-- Fuel: `CaramelBurnTimeProvider` (datagen) writes `caramel:cooking/time_wood_stairs` (225) and `caramel:cooking/time_wool_stairs` (75), built like vanilla's burn times, so a blast furnace or smoker halves them (112 and 37). `io.github.cr4ftex.caramel.stairs.StairsFuel`, called from `Caramel.onInitialize`, points the 28 stairs that burned in the base game at them (12 wooden, bamboo and bamboo mosaic included, and 16 wool) through Fabric's `DefaultItemComponentEvents.MODIFY`.
-- Game test: `src/gametest/java/io/github/cr4ftex/caramel/gametest/StairsRecipeGameTest.java`, a separate mod `caramel-gametest`, wired by `configureTests` in `build.gradle`. `./gradlew build` and CI run its 10 checks. They read the expected values from the vanilla data pack and check every L rotation and placement, the old staircase, recycling, mixed stairs, the stonecutter, recipe groups and categories, and every item's fuel. Which vanilla ids Caramel's pack touches is checked by `VanillaOverridesGameTest`, shared with C-002. `OtherModStairs` registers a test-only stairs in the game-test mod to prove other mods' stairs keep their fuel; it is not on `runClient`'s classpath and not in the mod jar.
+- Fuel: `CaramelBurnTimeProvider` (datagen) writes `caramel:cooking/time_wood_stairs` (225) and `caramel:cooking/time_wool_stairs` (75), built like vanilla's burn times, so a blast furnace or smoker halves them (112 and 37). `io.github.cr4ftex.caramel.fuel.CraftedFuel` (named `StairsFuel` until C-003 widened it), called from `Caramel.onInitialize`, points the 28 stairs that burned in the base game at them (12 wooden, bamboo and bamboo mosaic included, and 16 wool) through Fabric's `DefaultItemComponentEvents.MODIFY`.
+- Game test: `src/gametest/java/io/github/cr4ftex/caramel/gametest/StairsRecipeGameTest.java`, a separate mod `caramel-gametest`, wired by `configureTests` in `build.gradle`. `./gradlew build` and CI run its 9 checks. They read the expected values from the vanilla data pack and check every L rotation and placement, the old staircase, recycling, mixed stairs, the stonecutter, recipe groups and categories, and stairs fuel. Which vanilla ids Caramel's pack touches is checked by `VanillaOverridesGameTest`, and which items have new fuel by `CraftedFuelGameTest`, both shared with the later ideas. `OtherModStairs` registers a test-only stairs in the game-test mod to prove other mods' stairs keep their fuel; it is not on `runClient`'s classpath and not in the mod jar.
 - Generated files: 790 in `src/main/generated/data`. They must be committed, because CI does not run datagen.
 - No placeholder textures.
 
@@ -202,26 +204,70 @@ As pictured: 2 oak planks side by side in the bottom row of the 2x2 grid make 4 
 - Recipes the new shapes take over, found in the game data:
   - 2 base blocks in a row: 15 pressure plates (the 13 wooden ones, stone, polished blackstone) and the 16 carpets (2 wool make 3 carpets). The two weighted pressure plates use gold and iron ingots, which have no slabs.
   - 2 stacked slabs: 20 chiseled blocks (stone bricks, sandstone, red sandstone, quartz, nether bricks, polished blackstone, deepslate from cobbled deepslate slabs, tuff, tuff bricks, resin bricks, cinnabar, sulfur, and the 8 chiseled coppers, waxed ones included). The stonecutter still makes every one of them. Also the purpur pillar, which the stonecutter also makes, and bamboo mosaic, which has no other recipe.
-- Pressure plates (asked, owner's answer): all 17 pressure plate recipes are removed, the two weighted plates (2 gold or 2 iron ingots) included, although ingots have no slabs. No pressure plate can be crafted until the owner's next idea gives them a new recipe.
-- Carpets (asked, owner's answer): the 16 wool carpet recipes are removed for now, and wool slabs get the new recipe as pitched. No carpet can be crafted from wool until a later idea gives them a new recipe. Moss and pale moss carpets keep theirs: those blocks have no slabs. The recipes that dye a carpet another colour stay. Shepherds still sell carpets, but each one offers only 2 trades at level 2, drawn from 37 (16 of them carpets), so one shepherd sells at most 2 colours.
+- Pressure plates (asked, owner's answer): all 17 pressure plate recipes are removed, the two weighted plates (2 gold or 2 iron ingots) included, although ingots have no slabs. No pressure plate can be crafted until the owner's next idea gives them a new recipe. C-003 did: 2 slabs, or 2 ingots for the weighted plates, make 16.
+- Carpets (asked, owner's answer): the 16 wool carpet recipes are removed for now, and wool slabs get the new recipe as pitched. No carpet can be crafted from wool until a later idea gives them a new recipe. Moss and pale moss carpets keep theirs: those blocks have no slabs. C-003 gave wool carpets a new recipe, 2 wool slabs to 16, and moss carpets 32 from their 2 blocks. The recipes that dye a carpet another colour stay. Shepherds still sell carpets, but each one offers only 2 trades at level 2, drawn from 37 (16 of them carpets), so one shepherd sells at most 2 colours.
 - Bamboo mosaic (asked, owner's answer): its recipe is removed, so bamboo slabs recycle like every other slab. Bamboo mosaic, and with it its slab and stairs, cannot be crafted until a later idea gives it a recipe.
 - Purpur pillar (asked, owner's answer): removed like the chiseled recipes, so purpur slabs recycle into purpur blocks. The stonecutter still makes the pillar.
 - What can no longer be made (found in review, from the 26.3 recipes, loot tables, villager trades and structure files):
   - None of the 17 pressure plates has a recipe. Only a few can still be found: the oak, spruce and acacia plates in villages (oak also in trial chambers), the stone plate in ancient cities and desert pyramids, and the light weighted plate in ruined portal chests. The other 12 cannot be obtained in survival.
   - Detector rails need a stone pressure plate, so each batch of 6 needs a stone plate found in the world.
   - Bamboo mosaic, its slab and its stairs cannot be obtained in survival at all: no structure, chest or trade has them. Their recipes stay, but each needs bamboo mosaic to start.
+  - C-003 gives the pressure plates and wool carpets new recipes, which makes detector rails craftable again. Of this list, only bamboo mosaic, its slab and its stairs remain; the owner plans a later idea for them, the chiseled blocks and the pillars.
   - Every chiseled block and the purpur pillar can still be cut on the stonecutter, and the waxed chiseled coppers still come from honeycomb.
 - Playtest (owner): all 12 in-game checks passed as intended: slabs from 2 blocks in the 2x2 and 3x3 grids, the old row of 3 gone, several families, alternative blocks, recycling in both columns and in the crafting table, stacked slabs giving the base block instead of the chiseled block, mixed slabs refused, pressure plates and carpets no longer crafted, the stonecutter unchanged, the recipe book, and the detector rail.
 
 **Implementation notes**
 
 - No mixin was needed. No fuel change, and no placeholder textures.
-- Recipes: `CaramelRecipeProvider.replaceSlabs()` (datagen). It writes 100 recipes at `minecraft:<slab>`, for the 99 block families with slabs and the smooth stone slab, which vanilla crafts outside any family, and 100 at `caramel:<base>_from_<slab>`. It removes 55 recipes and their unlock advancements with Fabric's always-false load condition. The families' variants give 15 pressure plates, the 16 carpets and 16 chiseled blocks. The two weighted plates, the four waxed chiseled coppers, the purpur pillar and bamboo mosaic are removed by name. Datagen stops if the number of families with slabs (99), pressure plates (15), carpets (16) or chiseled blocks (16) changes.
+- Recipes: `CaramelRecipeProvider.replaceSlabs()` (datagen). It writes 100 recipes at `minecraft:<slab>`, for the 99 block families with slabs and the smooth stone slab, which vanilla crafts outside any family, and 100 at `caramel:<base>_from_<slab>`. It removes 22 recipes and their unlock advancements with Fabric's always-false load condition: the families' 16 chiseled blocks, and by name the four waxed chiseled coppers, the purpur pillar and bamboo mosaic. Datagen stops if the number of families with slabs (99) or chiseled blocks (16) changes. C-002 also removed the 17 pressure plates and 16 wool carpets until C-003 gave them new recipes at the same ids.
 - The removed files carry vanilla's recipe bodies. Four removed unlock advancements (chiseled stone bricks, chiseled quartz block, chiseled sandstone, chiseled red sandstone) carry simpler criteria than vanilla's; Fabric drops them before reading.
 - Game tests, in `src/gametest/java/io/github/cr4ftex/caramel/gametest/`:
   - `SlabsRecipeGameTest` has 9 checks, with expected values read from the vanilla data pack: every slab found, the new recipe in every placement of the 2x2 and 3x3 grids, the vanilla group and category, the old row of 3 gone, recycling in every placement, mixed pairs, the removed recipes gone, the chiseled blocks still cut, and fuel.
-  - `VanillaOverridesGameTest` checks which vanilla ids Caramel's pack replaces or removes, for C-001 and C-002 together. It works the list out from the vanilla pack: pressure plates by the `#minecraft:pressure_plates` block tag, and every other recipe that the new grids would also match.
+  - `VanillaOverridesGameTest` checks which vanilla ids Caramel's pack replaces or removes, for C-001, C-002 and C-003 together, working the list out from the vanilla pack.
   - `UnlockAdvancementsGameTest` checks that every recipe in the `caramel` namespace has exactly one unlock advancement.
   - `RecipeTestSupport` holds the helpers these tests and C-001's share.
-  - Five deliberate breaks to the generated files each failed the build, then were undone: a carpet removal deleted, a recycling recipe deleted, the light weighted plate's removal deleted, a slab count changed, the chiseled stone bricks removal deleted.
-- Generated files: 1300 in `src/main/generated/data`, 510 of them new with C-002. They must be committed, because CI does not run datagen.
+  - While C-002 was built, five deliberate breaks to the generated files each failed the build, then were undone: a carpet removal deleted, a recycling recipe deleted, the light weighted plate's removal deleted, a slab count changed, the chiseled stone bricks removal deleted.
+- Generated files: 510 new with C-002, 1300 in `src/main/generated/data` in all at that point. They must be committed, because CI does not run datagen.
+
+### C-003: Pressure plates and carpets from slabs
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every pressure plate and carpet of every block family that has them (for example Birch, Stone, White Wool, Yellow Wool) is crafted from 2 of the family's slab instead of 2 of its block. The recipe keeps its straight-line shape and gives 16 pressure plates or 16 carpets, instead of 1 plate or 3 carpets.
+- The light and heavy weighted pressure plates keep their base-game recipe, 2 gold or 2 iron ingots side by side, and now give 16 instead of 1.
+- Why: the pressure plate becomes a more accessible and profitable recipe, with no crafting table needed.
+- The owner added: 2 wool slabs of the same colour in a row make 16 carpets of that colour. Bamboo mosaic, the chiseled blocks and the pillars will be part of a future idea, and their removal in C-002 stands.
+- The owner added later: the moss carpet and pale moss carpet recipes (2 moss or pale moss blocks side by side) give 32 instead of 3.
+- After the playtest, answering the knock-ons: shepherds sell 20 carpets for an emerald instead of 4, so buying carpets is worth it again. Dyeing wool and items will be addressed in a future idea.
+
+As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 oak pressure plates, and 2 white wool slabs make 16 white carpets.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 15 block families have a pressure plate and a slab (the 13 wooden ones, stone and polished blackstone), and the 16 wool families have a carpet and a slab. With the 2 weighted plates, that is the 33 recipes C-002 removed. C-003 gives each a new recipe at the same base-game id.
+- Moss and pale moss carpets: their blocks have no slabs, so their recipe keeps its 2 blocks side by side and gives 32, the same 16 carpets per block as the others. They are not fuel. They do compost: each has a 30% chance to add a composter layer (`minecraft:compostable/low`), and a moss or pale moss block 65% (`compostable/medium`), checked in the game.
+- No clash: no other recipe in the game data takes 2 of one slab side by side. The cushion takes 3 wool slabs in a row, and C-002's recycling takes 2 slabs stacked, which a shaped recipe never confuses with side by side.
+- Nothing can be duplicated: no recipe, furnace or trade turns pressure plates or carpets back into anything, and villagers only sell carpets (shepherds). The detector rail, which takes 1 stone pressure plate, can be crafted from new materials again.
+- Burn times, measured in the game: wooden pressure plates burn 300 ticks (crimson and warped do not burn), wool carpets 67.
+- Compost (asked, owner's answer): at 32 carpets from 2 blocks, one moss block turned into carpets would compost for about 4.8 layers instead of 0.65. The owner chose to match the cost: each moss and pale moss carpet adds a layer with a 4% chance, 1/16 of the block's 65% rounded down. The first item into an empty composter still always adds one layer, as in vanilla.
+- Recipe book: each replaced recipe keeps its base-game unlock advancement, so it shows once the player has held the base-game ingredient (planks, stone, polished blackstone, wool, the ingot, the moss block), not the slab.
+- Fuel and compost apply to the item, not only to crafted ones: a wooden pressure plate found in a village burns 18 ticks too, and a moss carpet grown with bone meal composts at 4%.
+- Knock-ons, found in review: a shepherd's trade of 4 carpets for an emerald became worse than buying 1 wool (16 carpets), which the owner answered by raising it to 20; dyeing a carpet stays 1 for 1, so dyeing the wool first is 16 times better, left for the owner's future dyeing idea; carpets, which dampen vibrations for sculk sensors, are 16 per wool; light weighted pressure plates, which distract piglins, are 16 per 2 gold ingots.
+- Shepherd trades (owner's addition): each of the 16 carpet trades at shepherd level 2 gives 20 carpets instead of 4, and keeps the rest of vanilla's trade: 1 emerald, 16 uses, 5 experience. A shepherd draws 2 of its 37 level-2 trades, as before. A villager keeps the offers it already has, so only trades drawn after the change give 20.
+- Playtest (owner): the owner confirmed in game that a shepherd sells 20 carpets. Before the trades were added, all 12 in-game checks passed as intended: plates and carpets from 2 slabs, other plate families, the weighted plates, wool carpets in two colours, moss carpets, mixed slabs refused, 2 blocks still making slabs, the recipe book, the detector rail, fuel, compost, and what does not burn.
+- Furnace fuel (asked, owner's answer): at 16 per block, a plank would make 16 plates worth 4,800 ticks and a wool 16 carpets worth 1,072. The owner chose to match the cost, as C-001 did for stairs: a wooden pressure plate burns 18 ticks and a wool carpet 6, 1/16 of a plank or a wool rounded down, so crafting never adds fuel. Blast furnaces and smokers halve both (9 and 3).
+
+**Implementation notes**
+
+- No mixin was needed. No placeholder textures.
+- Recipes: `CaramelRecipeProvider.pressurePlatesAndCarpets()` (datagen) writes 35 recipes at their base-game ids: the 15 slab families' pressure plates and the 16 wool carpets from 2 slabs, the two weighted plates from 2 ingots (16 each), and the moss and pale moss carpets from 2 blocks (32 each). Each keeps the base-game group, category and unlock advancement, byte for byte for the advancements. Datagen stops if the number of slab families with a pressure plate (15) or a carpet (16) changes.
+- Fuel: C-001's `StairsFuel` became `io.github.cr4ftex.caramel.fuel.CraftedFuel`, which matches an item by its block's class and vanilla's burn time. `CaramelBurnTimeProvider` writes `caramel:cooking/time_wood_pressure_plates` (18) and `caramel:cooking/time_wool_carpets` (6); the 11 wooden plates that burned and the 16 wool carpets point at them.
+- Compost: `io.github.cr4ftex.caramel.compost.CraftedCompost` points the two moss carpets at `caramel:compostable/moss_carpets`, a 4% chance written by the new `CaramelCompostProvider`, built like vanilla's chances.
+- Trades: `CaramelTradeProvider` (datagen) writes the 16 shepherd carpet trades at their vanilla ids, built with vanilla's own call and a count of 20.
+- Game tests: `PressurePlatesAndCarpetsGameTest` has 12 checks, with expected values read from the vanilla data pack and vanilla item components: all 35 recipes found, 2 slabs or ingots in every placement of the 2x2 and 3x3 grids, the moss carpets, groups and categories, unlock advancements, mixed pairs, the detector rail, fuel, fuel still burning where it burned, compost, and the carpet trades. `CraftedFuelGameTest` checks that only the vanilla stairs, pressure plates and carpets that burned have new fuel. `SlabsRecipeGameTest` and `VanillaOverridesGameTest` were updated for the recipes C-003 took over from C-002's removals. `VanillaOverridesGameTest` also fails if Caramel's pack replaces any villager trade but these 16. `./gradlew build` runs 33 Caramel game tests.
+- Ten deliberate breaks each failed the build, then were undone: a plate's count, a carpet's ingredient, the light weighted plate removed again, the plate burn time, the carpet fuel mapping, the moss carpet count, the moss carpet compost chance, the pale moss carpet left out of the compost change, a carpet trade back at 4, and a carpet trade file deleted.
+- Generated files: 1323 in `src/main/generated/data`, 23 new and 66 changed with C-003.

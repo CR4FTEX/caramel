@@ -1,18 +1,14 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:false"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "#": "minecraft:stone"
+    "#": "minecraft:stone_slab"
   },
   "pattern": [
     "##"
   ],
   "result": {
+    "count": 16,
     "id": "minecraft:stone_pressure_plate"
   }
 }

@@ -10,7 +10,8 @@ How Caramel works, for a reader who was not there, and the traps each part hides
 | Data generation and `src/main/generated/`          | [[datagen]]   |
 | Replacing, adding and removing recipes             | [[recipes]]   |
 | Server game tests and the EULA                     | [[gametest]]  |
-| Furnace fuel and burn times                        | [[fuel]]      |
+| Furnace fuel, burn times and compost chances       | [[fuel]]      |
+| Villager trades                                    | [[trades]]    |
 | Mixin configs and how they fail                    | [[mixins]]    |
 | The GitHub Actions build                           | [[ci]]        |
 | Code and art licenses, and how the jars carry them | [[licensing]] |

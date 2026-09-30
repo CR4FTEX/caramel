@@ -1,19 +1,15 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:false"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": "minecraft:acacia_planks"
+    "#": "minecraft:acacia_slab"
   },
   "pattern": [
     "##"
   ],
   "result": {
+    "count": 16,
     "id": "minecraft:acacia_pressure_plate"
   }
 }

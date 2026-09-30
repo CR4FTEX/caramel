@@ -1,6 +1,8 @@
 # Data generation
 
-Caramel's JSON data is generated from Java into `src/main/generated/` by the providers registered in `CaramelDataGenerator`, and that output is committed. They write recipes and their unlock advancements ([[recipes]]) and burn times ([[fuel]]); `CLAUDE.md` requires every other generated JSON, such as models, blockstates, loot tables, tags and translations, to come from datagen too. The rule for people is in `CONTRIBUTING.md`, "Where things go"; this note is how it works and what breaks. The behaviour below was reproduced in scratch copies on Loom 1.18.2 and Fabric API 0.161.0+26.3.
+Caramel's JSON data is generated from Java into `src/main/generated/` by the providers registered in `CaramelDataGenerator`, and that output is committed. They write recipes and their unlock advancements ([[recipes]]), burn times and compost chances ([[fuel]]), and villager trades ([[trades]]).
+
+`CLAUDE.md` requires every other generated JSON, such as models, blockstates, loot tables, tags and translations, to come from datagen too. The rule for people is in `CONTRIBUTING.md`, "Where things go"; this note is how it works and what breaks. The behaviour below was reproduced in scratch copies on Loom 1.18.2 and Fabric API 0.161.0+26.3.
 
 ## How it runs
 
@@ -11,7 +13,7 @@ Caramel's JSON data is generated from Java into `src/main/generated/` by the pro
 
 ## What a run does to src/main/generated
 
-- `.cache/` holds one file per provider, listing the hash of each file that provider wrote. `.gitignore` excludes it, so a fresh clone has none.
+- `.cache/` holds one file per provider, headed by `<pack>/<provider getName()>` and listing the hash of each file that provider wrote. `.gitignore` excludes it, so a fresh clone has none. Two providers can write into one registry folder, as the burn-time and compost providers both write `context_int_provider/`, when their names differ; each keeps its own cache file (`src/main/generated/.cache/`).
 - A file is rewritten only when the provider's new output hash differs from the hash in `.cache`, or when the file is missing. The content on disk is not compared.
 - Every file in `src/main/generated` that the current run did not produce is deleted: hand-placed files, and the output of providers no longer registered. Empty directories stay, and the jar packages them as empty directory entries.
 

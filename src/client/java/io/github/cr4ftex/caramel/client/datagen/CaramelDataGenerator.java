@@ -9,5 +9,7 @@ public class CaramelDataGenerator implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = generator.createPack();
 		pack.addProvider(CaramelRecipeProvider::new);
 		pack.addProvider(CaramelBurnTimeProvider::new);
+		pack.addProvider(CaramelCompostProvider::new);
+		pack.addProvider(CaramelTradeProvider::new);
 	}
 }

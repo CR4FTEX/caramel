@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import io.github.cr4ftex.caramel.Caramel;
 import io.github.cr4ftex.caramel.gametest.RecipeTestSupport.Crafted;
@@ -31,10 +30,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.context.ContextMap;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,19 +38,17 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
-import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 
-// C-002. What each slab should cost and give back, and which vanilla recipes its new grids take over, are read from
+// C-002. What each slab should cost and give back, and which vanilla recipes 2 stacked slabs take over, are read from
 // the vanilla data pack's own recipe files, never from Caramel's, so a wrong generated recipe cannot also make its own
-// expectation.
+// expectation. The pressure plates and carpets that 2 blocks side by side made are C-003's, in
+// PressurePlatesAndCarpetsGameTest.
 public class SlabsRecipeGameTest {
 	private static final String IDEA = "C-002";
 	// 26.3 has no ItemTags constant for it.
 	private static final TagKey<Item> SLABS = TagKey.create(Registries.ITEM, Identifier.withDefaultNamespace("slabs"));
 	// C-002's scope in Minecraft 26.3, from docs/DESIGN.md.
 	static final int VANILLA_SLABS = 100;
-	static final int REMOVED_PRESSURE_PLATES = 17;
-	static final int REMOVED_CARPETS = 16;
 	static final int REMOVED_STACKED_SLAB_RECIPES = 22;
 	// Vanilla crafts these from more than one block; recycling gives the family's base block.
 	private static final Map<Item, Item> BASE_OF_ALTERNATIVES = Map.of(
@@ -62,18 +56,6 @@ public class SlabsRecipeGameTest {
 			Items.PURPUR_SLAB, Items.PURPUR_BLOCK,
 			Items.SANDSTONE_SLAB, Items.SANDSTONE,
 			Items.RED_SANDSTONE_SLAB, Items.RED_SANDSTONE);
-
-	// The vanilla crafting recipes C-002 removes, by id, with what each makes: every pressure plate, as the owner chose,
-	// the other recipes that 2 of a block a slab recipe accepts side by side also match (the carpets), and the recipes
-	// that 2 of the same slab stacked also match.
-	record Removed(Map<Identifier, ItemStack> pressurePlates, Map<Identifier, ItemStack> carpets, Map<Identifier, ItemStack> stackedSlabs) {
-		Set<Identifier> ids() {
-			Set<Identifier> ids = new TreeSet<>(pressurePlates.keySet());
-			ids.addAll(carpets.keySet());
-			ids.addAll(stackedSlabs.keySet());
-			return ids;
-		}
-	}
 
 	@GameTest
 	public void vanillaSlabsAreAllFound(GameTestHelper helper) {
@@ -192,27 +174,17 @@ public class SlabsRecipeGameTest {
 		report(helper, IDEA, "mixed grids", checked, failures);
 	}
 
-	// No removed recipe is loaded, and the weighted pressure plates, whose ingots have no slabs, cannot be crafted either.
+	// No removed recipe is loaded: no recipe that 2 stacked slabs matched in vanilla is left to compete with recycling.
 	@GameTest
 	public void removedRecipesAreNotLoaded(GameTestHelper helper) {
 		Set<Identifier> loaded = new HashSet<>();
 		helper.getLevel().recipeAccess().getRecipes().forEach(holder -> loaded.add(holder.id().identifier()));
 		List<String> failures = new ArrayList<>();
 		int checked = 0;
-		for (Identifier id : removedRecipes(helper).ids()) {
+		for (Identifier id : removedRecipes(helper).keySet()) {
 			checked++;
 			if (loaded.contains(id)) {
 				failures.add("Recipe " + id + " is still loaded");
-			}
-		}
-		List<RecipeHolder<?>> crafting = craftingRecipes(helper);
-		for (Item ingot : List.of(Items.GOLD_INGOT, Items.IRON_INGOT)) {
-			for (Grid grid : placements(2, 1, List.of(new ItemStack(ingot), new ItemStack(ingot)))) {
-				checked++;
-				Crafted crafted = craft(helper, crafting, grid.input());
-				if (!crafted.recipes().isEmpty()) {
-					failures.add("2 " + name(ingot) + " side by side " + grid.label() + " gave " + crafted);
-				}
 			}
 		}
 		report(helper, IDEA, "removed recipe checks", checked, failures);
@@ -237,7 +209,7 @@ public class SlabsRecipeGameTest {
 		List<String> failures = new ArrayList<>();
 		List<Item> neverCut = new ArrayList<>();
 		int checked = 0;
-		for (Map.Entry<Identifier, ItemStack> entry : removedRecipes(helper).stackedSlabs().entrySet()) {
+		for (Map.Entry<Identifier, ItemStack> entry : removedRecipes(helper).entrySet()) {
 			checked++;
 			Item block = entry.getValue().getItem();
 			if (!vanillaCuts.contains(block)) {
@@ -291,38 +263,23 @@ public class SlabsRecipeGameTest {
 		return vanillaVariants(helper, SLABS, BASE_OF_ALTERNATIVES, false);
 	}
 
-	// Found by crafting with every vanilla crafting recipe, decoded from the vanilla data pack. A pressure plate is a
-	// recipe whose result is in #minecraft:pressure_plates, a block tag: 26.3 has no item tag of that name.
-	static Removed removedRecipes(GameTestHelper helper) {
+	// The vanilla crafting recipes C-002 removes, by id, with what each makes: the recipes that 2 of the same slab
+	// stacked also match. Found by crafting with every vanilla crafting recipe, decoded from the vanilla data pack.
+	static Map<Identifier, ItemStack> removedRecipes(GameTestHelper helper) {
 		ServerLevel level = helper.getLevel();
-		ContextMap display = SlotDisplayContext.fromLevel(level);
 		List<Variant> slabs = vanillaSlabs(helper);
-		Map<Identifier, ItemStack> pressurePlates = new TreeMap<>();
-		Map<Identifier, ItemStack> carpets = new TreeMap<>();
-		Map<Identifier, ItemStack> stackedSlabs = new TreeMap<>();
+		Map<Identifier, ItemStack> removed = new TreeMap<>();
 		vanillaRecipes(helper).forEach((id, value) -> {
 			if (!(value instanceof CraftingRecipe recipe)) {
 				return;
 			}
-			for (ItemStack result : recipe.display().stream().map(shown -> shown.result().resolveForFirstStack(display)).toList()) {
-				if (result.getItem() instanceof BlockItem blockItem && blockItem.getBlock().defaultBlockState().is(BlockTags.PRESSURE_PLATES)) {
-					pressurePlates.put(id, result);
-					return;
-				}
-			}
 			for (Variant slab : slabs) {
-				for (Item block : slab.accepted()) {
-					CraftingInput sideBySide = CraftingInput.of(2, 1, List.of(new ItemStack(block), new ItemStack(block)));
-					if (recipe.matches(sideBySide, level)) {
-						carpets.put(id, recipe.assemble(sideBySide));
-					}
-				}
 				CraftingInput stacked = CraftingInput.of(1, 2, List.of(new ItemStack(slab.item()), new ItemStack(slab.item())));
 				if (recipe.matches(stacked, level)) {
-					stackedSlabs.put(id, recipe.assemble(stacked));
+					removed.put(id, recipe.assemble(stacked));
 				}
 			}
 		});
-		return new Removed(pressurePlates, carpets, stackedSlabs);
+		return removed;
 	}
 }

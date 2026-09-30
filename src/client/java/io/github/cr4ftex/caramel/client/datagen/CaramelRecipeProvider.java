@@ -44,11 +44,13 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 	private static final int STAIRS_FAMILIES = 97;
 	private static final int STONECUTTER_STAIRS_RECIPES = 103;
 	// C-002's scope, checked the same way. The smooth stone slab, crafted outside any family, is the 100th slab. The
-	// weighted pressure plates, the waxed chiseled coppers, the purpur pillar and bamboo mosaic are removed by name.
+	// waxed chiseled coppers, the purpur pillar and bamboo mosaic are removed by name.
 	private static final int SLAB_FAMILIES = 99;
+	private static final int CHISELED_FAMILIES = 16;
+	// C-003's: the slab families with a pressure plate or a carpet. The weighted pressure plates and the moss carpets are
+	// made by name.
 	private static final int PRESSURE_PLATE_FAMILIES = 15;
 	private static final int CARPET_FAMILIES = 16;
-	private static final int CHISELED_FAMILIES = 16;
 
 	public CaramelRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
@@ -88,7 +90,8 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 			public void buildRecipes() {
 				removed = CaramelRecipeProvider.this.withConditions(output, ResourceConditions.alwaysFalse());
 				replaceStairs();
-				replaceSlabs();
+				List<BlockFamily> slabFamilies = replaceSlabs();
+				pressurePlatesAndCarpets(slabFamilies);
 			}
 
 			// C-001: 3 blocks in an L make 4 stairs, 4 stairs make 3 blocks, and the stonecutter makes no stairs.
@@ -112,10 +115,10 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				}
 			}
 
-			// C-002: 2 blocks in a row make 4 slabs and 2 stacked slabs make 1 block. The vanilla recipes those grids
-			// would also match are removed: pressure plates and carpets (2 blocks in a row) and the chiseled blocks, purpur
-			// pillar and bamboo mosaic (2 stacked slabs). The owner chose to remove the weighted pressure plates too.
-			private void replaceSlabs() {
+			// C-002: 2 blocks in a row make 4 slabs and 2 stacked slabs make 1 block. The vanilla recipes 2 stacked slabs
+			// would also match are removed: the chiseled blocks, purpur pillar and bamboo mosaic. The pressure plates and
+			// carpets that 2 blocks in a row made get their C-003 recipes instead.
+			private List<BlockFamily> replaceSlabs() {
 				List<BlockFamily> families = BlockFamilies.getAllFamilies()
 						.filter(family -> family.getVariants().containsKey(BlockFamily.Variant.SLAB))
 						.sorted(Comparator.comparing(family -> BuiltInRegistries.BLOCK.getKey(family.get(BlockFamily.Variant.SLAB))))
@@ -126,34 +129,18 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				families.forEach(family -> slabRecipes(family, family.get(BlockFamily.Variant.SLAB), family.getBaseBlock()));
 				slabRecipes(null, Blocks.SMOOTH_STONE_SLAB, Blocks.SMOOTH_STONE);
 
-				int plates = 0;
-				int carpets = 0;
 				int chiseledBlocks = 0;
 				for (BlockFamily family : families) {
-					Block base = family.getBaseBlock();
 					Block slab = family.get(BlockFamily.Variant.SLAB);
-					if (family.get(BlockFamily.Variant.PRESSURE_PLATE) instanceof Block plate) {
-						remove(inFamilyGroup(pressurePlateBuilder(RecipeCategory.REDSTONE, plate, Ingredient.of(base)), family, BlockFamily.Variant.PRESSURE_PLATE)
-								.unlockedBy(getCraftingCriterionName(family, BlockFamily.Variant.PRESSURE_PLATE, base), has(base)), plate);
-						plates++;
-					}
-					if (family.get(BlockFamily.Variant.CARPET) instanceof Block carpet) {
-						remove(inFamilyGroup(carpetBuilder(RecipeCategory.DECORATIONS, carpet, Ingredient.of(base)), family, BlockFamily.Variant.CARPET)
-								.unlockedBy(getCraftingCriterionName(family, BlockFamily.Variant.CARPET, base), has(base)), carpet);
-						carpets++;
-					}
 					if (family.get(BlockFamily.Variant.CHISELED) instanceof Block chiseled) {
 						remove(chiseledBuilder(RecipeCategory.BUILDING_BLOCKS, chiseled, Ingredient.of(slab))
 								.unlockedBy(getCraftingCriterionName(family, BlockFamily.Variant.CHISELED, slab), has(slab)), chiseled);
 						chiseledBlocks++;
 					}
 				}
-				if (plates != PRESSURE_PLATE_FAMILIES || carpets != CARPET_FAMILIES || chiseledBlocks != CHISELED_FAMILIES) {
-					throw new IllegalStateException("Expected " + PRESSURE_PLATE_FAMILIES + " slab families with pressure plates, " + CARPET_FAMILIES + " with carpets and "
-							+ CHISELED_FAMILIES + " with chiseled blocks, found " + plates + ", " + carpets + " and " + chiseledBlocks);
+				if (chiseledBlocks != CHISELED_FAMILIES) {
+					throw new IllegalStateException("Expected " + CHISELED_FAMILIES + " slab families with chiseled blocks, found " + chiseledBlocks);
 				}
-				Map.of(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, Items.GOLD_INGOT, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, Items.IRON_INGOT).forEach((plate, ingot) ->
-						remove(pressurePlateBuilder(RecipeCategory.REDSTONE, plate, Ingredient.of(ingot)).unlockedBy(getHasName(ingot), has(ingot)), plate));
 				// The block families hold the unwaxed chiseled copper only. Vanilla writes the waxed ones in a 3-wide pattern.
 				WeatheringCopperCollection.zipApply(Blocks.CHISELED_COPPER.waxed(), Blocks.CUT_COPPER_SLAB.waxed(), (chiseled, slab) ->
 						remove(shaped(RecipeCategory.BUILDING_BLOCKS, chiseled)
@@ -166,6 +153,53 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 						.unlockedBy(getHasName(Blocks.PURPUR_BLOCK), has(Blocks.PURPUR_BLOCK)), Blocks.PURPUR_PILLAR);
 				remove(chiseledBuilder(RecipeCategory.DECORATIONS, Blocks.BAMBOO_MOSAIC, Ingredient.of(Blocks.BAMBOO_SLAB))
 						.unlockedBy(getHasName(Blocks.BAMBOO_SLAB), has(Blocks.BAMBOO_SLAB)), Blocks.BAMBOO_MOSAIC);
+				return families;
+			}
+
+			// C-003: 2 slabs side by side make 16 pressure plates or carpets, 2 ingots side by side 16 weighted pressure
+			// plates, and 2 moss or pale moss blocks 32 moss carpets. Each replaces the vanilla recipe at its id (C-002
+			// would otherwise remove all but the moss carpets) and keeps vanilla's group and unlock criteria.
+			private void pressurePlatesAndCarpets(List<BlockFamily> slabFamilies) {
+				int plates = 0;
+				int carpets = 0;
+				for (BlockFamily family : slabFamilies) {
+					Block base = family.getBaseBlock();
+					Block slab = family.get(BlockFamily.Variant.SLAB);
+					if (family.get(BlockFamily.Variant.PRESSURE_PLATE) instanceof Block plate) {
+						sixteenFrom(RecipeCategory.REDSTONE, plate, slab, family, BlockFamily.Variant.PRESSURE_PLATE)
+								.unlockedBy(getCraftingCriterionName(family, BlockFamily.Variant.PRESSURE_PLATE, base), has(base))
+								.save(output, vanillaKey(plate));
+						plates++;
+					}
+					if (family.get(BlockFamily.Variant.CARPET) instanceof Block carpet) {
+						sixteenFrom(RecipeCategory.DECORATIONS, carpet, slab, family, BlockFamily.Variant.CARPET)
+								.unlockedBy(getCraftingCriterionName(family, BlockFamily.Variant.CARPET, base), has(base))
+								.save(output, vanillaKey(carpet));
+						carpets++;
+					}
+				}
+				if (plates != PRESSURE_PLATE_FAMILIES || carpets != CARPET_FAMILIES) {
+					throw new IllegalStateException("Expected " + PRESSURE_PLATE_FAMILIES + " slab families with pressure plates and " + CARPET_FAMILIES
+							+ " with carpets, found " + plates + " and " + carpets);
+				}
+				Map.of(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, Items.GOLD_INGOT, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, Items.IRON_INGOT).forEach((plate, ingot) ->
+						sixteenFrom(RecipeCategory.REDSTONE, plate, ingot, null, BlockFamily.Variant.PRESSURE_PLATE)
+								.unlockedBy(getHasName(ingot), has(ingot))
+								.save(output, vanillaKey(plate)));
+				// The moss blocks have no slabs, so their carpets keep 2 blocks side by side and give 32, 16 per block.
+				Map.of(Blocks.MOSS_CARPET, Blocks.MOSS_BLOCK, Blocks.PALE_MOSS_CARPET, Blocks.PALE_MOSS_BLOCK).forEach((carpet, moss) ->
+						shaped(RecipeCategory.DECORATIONS, carpet, 32)
+								.define('#', moss)
+								.pattern("##")
+								.group("carpet")
+								.unlockedBy(getHasName(moss), has(moss))
+								.save(output, vanillaKey(carpet)));
+			}
+
+			private ShapedRecipeBuilder sixteenFrom(RecipeCategory category, ItemLike result, ItemLike ingredient, @Nullable BlockFamily family, BlockFamily.Variant variant) {
+				return inFamilyGroup(shaped(category, result, 16)
+						.define('#', ingredient)
+						.pattern("##"), family, variant);
 			}
 
 			private void slabRecipes(@Nullable BlockFamily family, Block slab, Block base) {
@@ -183,7 +217,8 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 						.save(output, ResourceKey.create(Registries.RECIPE, Caramel.id(getConversionRecipeName(base, slab))));
 			}
 
-			// Vanilla's recipe book group for a family's variant, such as wooden_slab; the smooth stone slab has none.
+			// Vanilla's recipe book group for a family's variant, such as wooden_slab; the smooth stone slab and the weighted
+			// pressure plates have none.
 			private <T extends RecipeBuilder> T inFamilyGroup(T builder, @Nullable BlockFamily family, BlockFamily.Variant variant) {
 				if (family != null) {
 					family.getRecipeGroupPrefix().map(variant::getPrefixedRecipeGroup).ifPresent(builder::group);

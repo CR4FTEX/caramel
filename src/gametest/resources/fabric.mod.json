@@ -11,6 +11,8 @@
 		"fabric-gametest": [
 			"io.github.cr4ftex.caramel.gametest.StairsRecipeGameTest",
 			"io.github.cr4ftex.caramel.gametest.SlabsRecipeGameTest",
+			"io.github.cr4ftex.caramel.gametest.PressurePlatesAndCarpetsGameTest",
+			"io.github.cr4ftex.caramel.gametest.CraftedFuelGameTest",
 			"io.github.cr4ftex.caramel.gametest.VanillaOverridesGameTest",
 			"io.github.cr4ftex.caramel.gametest.UnlockAdvancementsGameTest"
 		]

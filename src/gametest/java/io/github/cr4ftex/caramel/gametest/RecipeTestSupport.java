@@ -31,6 +31,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -48,6 +49,7 @@ import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -130,8 +132,7 @@ final class RecipeTestSupport {
 					if (!(Recipe.DIRECT_CODEC.parse(ops, json).getOrThrow() instanceof CraftingRecipe recipe)) {
 						throw helper.assertionException(Component.literal(recipeFile + " in the vanilla data pack is not a crafting recipe"));
 					}
-					Ingredient ingredient = Ingredient.CODEC.parse(ops, json.getAsJsonObject("key").get("#")).getOrThrow();
-					List<Item> accepted = BuiltInRegistries.ITEM.listElements().filter(ingredient::acceptsItem).map(Holder::value).toList();
+					List<Item> accepted = accepted(Ingredient.CODEC.parse(ops, json.getAsJsonObject("key").get("#")).getOrThrow());
 					Item base = accepted.size() == 1 ? accepted.getFirst() : baseOfAlternatives.get(item);
 					if (base == null || !accepted.contains(base)) {
 						throw helper.assertionException(Component.literal(name(item) + " accepts " + accepted + " and has no known base block"));
@@ -150,6 +151,18 @@ final class RecipeTestSupport {
 		Map<Identifier, Recipe<?>> recipes = new TreeMap<>();
 		packFiles(helper, "vanilla", Registries.RECIPE).forEach((id, json) -> recipes.put(id, Recipe.DIRECT_CODEC.parse(ops, json).getOrThrow()));
 		return recipes;
+	}
+
+	// Each vanilla recipe's unlock advancements, by recipe id: the vanilla files at recipes/<folder>/<recipe path>.
+	static Map<Identifier, List<Identifier>> vanillaUnlocks(GameTestHelper helper) {
+		Map<Identifier, List<Identifier>> unlocks = new HashMap<>();
+		for (Identifier id : packFiles(helper, "vanilla", Registries.ADVANCEMENT).keySet()) {
+			String[] path = id.getPath().split("/", 3);
+			if (path.length == 3 && path[0].equals("recipes")) {
+				unlocks.computeIfAbsent(id.withPath(path[2]), recipe -> new ArrayList<>()).add(id);
+			}
+		}
+		return unlocks;
 	}
 
 	// Every file one data pack holds for a registry in the minecraft namespace, by entry id, read from that pack
@@ -180,7 +193,7 @@ final class RecipeTestSupport {
 	}
 
 	// Every item's default components as the game builds them before applying them. Fabric's modify event, where
-	// Caramel changes stairs fuel, only runs when they are applied, so these are vanilla's.
+	// Caramel changes fuel and compost chances, only runs when they are applied, so these are vanilla's.
 	static Map<Item, DataComponentMap> vanillaComponents(GameTestHelper helper) {
 		Map<Item, DataComponentMap> components = new HashMap<>();
 		HolderLookup.Provider registries = helper.getLevel().getServer().reloadableRegistries().lookup();
@@ -194,6 +207,18 @@ final class RecipeTestSupport {
 			}
 		}
 		return components;
+	}
+
+	// A copy of the stack with the fuel vanilla gives its item, or with no fuel if vanilla gives it none.
+	static ItemStack withVanillaFuel(ItemStack stack, Map<Item, DataComponentMap> vanilla) {
+		ItemStack before = stack.copy();
+		CookingFuel fuel = vanilla.get(stack.getItem()).get(DataComponents.COOKING_FUEL);
+		if (fuel == null) {
+			before.remove(DataComponents.COOKING_FUEL);
+		} else {
+			before.set(DataComponents.COOKING_FUEL, fuel);
+		}
+		return before;
 	}
 
 	// A furnace, a blast furnace and a smoker, the plain furnace first. Each is asked about a stack as it asks itself:
@@ -249,6 +274,11 @@ final class RecipeTestSupport {
 			}
 		}
 		return placements;
+	}
+
+	// Every item an ingredient accepts, in registry order.
+	static List<Item> accepted(Ingredient ingredient) {
+		return BuiltInRegistries.ITEM.listElements().filter(ingredient::acceptsItem).map(Holder::value).toList();
 	}
 
 	// SingleItemRecipe.result() is protected, so the tests cut this item to see what a recipe makes.

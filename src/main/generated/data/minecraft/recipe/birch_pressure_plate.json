@@ -1,19 +1,15 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:false"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": "minecraft:birch_planks"
+    "#": "minecraft:birch_slab"
   },
   "pattern": [
     "##"
   ],
   "result": {
+    "count": 16,
     "id": "minecraft:birch_pressure_plate"
   }
 }

@@ -1,19 +1,14 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:false"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "group": "woolen_carpet",
   "key": {
-    "#": "minecraft:lime_wool"
+    "#": "minecraft:lime_wool_slab"
   },
   "pattern": [
     "##"
   ],
   "result": {
-    "count": 3,
+    "count": 16,
     "id": "minecraft:lime_carpet"
   }
 }

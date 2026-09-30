@@ -2,19 +2,19 @@ package io.github.cr4ftex.caramel.gametest;
 
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.compare;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.cut;
-import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.name;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.packFiles;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.report;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.vanillaRecipes;
+import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.vanillaUnlocks;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import io.github.cr4ftex.caramel.Caramel;
+import io.github.cr4ftex.caramel.gametest.PressurePlatesAndCarpetsGameTest.Scope;
 import io.github.cr4ftex.caramel.gametest.RecipeTestSupport.Variant;
 
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
@@ -23,16 +23,16 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
 
 // With the provider's identity recipe ids, a recipe saved without an explicit key lands on its result item's vanilla
 // id and silently replaces that recipe. In the minecraft namespace, Caramel's pack may only hold the recipes the ideas
 // replace or remove and their unlock advancements, each worked out from the vanilla data pack: C-001's stairs recipes
-// and the stonecutter recipes that make stairs, and C-002's slab recipes and the recipes its new grids take over.
+// and the stonecutter recipes that make stairs, C-002's slab recipes and the recipes 2 stacked slabs take over, and
+// C-003's pressure plate and carpet recipes. Of vanilla's villager trades, it may only hold the shepherds' carpet trades.
 public class VanillaOverridesGameTest {
-	private static final String IDEAS = "C-001 and C-002";
+	private static final String IDEAS = "C-001, C-002 and C-003";
 
 	@GameTest
 	public void onlyExpectedVanillaRecipesAreReplacedOrRemoved(GameTestHelper helper) {
@@ -47,34 +47,28 @@ public class VanillaOverridesGameTest {
 			}
 		});
 
-		// C-002: every slab recipe is replaced, and the recipes its new grids take over are removed, pressure plates included.
+		// C-002: every slab recipe is replaced, and the recipes 2 stacked slabs would also match are removed.
 		List<Variant> slabs = SlabsRecipeGameTest.vanillaSlabs(helper);
 		slabs.forEach(slab -> recipes.add(BuiltInRegistries.ITEM.getKey(slab.item())));
-		SlabsRecipeGameTest.Removed removed = SlabsRecipeGameTest.removedRecipes(helper);
-		recipes.addAll(removed.ids());
-		for (Map.Entry<Identifier, ItemStack> carpet : removed.carpets().entrySet()) {
-			if (!carpet.getValue().is(ItemTags.WOOL_CARPETS)) {
-				failures.add(carpet.getKey() + " makes " + name(carpet.getValue()) + " from 2 blocks side by side, which is not a carpet");
-			}
-		}
+		Map<Identifier, ItemStack> removed = SlabsRecipeGameTest.removedRecipes(helper);
+		recipes.addAll(removed.keySet());
 		// C-002's scope from docs/DESIGN.md. A Minecraft update that shifts it fails here, so the scope gets rechecked.
-		if (slabs.size() != SlabsRecipeGameTest.VANILLA_SLABS || removed.pressurePlates().size() != SlabsRecipeGameTest.REMOVED_PRESSURE_PLATES
-				|| removed.carpets().size() != SlabsRecipeGameTest.REMOVED_CARPETS || removed.stackedSlabs().size() != SlabsRecipeGameTest.REMOVED_STACKED_SLAB_RECIPES) {
-			failures.add("Expected " + SlabsRecipeGameTest.VANILLA_SLABS + " slab recipes to replace and " + SlabsRecipeGameTest.REMOVED_PRESSURE_PLATES + " pressure plate, "
-					+ SlabsRecipeGameTest.REMOVED_CARPETS + " carpet and " + SlabsRecipeGameTest.REMOVED_STACKED_SLAB_RECIPES + " stacked slab recipes to remove, found "
-					+ slabs.size() + ", " + removed.pressurePlates().size() + ", " + removed.carpets().size() + " and " + removed.stackedSlabs().size());
+		if (slabs.size() != SlabsRecipeGameTest.VANILLA_SLABS || removed.size() != SlabsRecipeGameTest.REMOVED_STACKED_SLAB_RECIPES) {
+			failures.add("Expected " + SlabsRecipeGameTest.VANILLA_SLABS + " slab recipes to replace and " + SlabsRecipeGameTest.REMOVED_STACKED_SLAB_RECIPES
+					+ " stacked slab recipes to remove, found " + slabs.size() + " and " + removed.size());
 		}
-		Caramel.LOGGER.info("C-002 game test: {} slab recipes replaced, {} recipes removed: {} pressure plates, {} carpets, {} from 2 stacked slabs",
-				slabs.size(), removed.ids().size(), removed.pressurePlates().size(), removed.carpets().size(), removed.stackedSlabs().size());
+		Caramel.LOGGER.info("C-002 game test: {} slab recipes replaced, {} recipes that 2 stacked slabs matched removed", slabs.size(), removed.size());
+
+		// C-003: every pressure plate recipe, the other recipes that 2 of a slab's block side by side matched (the wool
+		// carpets, whose 2 wool side by side now make slabs) and the two moss carpet recipes are replaced.
+		Scope scope = PressurePlatesAndCarpetsGameTest.vanillaScope(helper);
+		scope.all().forEach(replaced -> recipes.add(replaced.id()));
+		failures.addAll(PressurePlatesAndCarpetsGameTest.scopeFailures(scope));
+		Caramel.LOGGER.info("C-003 game test: {} recipes replaced: {} pressure plates, {} wool carpets, {} moss carpets",
+				scope.all().size(), scope.pressurePlates().size(), scope.woolCarpets().size(), scope.mossCarpets().size());
 
 		// Each recipe's unlock advancement is the one vanilla file at recipes/<folder>/<recipe path>.
-		Map<Identifier, List<Identifier>> unlocks = new HashMap<>();
-		for (Identifier id : packFiles(helper, "vanilla", Registries.ADVANCEMENT).keySet()) {
-			String[] path = id.getPath().split("/", 3);
-			if (path.length == 3 && path[0].equals("recipes")) {
-				unlocks.computeIfAbsent(id.withPath(path[2]), recipe -> new ArrayList<>()).add(id);
-			}
-		}
+		Map<Identifier, List<Identifier>> unlocks = vanillaUnlocks(helper);
 		Set<Identifier> advancements = new TreeSet<>();
 		for (Identifier id : recipes) {
 			List<Identifier> found = unlocks.getOrDefault(id, List.of());
@@ -85,8 +79,12 @@ public class VanillaOverridesGameTest {
 			}
 		}
 
+		// C-003 also replaces the shepherds' carpet trades, and no other trade.
+		Set<Identifier> trades = PressurePlatesAndCarpetsGameTest.vanillaCarpetTrades(helper).keySet();
+
 		compare(failures, IDEAS, "recipe", recipes, packFiles(helper, Caramel.MOD_ID, Registries.RECIPE).keySet());
 		compare(failures, IDEAS, "advancement", advancements, packFiles(helper, Caramel.MOD_ID, Registries.ADVANCEMENT).keySet());
-		report(helper, IDEAS, "vanilla recipe and advancement overrides", recipes.size() + advancements.size(), failures);
+		compare(failures, IDEAS, "villager trade", trades, packFiles(helper, Caramel.MOD_ID, Registries.VILLAGER_TRADE).keySet());
+		report(helper, IDEAS, "vanilla recipe, advancement and trade overrides", recipes.size() + advancements.size() + trades.size(), failures);
 	}
 }
