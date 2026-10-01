@@ -2,7 +2,7 @@
 
 The passdown between sessions: where the project stands, what you decided, and what comes next. Part 1 is the current state and is rewritten each session. Part 2 is the record of the first review of the docs and how each finding was handled.
 
-Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30.
+Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built and playtested on 2026-09-30.
 
 ---
 
@@ -64,6 +64,7 @@ Choices I made that you can change:
 - **C-001, cheaper stairs and recycling: Done.** You playtested all 12 checks with no issues. Committed and pushed to `main`. The entry in `docs/DESIGN.md` has every decision and the implementation notes.
 - **C-002, cheaper slabs and recycling: Done.** You playtested all 12 checks and they all worked as intended. Committed and pushed to `main`. Your four answers (all 17 pressure plates, carpets removed for now, bamboo mosaic removed, purpur pillar removed) and what can no longer be made are in the entry in `docs/DESIGN.md`. Bamboo mosaic cannot be obtained in survival until a later idea; C-003 brings back the pressure plates, wool carpets and detector rails.
 - **C-003, pressure plates and carpets from slabs: Done.** You playtested all 12 checks and they passed, then confirmed in game that shepherds sell 20 carpets. Committed and pushed to `main`. Your answers (fuel and moss carpet compost both match their cost, shepherd carpets at 20) are in the entry in `docs/DESIGN.md`. Dyeing wool and items is a future idea of yours.
+- **C-004, more fences per craft: Done.** You playtested all 8 checks and they all worked as intended. Every fence recipe gives 4 times as many: 12 wooden fences, 24 nether brick fences (your answer). Wooden fences burn 125 ticks, matching their cost (your answer). Committed and pushed to `main`. The entry in `docs/DESIGN.md` has the decisions.
 
 ### Open suggestions (your call)
 
@@ -87,7 +88,7 @@ None of these is started. Say the word for any of them.
 
 ### Next step
 
-Send me the next idea. You have said dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
+Send me the next idea. You have said the next few ideas are small ones about how much a recipe gives, and that dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
 
 ---
 

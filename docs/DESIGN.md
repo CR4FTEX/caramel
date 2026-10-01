@@ -48,12 +48,14 @@ No ideas yet.
 - C-001: Cheaper stairs, and stairs back into blocks
 - C-002: Cheaper slabs, and slabs back into blocks
 - C-003: Pressure plates and carpets from slabs
+- C-004: More fences per craft
 
 ### Recipes
 
 - C-001: Cheaper stairs, and stairs back into blocks
 - C-002: Cheaper slabs, and slabs back into blocks
 - C-003: Pressure plates and carpets from slabs
+- C-004: More fences per craft
 
 ### Blocks and Items
 
@@ -271,3 +273,33 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 - Game tests: `PressurePlatesAndCarpetsGameTest` has 12 checks, with expected values read from the vanilla data pack and vanilla item components: all 35 recipes found, 2 slabs or ingots in every placement of the 2x2 and 3x3 grids, the moss carpets, groups and categories, unlock advancements, mixed pairs, the detector rail, fuel, fuel still burning where it burned, compost, and the carpet trades. `CraftedFuelGameTest` checks that only the vanilla stairs, pressure plates and carpets that burned have new fuel. `SlabsRecipeGameTest` and `VanillaOverridesGameTest` were updated for the recipes C-003 took over from C-002's removals. `VanillaOverridesGameTest` also fails if Caramel's pack replaces any villager trade but these 16. `./gradlew build` runs 33 Caramel game tests.
 - Ten deliberate breaks each failed the build, then were undone: a plate's count, a carpet's ingredient, the light weighted plate removed again, the plate burn time, the carpet fuel mapping, the moss carpet count, the moss carpet compost chance, the pale moss carpet left out of the compost change, a carpet trade back at 4, and a carpet trade file deleted.
 - Generated files: 1323 in `src/main/generated/data`, 23 new and 66 changed with C-003.
+
+### C-004: More fences per craft
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every crafted fence, of every block family that has one (for example Oak, Acacia, Pale Oak, Nether Bricks), gives 12 fences instead of 3.
+- As pictured: the recipe keeps its shape, 2 rows of plank, stick, plank, and makes 12 oak fences.
+- The owner noted that this idea, and the next few, are smaller ideas that only change how much a recipe gives.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 14 recipes make a fence, the 13 wooden ones (oak, spruce, birch, jungle, acacia, dark oak, mangrove, cherry, pale oak, poplar, bamboo, crimson, warped), 3 each, and the nether brick fence (4 nether bricks and 2 nether brick items), which gives 6 in the base game, not 3. No other recipe, furnace, stonecutter or villager trade makes, uses or sells fences. Fence gates are not part of the pitch and keep their recipes.
+- No clash: plank, stick, plank in 2 rows is still the only recipe with that shape. The fence gate puts the sticks on the outside.
+- Burn time, read from the game code: the 11 wooden fences that burn (crimson and warped do not) burn 300 ticks, as long as a plank (`minecraft:cooking/time_wood_blocks`). The nether brick fence does not burn.
+- Nether brick fence (asked, owner's answer): it gives 24, four times the base game's 6, the same increase the wooden fences get.
+- Furnace fuel (asked, owner's answer): at 12 per craft, one craft would burn 3,600 ticks from 5 planks' worth of wood (4 planks and 2 sticks; 2 planks make 4 sticks, so 2 sticks cost a plank), 1,500 ticks. The owner chose to match the cost, as for stairs and pressure plates: a wooden fence burns 125 ticks, 5/12 of a plank, so crafting never adds fuel. Blast furnaces and smokers halve it (62). The question put the cost at 4½ planks and 112 ticks, a miscount of the sticks, which the fuel game test caught.
+- Playtest (owner): all 8 in-game checks worked as intended: 12 oak fences in both rows of the grid, other woods including bamboo and crimson, 24 nether brick fences, mixed planks refused, the fence gate unchanged, the recipe book, 1 fence no longer smelting an item in a furnace or blast furnace where 2 do, and the fences that do not burn.
+
+**Implementation notes**
+
+- No mixin was needed. No placeholder textures.
+- Recipes: `CaramelRecipeProvider.fences()` (datagen) writes the 14 fence recipes at their base-game ids, each built as the base game builds it with 4 times the count: 12 for the wooden fences, 24 for the nether brick fence. Each keeps the base-game group, category and unlock advancement, byte for byte. Bamboo's fence is its family's custom fence variant, so the walk covers both variants; datagen stops if the number of fences found (14) changes.
+- Fuel: `CraftedFuel` points the 11 wooden fences that burned at `caramel:cooking/time_wood_fences` (125 ticks), written by `CaramelBurnTimeProvider`.
+- Game tests: `FencesRecipeGameTest` has 6 checks, with expected values read from the vanilla data pack and vanilla item components: all 14 recipes found; the base-game grid at both places it fits in the 3x3 grid gives 4 times the base game's count, with no other recipe matching; each loaded recipe equals the base game's file with only the count changed; unlock advancements; fuel matching the cost (sticks costed from the base game's stick recipe); and fuel still burning where it burned. `CraftedFuelGameTest` and `VanillaOverridesGameTest` cover fences too. `./gradlew build` runs 39 Caramel game tests.
+- Six deliberate breaks each failed the build, then were undone: the nether brick fence at 12, the oak fence's group dropped, the oak fence unlocking on sticks, the fence burn time at 126, the fence fuel mapping broken, and the bamboo fence's files deleted.
+- Generated files: 1352 in `src/main/generated/data`, 29 new with C-004 and none changed.

@@ -51,6 +51,8 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 	// made by name.
 	private static final int PRESSURE_PLATE_FAMILIES = 15;
 	private static final int CARPET_FAMILIES = 16;
+	// C-004's: the families with a fence, the 13 wooden ones (bamboo's is a custom fence) and nether bricks.
+	private static final int FENCE_FAMILIES = 14;
 
 	public CaramelRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
@@ -92,6 +94,7 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				replaceStairs();
 				List<BlockFamily> slabFamilies = replaceSlabs();
 				pressurePlatesAndCarpets(slabFamilies);
+				fences();
 			}
 
 			// C-001: 3 blocks in an L make 4 stairs, 4 stairs make 3 blocks, and the stonecutter makes no stairs.
@@ -194,6 +197,32 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 								.group("carpet")
 								.unlockedBy(getHasName(moss), has(moss))
 								.save(output, vanillaKey(carpet)));
+			}
+
+			// C-004: every fence recipe gives 4 times vanilla's count, 12 wooden fences or 24 nether brick fences. The recipe
+			// is vanilla's otherwise, built as vanilla's fenceBuilder builds it, and replaces it at its id. Bamboo's fence is
+			// its family's custom fence.
+			private void fences() {
+				int fences = 0;
+				for (BlockFamily family : BlockFamilies.getAllFamilies().toList()) {
+					for (BlockFamily.Variant variant : List.of(BlockFamily.Variant.FENCE, BlockFamily.Variant.CUSTOM_FENCE)) {
+						if (family.get(variant) instanceof Block fence) {
+							Block base = family.getBaseBlock();
+							boolean netherBrick = fence == Blocks.NETHER_BRICK_FENCE;
+							inFamilyGroup(shaped(RecipeCategory.DECORATIONS, fence, netherBrick ? 24 : 12)
+									.define('W', base)
+									.define('#', netherBrick ? Items.NETHER_BRICK : Items.STICK)
+									.pattern("W#W")
+									.pattern("W#W"), family, variant)
+									.unlockedBy(getCraftingCriterionName(family, variant, base), has(base))
+									.save(output, vanillaKey(fence));
+							fences++;
+						}
+					}
+				}
+				if (fences != FENCE_FAMILIES) {
+					throw new IllegalStateException("Expected " + FENCE_FAMILIES + " block families with fences, found " + fences);
+				}
 			}
 
 			private ShapedRecipeBuilder sixteenFrom(RecipeCategory category, ItemLike result, ItemLike ingredient, @Nullable BlockFamily family, BlockFamily.Variant variant) {

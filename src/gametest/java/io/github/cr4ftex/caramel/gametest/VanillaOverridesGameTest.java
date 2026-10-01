@@ -30,9 +30,10 @@ import net.minecraft.world.item.crafting.StonecutterRecipe;
 // id and silently replaces that recipe. In the minecraft namespace, Caramel's pack may only hold the recipes the ideas
 // replace or remove and their unlock advancements, each worked out from the vanilla data pack: C-001's stairs recipes
 // and the stonecutter recipes that make stairs, C-002's slab recipes and the recipes 2 stacked slabs take over, and
-// C-003's pressure plate and carpet recipes. Of vanilla's villager trades, it may only hold the shepherds' carpet trades.
+// C-003's pressure plate and carpet recipes, and C-004's fence recipes. Of vanilla's villager trades, it may only hold
+// the shepherds' carpet trades.
 public class VanillaOverridesGameTest {
-	private static final String IDEAS = "C-001, C-002 and C-003";
+	private static final String IDEAS = "C-001 through C-004";
 
 	@GameTest
 	public void onlyExpectedVanillaRecipesAreReplacedOrRemoved(GameTestHelper helper) {
@@ -66,6 +67,12 @@ public class VanillaOverridesGameTest {
 		failures.addAll(PressurePlatesAndCarpetsGameTest.scopeFailures(scope));
 		Caramel.LOGGER.info("C-003 game test: {} recipes replaced: {} pressure plates, {} wool carpets, {} moss carpets",
 				scope.all().size(), scope.pressurePlates().size(), scope.woolCarpets().size(), scope.mossCarpets().size());
+
+		// C-004: every fence recipe is replaced.
+		List<FencesRecipeGameTest.Fence> fences = FencesRecipeGameTest.vanillaFences(helper);
+		fences.forEach(fence -> recipes.add(fence.id()));
+		failures.addAll(FencesRecipeGameTest.scopeFailures(fences));
+		Caramel.LOGGER.info("C-004 game test: {} fence recipes replaced", fences.size());
 
 		// Each recipe's unlock advancement is the one vanilla file at recipes/<folder>/<recipe path>.
 		Map<Identifier, List<Identifier>> unlocks = vanillaUnlocks(helper);
