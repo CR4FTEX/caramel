@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import io.github.cr4ftex.caramel.Caramel;
-import io.github.cr4ftex.caramel.gametest.FencesRecipeGameTest.Fence;
 import io.github.cr4ftex.caramel.gametest.PressurePlatesAndCarpetsGameTest.Replaced;
 import io.github.cr4ftex.caramel.gametest.PressurePlatesAndCarpetsGameTest.Scope;
 import io.github.cr4ftex.caramel.gametest.RecipeTestSupport.Variant;
@@ -42,7 +41,7 @@ public class CraftedFuelGameTest {
 	// Of every item, only the vanilla stairs, pressure plates, wool carpets and fences that burned have a new fuel: not
 	// the blocks they are made from, which the burn time checks measure them against, and not other mods' items, whose
 	// recipes the ideas leave alone. Caramel's data pack replaces none of vanilla's burn times, cooking speeds or the
-	// predicates they use either.
+	// predicates they use either. C-005's fence gates already burned what they cost, a plank each, so they keep vanilla's.
 	@GameTest
 	public void onlyVanillaStairsPressurePlatesCarpetsAndFencesThatBurnedHaveNewFuel(GameTestHelper helper) {
 		Map<Item, DataComponentMap> vanilla = vanillaComponents(helper);
@@ -51,7 +50,7 @@ public class CraftedFuelGameTest {
 		List<Item> stairs = StairsRecipeGameTest.vanillaStairs(helper).stream().map(Variant::item).filter(burned).toList();
 		List<Item> pressurePlates = scope.pressurePlates().stream().map(Replaced::result).filter(burned).toList();
 		List<Item> woolCarpets = scope.woolCarpets().stream().map(Replaced::result).filter(burned).toList();
-		List<Item> fences = FencesRecipeGameTest.vanillaFences(helper).stream().map(Fence::item).filter(burned).toList();
+		List<Item> fences = MorePerCraft.vanillaRecipes(helper, FencesRecipeGameTest.SCOPE).stream().map(MorePerCraft.Replaced::item).filter(burned).toList();
 		Set<Item> expected = new HashSet<>(stairs);
 		expected.addAll(pressurePlates);
 		expected.addAll(woolCarpets);

@@ -13,7 +13,7 @@ Caramel's JSON data is generated from Java into `src/main/generated/` by the pro
 
 ## What a run does to src/main/generated
 
-- `.cache/` holds one file per provider, headed by `<pack>/<provider getName()>` and listing the hash of each file that provider wrote. `.gitignore` excludes it, so a fresh clone has none. Two providers can write into one registry folder, as the burn-time and compost providers both write `context_int_provider/`, when their names differ; each keeps its own cache file (`src/main/generated/.cache/`).
+- `.cache/` holds one file per provider, whose first line ends with the mod name and the provider's `getName()`, such as `Caramel/Caramel burn times`, listing the hash of each file that provider wrote. `.gitignore` excludes it, so a fresh clone has none. Two providers can write into one registry folder, as the burn-time and compost providers both write `context_int_provider/`, when their names differ; each keeps its own cache file (`src/main/generated/.cache/`).
 - A file is rewritten only when the provider's new output hash differs from the hash in `.cache`, or when the file is missing. The content on disk is not compared.
 - Every file in `src/main/generated` that the current run did not produce is deleted: hand-placed files, and the output of providers no longer registered. Empty directories stay, and the jar packages them as empty directory entries.
 

@@ -49,6 +49,7 @@ No ideas yet.
 - C-002: Cheaper slabs, and slabs back into blocks
 - C-003: Pressure plates and carpets from slabs
 - C-004: More fences per craft
+- C-005: More fence gates per craft
 
 ### Recipes
 
@@ -56,6 +57,7 @@ No ideas yet.
 - C-002: Cheaper slabs, and slabs back into blocks
 - C-003: Pressure plates and carpets from slabs
 - C-004: More fences per craft
+- C-005: More fence gates per craft
 
 ### Blocks and Items
 
@@ -288,7 +290,7 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 
 **Design notes and decisions**
 
-- Scope, checked in the Minecraft 26.3 game data: 14 recipes make a fence, the 13 wooden ones (oak, spruce, birch, jungle, acacia, dark oak, mangrove, cherry, pale oak, poplar, bamboo, crimson, warped), 3 each, and the nether brick fence (4 nether bricks and 2 nether brick items), which gives 6 in the base game, not 3. No other recipe, furnace, stonecutter or villager trade makes, uses or sells fences. Fence gates are not part of the pitch and keep their recipes.
+- Scope, checked in the Minecraft 26.3 game data: 14 recipes make a fence, the 13 wooden ones (oak, spruce, birch, jungle, acacia, dark oak, mangrove, cherry, pale oak, poplar, bamboo, crimson, warped), 3 each, and the nether brick fence (4 nether bricks and 2 nether brick items), which gives 6 in the base game, not 3. No other recipe, furnace, stonecutter or villager trade makes, uses or sells fences. Fence gates are not part of the pitch and kept their recipes; C-005 makes each fence gate recipe give 4.
 - No clash: plank, stick, plank in 2 rows is still the only recipe with that shape. The fence gate puts the sticks on the outside.
 - Burn time, read from the game code: the 11 wooden fences that burn (crimson and warped do not) burn 300 ticks, as long as a plank (`minecraft:cooking/time_wood_blocks`). The nether brick fence does not burn.
 - Nether brick fence (asked, owner's answer): it gives 24, four times the base game's 6, the same increase the wooden fences get.
@@ -303,3 +305,32 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 - Game tests: `FencesRecipeGameTest` has 6 checks, with expected values read from the vanilla data pack and vanilla item components: all 14 recipes found; the base-game grid at both places it fits in the 3x3 grid gives 4 times the base game's count, with no other recipe matching; each loaded recipe equals the base game's file with only the count changed; unlock advancements; fuel matching the cost (sticks costed from the base game's stick recipe); and fuel still burning where it burned. `CraftedFuelGameTest` and `VanillaOverridesGameTest` cover fences too. `./gradlew build` runs 39 Caramel game tests.
 - Six deliberate breaks each failed the build, then were undone: the nether brick fence at 12, the oak fence's group dropped, the oak fence unlocking on sticks, the fence burn time at 126, the fence fuel mapping broken, and the bamboo fence's files deleted.
 - Generated files: 1352 in `src/main/generated/data`, 29 new with C-004 and none changed.
+
+### C-005: More fence gates per craft
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every crafted fence gate, of every block family that has one (for example Spruce, Dark Oak, Poplar, Jungle), gives 4 fence gates instead of 1.
+- As pictured: the recipe keeps its shape, 2 rows of stick, plank, stick, and makes 4 oak fence gates.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 13 recipes make a fence gate, all wooden (oak, spruce, birch, jungle, acacia, dark oak, mangrove, cherry, pale oak, poplar, bamboo, crimson, warped), 1 each. Nether bricks have no fence gate. No other recipe, furnace, stonecutter or villager trade makes, uses or sells fence gates. Bamboo's fence gate is its family's custom fence gate variant, as its fence is (C-004).
+- No clash: stick, plank, stick in 2 rows is still the only recipe with that shape. The fence puts the sticks in the middle.
+- Burn time, read from the game code: the 11 wooden fence gates that burn (crimson and warped do not) burn 300 ticks, as long as a plank (`minecraft:cooking/time_wood_blocks`). 4 fence gates take 2 planks and 4 sticks, and 2 planks make 4 sticks, so they cost 4 planks: each costs one plank and already burns exactly as long as one, in every furnace. Crafting fence gates adds no fuel, so their burn time stays the base game's, as the owner's "match their cost" choices for stairs, pressure plates and fences would set it. No question was needed.
+- Sticks are priced in planks, as for C-004's fences: a stick in a fence gate is worth 150 ticks, half a plank, though it burns 100 on its own. Where sticks come from something other than planks, a fence gate craft gains a little fuel over burning its ingredients, found in review: bamboo burns 50 ticks a piece, 66.7 per bamboo as bamboo planks, 68.2 as C-004's bamboo fences and 70.6 as C-005's bamboo fence gates (2 bamboo make a stick). The base game's ladders already value a stick at 128.6 ticks. It follows from the pricing the owner accepted for fences, so nothing was changed.
+- Playtest (owner): all 7 in-game checks worked as intended: 4 oak fence gates in both rows of the grid, other woods including bamboo and crimson, mixed planks refused, fences unchanged at 12, the recipe book, a fence gate still smelting an item in a furnace and blast furnace, and the gates that do not burn.
+
+**Implementation notes**
+
+- No mixin was needed. No placeholder textures.
+- Recipes: `CaramelRecipeProvider.fenceGates()` (datagen) writes the 13 fence gate recipes at their base-game ids, each built as the base game builds it with a count of 4, and each keeps the base-game group, category and unlock advancement, byte for byte. `fences()` and `fenceGates()` share `eachFamilyWith`, which walks a variant and its custom twin (bamboo's) and stops datagen if the number of families found (13 fence gates) changes.
+- Fuel: unchanged. Fence gates keep the base game's burn time.
+- Game tests: C-004's fence checks moved into `MorePerCraft`, shared by `FencesRecipeGameTest` and the new `FenceGatesRecipeGameTest`, which runs the same 6 checks for fence gates: all 13 recipes found, the base-game grid at both places it fits giving 4 with no other recipe matching, each loaded recipe equal to the base game's file but for the count, unlock advancements, fuel matching the cost (exactly a plank), and the fuel unchanged where it burned. `VanillaOverridesGameTest` covers the fence gate recipes, and `CraftedFuelGameTest` fails if a fence gate's fuel changes. `./gradlew build` runs 45 Caramel game tests.
+- Six deliberate breaks each failed the build or datagen, then were undone: a gate back to 1, the bamboo fence gate's files deleted, a gate's group dropped, a gate unlocking on sticks, the gates given the fence burn time, and the walk missing the custom fence gate ("Expected 13 block families with fence gates, found 12").
+- Review: four reviewers (datagen, tests, knock-ons, docs) and a skeptic per finding; the 7 findings that held were documentation, fixed here and in `caramel-vault/`.
+- Generated files: 1378 in `src/main/generated/data`, 26 new with C-005 and none changed.

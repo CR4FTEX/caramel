@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 import org.jspecify.annotations.Nullable;
 
@@ -53,6 +54,8 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 	private static final int CARPET_FAMILIES = 16;
 	// C-004's: the families with a fence, the 13 wooden ones (bamboo's is a custom fence) and nether bricks.
 	private static final int FENCE_FAMILIES = 14;
+	// C-005's: the families with a fence gate, the 13 wooden ones (bamboo's is a custom fence gate).
+	private static final int FENCE_GATE_FAMILIES = 13;
 
 	public CaramelRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
@@ -95,6 +98,7 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				List<BlockFamily> slabFamilies = replaceSlabs();
 				pressurePlatesAndCarpets(slabFamilies);
 				fences();
+				fenceGates();
 			}
 
 			// C-001: 3 blocks in an L make 4 stairs, 4 stairs make 3 blocks, and the stonecutter makes no stairs.
@@ -200,28 +204,53 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 			}
 
 			// C-004: every fence recipe gives 4 times vanilla's count, 12 wooden fences or 24 nether brick fences. The recipe
-			// is vanilla's otherwise, built as vanilla's fenceBuilder builds it, and replaces it at its id. Bamboo's fence is
-			// its family's custom fence.
+			// is vanilla's otherwise, built as vanilla's fenceBuilder builds it, and replaces it at its id.
 			private void fences() {
-				int fences = 0;
+				eachFamilyWith(List.of(BlockFamily.Variant.FENCE, BlockFamily.Variant.CUSTOM_FENCE), FENCE_FAMILIES, "fences", (family, variant) -> {
+					Block fence = family.get(variant);
+					Block base = family.getBaseBlock();
+					boolean netherBrick = fence == Blocks.NETHER_BRICK_FENCE;
+					inFamilyGroup(shaped(RecipeCategory.DECORATIONS, fence, netherBrick ? 24 : 12)
+							.define('W', base)
+							.define('#', netherBrick ? Items.NETHER_BRICK : Items.STICK)
+							.pattern("W#W")
+							.pattern("W#W"), family, variant)
+							.unlockedBy(getCraftingCriterionName(family, variant, base), has(base))
+							.save(output, vanillaKey(fence));
+				});
+			}
+
+			// C-005: every fence gate recipe gives 4 instead of 1. The recipe is vanilla's otherwise, built as vanilla's
+			// fenceGateBuilder builds it, and replaces it at its id.
+			private void fenceGates() {
+				eachFamilyWith(List.of(BlockFamily.Variant.FENCE_GATE, BlockFamily.Variant.CUSTOM_FENCE_GATE), FENCE_GATE_FAMILIES, "fence gates", (family, variant) -> {
+					Block gate = family.get(variant);
+					Block base = family.getBaseBlock();
+					inFamilyGroup(shaped(RecipeCategory.REDSTONE, gate, 4)
+							.define('#', Items.STICK)
+							.define('W', base)
+							.pattern("#W#")
+							.pattern("#W#"), family, variant)
+							.unlockedBy(getCraftingCriterionName(family, variant, base), has(base))
+							.save(output, vanillaKey(gate));
+				});
+			}
+
+			// Writes a recipe for each family that has one of the variants, and stops datagen unless that is the expected
+			// number of families. Bamboo's fence and fence gate are its family's custom variants, so a walk over FENCE or
+			// FENCE_GATE alone misses them.
+			private void eachFamilyWith(List<BlockFamily.Variant> variants, int expected, String blocks, BiConsumer<BlockFamily, BlockFamily.Variant> write) {
+				int found = 0;
 				for (BlockFamily family : BlockFamilies.getAllFamilies().toList()) {
-					for (BlockFamily.Variant variant : List.of(BlockFamily.Variant.FENCE, BlockFamily.Variant.CUSTOM_FENCE)) {
-						if (family.get(variant) instanceof Block fence) {
-							Block base = family.getBaseBlock();
-							boolean netherBrick = fence == Blocks.NETHER_BRICK_FENCE;
-							inFamilyGroup(shaped(RecipeCategory.DECORATIONS, fence, netherBrick ? 24 : 12)
-									.define('W', base)
-									.define('#', netherBrick ? Items.NETHER_BRICK : Items.STICK)
-									.pattern("W#W")
-									.pattern("W#W"), family, variant)
-									.unlockedBy(getCraftingCriterionName(family, variant, base), has(base))
-									.save(output, vanillaKey(fence));
-							fences++;
+					for (BlockFamily.Variant variant : variants) {
+						if (family.get(variant) != null) {
+							write.accept(family, variant);
+							found++;
 						}
 					}
 				}
-				if (fences != FENCE_FAMILIES) {
-					throw new IllegalStateException("Expected " + FENCE_FAMILIES + " block families with fences, found " + fences);
+				if (found != expected) {
+					throw new IllegalStateException("Expected " + expected + " block families with " + blocks + ", found " + found);
 				}
 			}
 
