@@ -31,6 +31,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -56,6 +57,10 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 	private static final int FENCE_FAMILIES = 14;
 	// C-005's: the families with a fence gate, the 13 wooden ones (bamboo's is a custom fence gate).
 	private static final int FENCE_GATE_FAMILIES = 13;
+	// C-006's: the families with a door and a trapdoor, the 13 wooden ones. The iron and copper doors and trapdoors are
+	// made by name.
+	private static final int DOOR_FAMILIES = 13;
+	private static final int TRAPDOOR_FAMILIES = 13;
 
 	public CaramelRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
@@ -99,6 +104,7 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				pressurePlatesAndCarpets(slabFamilies);
 				fences();
 				fenceGates();
+				doorsAndTrapdoors();
 			}
 
 			// C-001: 3 blocks in an L make 4 stairs, 4 stairs make 3 blocks, and the stonecutter makes no stairs.
@@ -234,6 +240,44 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 							.unlockedBy(getCraftingCriterionName(family, variant, base), has(base))
 							.save(output, vanillaKey(gate));
 				});
+			}
+
+			// C-006: 6 planks make 16 doors in 2 columns, or 16 trapdoors in 2 rows, at the vanilla ids. The iron and copper
+			// doors and trapdoors take the same shapes, made of 6 Blocks of Iron or Copper instead of ingots, and keep vanilla's
+			// unlock on the ingot. Only the plain Block of Copper makes them; the waxing recipes stay 1 for 1.
+			private void doorsAndTrapdoors() {
+				eachFamilyWith(List.of(BlockFamily.Variant.DOOR), DOOR_FAMILIES, "doors", (family, variant) ->
+						door(family.get(variant), family.getBaseBlock(), family, variant)
+								.unlockedBy(getCraftingCriterionName(family, variant, family.getBaseBlock()), has(family.getBaseBlock()))
+								.save(output, vanillaKey(family.get(variant))));
+				eachFamilyWith(List.of(BlockFamily.Variant.TRAPDOOR), TRAPDOOR_FAMILIES, "trapdoors", (family, variant) ->
+						trapdoor(family.get(variant), family.getBaseBlock(), family, variant)
+								.unlockedBy(getCraftingCriterionName(family, variant, family.getBaseBlock()), has(family.getBaseBlock()))
+								.save(output, vanillaKey(family.get(variant))));
+				fromBlocks(Items.IRON_INGOT, Blocks.IRON_BLOCK, Blocks.IRON_DOOR, Blocks.IRON_TRAPDOOR);
+				fromBlocks(Items.COPPER_INGOT, Blocks.COPPER_BLOCK.weathering().unaffected(), Blocks.COPPER_DOOR.weathering().unaffected(),
+						Blocks.COPPER_TRAPDOOR.weathering().unaffected());
+			}
+
+			// A metal door and trapdoor in the wooden shapes, from 6 blocks, unlocking on the ingot as vanilla's do.
+			private void fromBlocks(Item ingot, Block block, Block door, Block trapdoor) {
+				door(door, block, null, BlockFamily.Variant.DOOR).unlockedBy(getHasName(ingot), has(ingot)).save(output, vanillaKey(door));
+				trapdoor(trapdoor, block, null, BlockFamily.Variant.TRAPDOOR).unlockedBy(getHasName(ingot), has(ingot)).save(output, vanillaKey(trapdoor));
+			}
+
+			private ShapedRecipeBuilder door(ItemLike door, ItemLike material, @Nullable BlockFamily family, BlockFamily.Variant variant) {
+				return inFamilyGroup(shaped(RecipeCategory.REDSTONE, door, 16)
+						.define('#', material)
+						.pattern("##")
+						.pattern("##")
+						.pattern("##"), family, variant);
+			}
+
+			private ShapedRecipeBuilder trapdoor(ItemLike trapdoor, ItemLike material, @Nullable BlockFamily family, BlockFamily.Variant variant) {
+				return inFamilyGroup(shaped(RecipeCategory.REDSTONE, trapdoor, 16)
+						.define('#', material)
+						.pattern("###")
+						.pattern("###"), family, variant);
 			}
 
 			// Writes a recipe for each family that has one of the variants, and stops datagen unless that is the expected

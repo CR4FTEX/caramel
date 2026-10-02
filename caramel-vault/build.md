@@ -19,7 +19,7 @@ How `./gradlew build` turns the `main` and `client` source sets into one mod jar
 
 ## Run tasks
 
-- Loom registers `runClient`, `runServer`, `runDatagen` and `runGameTest` from `loom.runConfigs` (`client`, `server`, `datagen`, `gameTest`), plus `runClientRenderDoc`, a separate RenderDoc task (`./gradlew tasks --all`). `check` depends on `runGameTest`, so `./gradlew build` runs the game tests.
+- Loom registers `runClient`, `runServer`, `runDatagen` and `runGameTest` from `loom.runConfigs` (`client`, `server`, `datagen`, `gameTest`), plus `runClientRenderDoc`, a separate RenderDoc task (`./gradlew tasks --all`). How `./gradlew build` runs the game tests is in [[gametest]].
 - `runServer`'s classpath has main's output and no client output, and its only Minecraft jar is `minecraft-common`. `runDatagen`'s classpath is the same as `runClient`'s; [[datagen]] says why.
 - Game files go in `run/` for `runClient` and `runServer`, in `run/datagen` for `runDatagen`, and in `build/run/gameTest` for `runGameTest`. `.gitignore` excludes `run/` and `build/`.
 - **On Linux, `runClient` logs "Error while loading the narrator" and runs on.** `com.mojang.text2speech.NarratorLinux` loads `libflite.so` from the system through JNA, and `text2speech-1.19.12.jar` bundles none (`unzip -l`), so the log shows a long `UnsatisfiedLinkError` for `libflite.so`. `Narrator.getNarrator` then returns `Narrator.EMPTY`, which does nothing (`run/logs/latest.log`, `javap`). Loom's dev log config, `.gradle/loom-cache/log4j.xml`, hides this ERROR from the console only when the system property `fabric.loom.suppressNarratorError` is set (a `SystemPropertyArbiter` around its filter).
@@ -34,8 +34,7 @@ How `./gradlew build` turns the `main` and `client` source sets into one mod jar
 
 - `build/libs/` holds the mod jar and a `-sources` jar (`withSourcesJar()` in `build.gradle`).
 - The `jar` block copies `LICENSE` and `LICENSE-ASSETS` into the mod jar under new names; [[licensing]] covers what that protects and how it fails silently. Loom excludes datagen's `.cache/**` from the `jar` task.
-- The `-sources` jar carries `fabric.mod.json` and `assets/caramel/icon.png`, and no license file: the license copy and the `.cache/**` exclude apply to the `jar` task only. A local build's `-sources` jar also carries the gitignored `src/main/generated/.cache/`, which a CI checkout does not have (`unzip -l`). Only the mod jar goes in a `mods` folder (see [[ci]]).
-- A jar in `build/libs/` is only as fresh as the last build: one built before a file existed lacks that file, and nothing flags it. Rebuild before checking a jar's contents.
+- The `-sources` jar carries `fabric.mod.json` and `assets/caramel/icon.png`, and no license file: the license copy and the `.cache/**` exclude apply to the `jar` task only. A local build's `-sources` jar also carries the gitignored `src/main/generated/.cache/`, which a CI checkout does not have (`unzip -l`). Only the mod jar goes in a `mods` folder.
 
 ## Scratch copies
 
@@ -43,4 +42,4 @@ Reproducing a trap happens in a copy of the project, never in the project itself
 
 - **A copy that includes `.gradle/` builds the real project.** Gradle in the copy reuses the real entries ("Reusing configuration cache."). Reproduced with two scratch copies: in the copy that kept `.gradle/`, `compileJava` rebuilt the original's `build/classes` and created no `build/` of its own.
 - Copy without it, and pass `--no-configuration-cache` in the copy: `tar --exclude=./build --exclude=./.gradle --exclude=./run --exclude=./.git -C <project> -cf - . | tar -xf - -C <copy>`.
-- **`./gradlew --stop` in a copy stops the real project's daemons too.** It terminates every daemon started with the same Gradle version, whichever project it serves (Gradle docs, "Gradle Daemon"). Leave a copy's daemons to exit on their own.
+- **`./gradlew --stop` in a copy stops the real project's daemons too, silently.** It terminates every daemon started with the same Gradle version, whichever project it serves (Gradle docs, "Gradle Daemon"). The real project's next build only prints "Starting a Gradle Daemon (subsequent builds will be faster)", as any build does when no daemon is idle. Leave a copy's daemons to exit on their own.

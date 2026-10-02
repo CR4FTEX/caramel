@@ -50,6 +50,7 @@ No ideas yet.
 - C-003: Pressure plates and carpets from slabs
 - C-004: More fences per craft
 - C-005: More fence gates per craft
+- C-006: More doors and trapdoors per craft, iron and copper from blocks
 
 ### Recipes
 
@@ -58,6 +59,7 @@ No ideas yet.
 - C-003: Pressure plates and carpets from slabs
 - C-004: More fences per craft
 - C-005: More fence gates per craft
+- C-006: More doors and trapdoors per craft, iron and copper from blocks
 
 ### Blocks and Items
 
@@ -334,3 +336,41 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 - Six deliberate breaks each failed the build or datagen, then were undone: a gate back to 1, the bamboo fence gate's files deleted, a gate's group dropped, a gate unlocking on sticks, the gates given the fence burn time, and the walk missing the custom fence gate ("Expected 13 block families with fence gates, found 12").
 - Review: four reviewers (datagen, tests, knock-ons, docs) and a skeptic per finding; the 7 findings that held were documentation, fixed here and in `caramel-vault/`.
 - Generated files: 1378 in `src/main/generated/data`, 26 new with C-005 and none changed.
+
+### C-006: More doors and trapdoors per craft, iron and copper from blocks
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every crafted door and trapdoor, of every block family that has them (for example Iron, Copper, Bamboo, Acacia), gives 16 instead of 3 or 1.
+- The iron door, copper door, iron trapdoor and copper trapdoor use the same grid shape as their wooden counterparts: 6 in 2 columns of 3 for a door, 6 in 2 rows of 3 for a trapdoor.
+- Those four take Blocks of Iron and Blocks of Copper instead of iron and copper ingots.
+- Why: the iron and copper doors and trapdoors cost more to craft, and players get more value out of all of them.
+
+As pictured: 6 oak planks in 2 columns make 16 oak doors, 6 oak planks in 2 rows make 16 oak trapdoors, 6 Blocks of Iron in 2 columns make 16 iron doors, and 6 Blocks of Copper in 2 rows make 16 copper trapdoors.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 30 recipes. 13 wooden doors (oak, spruce, birch, jungle, acacia, dark oak, mangrove, cherry, pale oak, poplar, bamboo, crimson, warped) give 3 each and 13 wooden trapdoors give 2 each, from 6 planks. The iron door and copper door give 3 from 6 ingots; the iron trapdoor and copper trapdoor give 1 from 4 ingots in a 2x2. The pitch's "instead of 3 or 1" leaves out the wooden trapdoors' 2; they give 16 like the rest.
+- Only the plain copper door and trapdoor are crafted. The exposed, weathered and oxidized ones come from the copper aging in the world, and the 8 waxed ones from a honeycomb recipe, 1 door or trapdoor and 1 honeycomb for 1 waxed one. Those waxing recipes stay 1 for 1: at 16, one door and one honeycomb would make 16 doors.
+- No other recipe, furnace, stonecutter, villager trade or chest loot makes, uses or sells doors or trapdoors.
+- No clash: no other recipe takes 6 Blocks of Iron or Copper in 2 columns or 2 rows. The old ingot grids give nothing afterwards; 6 iron or copper ingots in 2 rows of 3 are still iron or copper bars, as in the base game.
+- Cost: 6 Blocks of Iron are 54 ingots, about 3.4 per door or trapdoor. An iron or copper door cost 2 ingots before and costs more; an iron or copper trapdoor cost 4 and costs a little less.
+- Burn times, read from the game code: the 11 wooden doors that burn (crimson and warped do not) burn 200 ticks (`minecraft:cooking/time_wood_items_large`), and the 11 wooden trapdoors that burn 300, as long as a plank (`minecraft:cooking/time_wood_blocks`). Iron and copper doors and trapdoors do not burn.
+- Furnace fuel (asked, owner's answer): at 16 from 6 planks, 1,800 ticks of wood, 16 doors would burn 3,200 ticks and 16 trapdoors 4,800. The owner chose to match the cost, as for stairs, pressure plates and fences: a wooden door and a wooden trapdoor each burn 112 ticks, 6/16 of a plank rounded down, so crafting never adds fuel. Blast furnaces and smokers halve it (56).
+- Copper (asked, owner's answer): only the Block of Copper makes copper doors and trapdoors, as pitched. The exposed, weathered, oxidized and waxed blocks make none; those doors and trapdoors still come from aging and honeycomb.
+- Recipe book: each replaced recipe keeps its base-game unlock advancement, as C-003's did, so the iron and copper doors and trapdoors show once the player has held an iron or copper ingot, though they now take blocks.
+- Playtest (owner): all 10 in-game checks worked as intended: oak doors and trapdoors at every place in the grid, other woods, iron and copper doors and trapdoors from 6 blocks, aged and waxed copper blocks refused, the old ingot recipes gone with iron bars still crafting, waxing 1 for 1, the recipe book, fuel in a furnace and blast furnace, and what does not burn.
+
+**Implementation notes**
+
+- No mixin was needed. No placeholder textures.
+- Recipes: `CaramelRecipeProvider.doorsAndTrapdoors()` (datagen) writes the 30 recipes at their base-game ids. The 26 wooden ones walk the families' door and trapdoor variants (13 each; datagen stops if either count changes) and give 16 with the base-game shape and group. `fromBlocks()` writes the iron and copper door and trapdoor in the wooden shapes from 6 Blocks of Iron or the plain Block of Copper (`Blocks.COPPER_BLOCK.weathering().unaffected()`), 16 each. Every unlock advancement is the base game's, byte for byte. The waxing recipes are untouched.
+- Fuel: `CraftedFuel` points the 11 wooden doors that burned (vanilla's `cooking/time_wood_items_large`) at `caramel:cooking/time_wood_doors` and the 11 wooden trapdoors (vanilla's `time_wood_blocks`) at `caramel:cooking/time_wood_trapdoors`, both 112 ticks, written by `CaramelBurnTimeProvider`.
+- Game tests: `DoorsAndTrapdoorsGameTest` has 10 checks. Six run `MorePerCraft` over the 26 wooden recipes (`MorePerCraft.Scope` now takes several tags and a count rule, 16 here, 4 times vanilla's for fences and fence gates). Four are its own, with expected values built from the base game's data: the iron and copper recipes equal the base game's with the wooden counterpart's pattern, the block that 9 of the ingot craft into, and 16; 6 blocks give 16 at every place they fit; the old ingot grids give nothing; the 8 waxing recipes stay the base game's. `CraftedFuelGameTest` (its check renamed `onlyVanillaItemsCraftedCheaperThatBurnedHaveNewFuel`) and `VanillaOverridesGameTest` cover C-006. `./gradlew build` runs 55 Caramel game tests.
+- Eight deliberate breaks each failed the build, then were undone: an oak door back to 3, the iron trapdoor back to 4 ingots in a 2x2, the copper door from ingots, the copper trapdoor from exposed copper, a waxing recipe overridden to give 16, the door burn time at 200, the trapdoor fuel mapping removed, and the iron door unlocking on iron blocks.
+- Review: four reviewers (datagen and fuel, tests, knock-ons, docs) and a skeptic per finding; the 8 findings that held were documentation, fixed here, in `caramel-vault/` and in one test comment.
+- Generated files: 1440 in `src/main/generated/data`, 62 new with C-006 and none changed.

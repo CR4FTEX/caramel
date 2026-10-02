@@ -38,6 +38,9 @@ public class CaramelBurnTimeProvider extends FabricCodecDataProvider<ContextIntP
 		provider.accept(CraftedFuel.COOKING_TIME_WOOL_CARPETS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 6));
 		// C-004: 12 fences cost 4 planks and 2 sticks, 5 planks, so each burns 5/12 of a plank's 300 ticks.
 		provider.accept(CraftedFuel.COOKING_TIME_WOOD_FENCES.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 125));
+		// C-006: 6 planks make 16 doors or 16 trapdoors, so each burns 6/16 of a plank's 300 ticks, rounded down.
+		provider.accept(CraftedFuel.COOKING_TIME_WOOD_DOORS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 112));
+		provider.accept(CraftedFuel.COOKING_TIME_WOOD_TRAPDOORS.identifier(), ContextIntProviders.cooking(predicates, normal, fast, 112));
 	}
 
 	@Override

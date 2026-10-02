@@ -13,7 +13,7 @@ Both configs set `"injectors": { "defaultRequire": 1 }`. That setting turns a de
 | Method exists, injection point matches nothing | crash: `InjectionError: Critical injection failure: ... failed injection check, (0/1) succeeded` | no crash, no log line |
 | Method name does not exist | crash: `InvalidInjectionException: Critical injection failure: @Inject annotation on ... could not find any targets matching '...'` | no crash, no log line |
 
-After a Minecraft update, these crashes are the signal that a target moved or was renamed. The first message also says "Scanned 0 target(s)": in Mixin 0.8.7 that count is always 0, so it says nothing about whether the target method exists.
+After a Minecraft update, these crashes are the signal that a target moved or was renamed. The first message also says "Scanned 0 target(s)": in Mixin 0.8.7 that count is always 0 (`InjectionInfo` writes `targetCount` only once, as 0, in its constructor; `javap -c` on sponge-mixin 0.17.4+mixin.0.8.7), so it says nothing about whether the target method exists.
 
 ## Where a broken mixin surfaces
 

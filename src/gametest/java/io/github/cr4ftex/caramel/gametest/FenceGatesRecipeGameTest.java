@@ -1,5 +1,7 @@
 package io.github.cr4ftex.caramel.gametest;
 
+import java.util.List;
+
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -8,7 +10,7 @@ import net.minecraft.tags.BlockTags;
 // C-005: every fence gate recipe gives 4 times vanilla's count. The checks are MorePerCraft's.
 public class FenceGatesRecipeGameTest {
 	// C-005's scope in Minecraft 26.3, from docs/DESIGN.md: the 13 wooden fence gates. The owner's rule: 4 instead of 1.
-	static final MorePerCraft.Scope SCOPE = new MorePerCraft.Scope("C-005", "fence gate", BlockTags.FENCE_GATES, 13, 4);
+	static final MorePerCraft.Scope SCOPE = new MorePerCraft.Scope("C-005", "fence gate", "fence gates", List.of(BlockTags.FENCE_GATES), 13, count -> 4 * count);
 
 	@GameTest
 	public void vanillaFenceGatesAreAllFound(GameTestHelper helper) {

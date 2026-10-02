@@ -30,7 +30,7 @@ The vault links to those files and does not restate them.
 
 ## Discipline and checkers
 
-`.vaultrc` declares the vault's rules, and its comments give the reason for each and list the checkers a gold pass runs first. Lint with the `/gold` skill's `vault_lint.py` (`python3 <skill-dir>/vault_lint.py caramel-vault`); its last line, `exit: N`, is the result, and 0 is gold.
+`.vaultrc` declares the vault's rules, and its comments give the reason for each and list the checkers a gold pass runs first. Lint with the `/gold` skill's `vault_lint.py`, as `CLAUDE.md`, "Vault and status", says; its last line, `exit: N`, is the result, and 0 is gold.
 
 ## Open questions
 

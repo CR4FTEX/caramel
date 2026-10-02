@@ -2,7 +2,7 @@
 
 The passdown between sessions: where the project stands, what you decided, and what comes next. Part 1 is the current state and is rewritten each session. Part 2 is the record of the first review of the docs and how each finding was handled.
 
-Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built and playtested on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01.
+Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built and playtested on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01. The sixth, C-006, was built, playtested and committed on 2026-10-01.
 
 ---
 
@@ -48,7 +48,7 @@ Choices I made that you can change:
 - **Placeholder icon:** a 32x32 pixel-art caramel cube with drips. Replace it whenever you like.
 - **Docs:** `README.md`, `CONTRIBUTING.md`, `docs/DESIGN.md` (your vision and the idea log), `docs/TEXTURES.md` (art guide), `CLAUDE.md` (rules for AI sessions), `art-source/README.md`, the two license files, and `.github/` (issue forms, pull request checklist, build workflow).
 - **All 28 review fixes applied** (Part 2). A second review of the fixed docs, through four lenses, found 21 more problems, all fixed; a skeptic rejected 9 others. The GitHub, git and Actions behaviour the fixes rely on was checked against official docs.
-- **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, recipes, game tests, fuel, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
+- **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, recipes, game tests, fuel, trades, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
 - **`/gold` installed** at `~/.claude/skills/gold/`, outside the repository: `SKILL.md`, `vault_lint.py` and `vault-rot-patterns.md`, with nothing tied to one machine. The vault lints clean (`exit: 0`). An older `bindings.md` is still in that folder; the skill does not need it, its Caramel entry now points at the vault's `.vaultrc`, and you can delete it.
 - **First commit pushed:** `88b1a56` on `main` at https://github.com/CR4FTEX/caramel, signed with your noreply address. The `idea` and `art` labels exist on GitHub.
 - **First CI run passed** (run 36375456105, 1m21s). The `caramel-jar` artifact is downloadable from the run until 2026-10-12. The run saved a 460 MB Gradle cache on `main`. CI caching works: a run whose Gradle build files are unchanged restores it (the gold-pass run did, and took 1m30s against 2m05s cold); a change to `build.gradle` starts cold and saves a new entry.
@@ -66,6 +66,7 @@ Choices I made that you can change:
 - **C-003, pressure plates and carpets from slabs: Done.** You playtested all 12 checks and they passed, then confirmed in game that shepherds sell 20 carpets. Committed and pushed to `main`. Your answers (fuel and moss carpet compost both match their cost, shepherd carpets at 20) are in the entry in `docs/DESIGN.md`. Dyeing wool and items is a future idea of yours.
 - **C-004, more fences per craft: Done.** You playtested all 8 checks and they all worked as intended. Every fence recipe gives 4 times as many: 12 wooden fences, 24 nether brick fences (your answer). Wooden fences burn 125 ticks, matching their cost (your answer). Committed and pushed to `main`. The entry in `docs/DESIGN.md` has the decisions.
 - **C-005, more fence gates per craft: Done.** You playtested all 7 checks and they all worked as intended. Every fence gate recipe gives 4 instead of 1. Fence gates keep their burn time, since 4 cost exactly 4 planks. Committed and pushed to `main`, with the gold pass on `caramel-vault/`.
+- **C-006, more doors and trapdoors per craft: Done.** You playtested all 10 checks and they all worked as intended. Every door and trapdoor recipe gives 16. The iron and copper ones take 6 Blocks of Iron or Copper in the wooden shapes (your pitch); only the plain Block of Copper works (your answer). Wooden doors and trapdoors burn 112 ticks, matching their cost (your answer). Waxing stays 1 for 1. Committed and pushed to `main`, with the second gold pass on `caramel-vault/`.
 
 ### Open suggestions (your call)
 
@@ -81,7 +82,7 @@ None of these is started. Say the word for any of them.
 
 ### Things you should know
 
-- **Private repo limits:** on a free GitHub account, private repositories get 2,000 build minutes a month and 500 MB of artifact storage. The two CI builds so far took 1m24s and 2m05s. The build workflow skips Markdown-only changes and cancels outdated runs to save minutes.
+- **Private repo limits:** on a free GitHub account, private repositories get 2,000 build minutes a month and 500 MB of artifact storage. CI builds take about 1m10s to 2m35s (`gh run list`). The build workflow skips Markdown-only changes and cancels outdated runs to save minutes (`caramel-vault/ci.md`).
 - **Inviting contributors:** because the repo is private, people can only help once you invite them. On the GitHub website, open the repo, then Settings > Collaborators > Add people. Artists don't need git or Java: the art guide explains how to submit through GitHub issues or the website.
 - **Automated in-game tests** run in every `./gradlew build` and in CI, since C-001: a Minecraft test server with no window loads the mod's data and checks it before you playtest. You chose Fabric's game-test mode, which skips the EULA check by design; `eula.txt` stays `eula=false`, and nothing accepts the EULA for you. `caramel-vault/gametest.md` has the details.
 - **Updating Minecraft:** Mojang releases a new version every few months. The plan is to stay on 26.3 while building and move to newer versions at milestones. `CLAUDE.md` has the step-by-step update procedure.

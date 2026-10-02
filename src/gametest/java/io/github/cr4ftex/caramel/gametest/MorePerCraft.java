@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.IntUnaryOperator;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -56,33 +57,27 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.block.Block;
 
-// The checks shared by the ideas that keep a vanilla recipe and make it give more: C-004's fences and C-005's fence
-// gates. Which vanilla recipes are in scope, what each is crafted from and how many it gave, are read from the vanilla
-// data pack's own recipe files, never from Caramel's, so a wrong generated recipe cannot also make its own expectation.
-// Whether an item burned comes from the item components vanilla builds, before Caramel changes them.
+// The checks shared by the ideas that keep a vanilla recipe and make it give more: C-004's fences, C-005's fence gates
+// and C-006's wooden doors and trapdoors. Which vanilla recipes are in scope, what each is crafted from and how many it
+// gave, are read from the vanilla data pack's own recipe files, never from Caramel's, so a wrong generated recipe cannot
+// also make its own expectation. Whether an item burned comes from the item components vanilla builds, before Caramel
+// changes them.
 final class MorePerCraft {
 	private MorePerCraft() {
 	}
 
-	// One idea's scope: every vanilla crafting recipe whose result is a block in the tag (a block tag, since 26.3's
-	// ItemTags has no constant for #minecraft:fences), how many there are in Minecraft 26.3, from docs/DESIGN.md, and how
-	// many times vanilla's count each gives now, as the owner chose.
-	record Scope(String idea, String what, TagKey<Block> blocks, int vanillaRecipes, int timesVanilla) {
-		String plural() {
-			return what + "s";
-		}
+	// One idea's scope: every vanilla crafting recipe whose result is a block in one of the tags (block tags, since 26.3's
+	// ItemTags has no constant for #minecraft:fences), how many there are in Minecraft 26.3, from docs/DESIGN.md, and what
+	// each gives now for vanilla's count, as the owner chose.
+	record Scope(String idea, String what, String plural, List<TagKey<Block>> blocks, int vanillaRecipes, IntUnaryOperator count) {
 	}
 
 	// A vanilla recipe in a scope, its file in the vanilla data pack, and its grid, filled with the first item each of its
-	// ingredients accepts, row by row. Vanilla's recipe gives vanillaResult for that grid.
-	record Replaced(Identifier id, JsonObject file, ShapedRecipe recipe, List<ItemStack> cells, ItemStack vanillaResult, int timesVanilla) {
+	// ingredients accepts, row by row.
+	// Vanilla's recipe gives vanillaResult for that grid, and the idea's gives count.
+	record Replaced(Identifier id, JsonObject file, ShapedRecipe recipe, List<ItemStack> cells, ItemStack vanillaResult, int count) {
 		Item item() {
 			return vanillaResult.getItem();
-		}
-
-		// What the idea's recipe gives for the same grid.
-		int count() {
-			return timesVanilla * vanillaResult.getCount();
 		}
 	}
 
@@ -143,20 +138,24 @@ final class MorePerCraft {
 		report(helper, scope.idea(), scope.what() + " recipes", found.size(), failures);
 	}
 
+	static void keepTheVanillaUnlockAdvancement(GameTestHelper helper, Scope scope) {
+		keepTheVanillaUnlockAdvancement(helper, scope.idea(), vanillaRecipes(helper, scope).stream().map(Replaced::id).toList());
+	}
+
 	// Each replaced recipe keeps vanilla's unlock advancement, the vanilla file at recipes/<folder>/<recipe path>: the
 	// one that loads, Caramel's copy if its pack holds one, must equal vanilla's.
-	static void keepTheVanillaUnlockAdvancement(GameTestHelper helper, Scope scope) {
+	static void keepTheVanillaUnlockAdvancement(GameTestHelper helper, String idea, List<Identifier> recipes) {
 		Map<Identifier, List<Identifier>> unlocks = vanillaUnlocks(helper);
 		Map<Identifier, JsonObject> vanilla = packFiles(helper, "vanilla", Registries.ADVANCEMENT);
 		Map<Identifier, JsonObject> caramel = packFiles(helper, Caramel.MOD_ID, Registries.ADVANCEMENT);
 		ServerAdvancementManager loaded = helper.getLevel().getServer().getAdvancements();
 		List<String> failures = new ArrayList<>();
 		int checked = 0;
-		for (Replaced replaced : vanillaRecipes(helper, scope)) {
+		for (Identifier recipe : recipes) {
 			checked++;
-			List<Identifier> found = unlocks.getOrDefault(replaced.id(), List.of());
+			List<Identifier> found = unlocks.getOrDefault(recipe, List.of());
 			if (found.size() != 1) {
-				failures.add("The vanilla data pack has " + found.size() + " unlock advancements for recipe " + replaced.id() + " " + found + ", expected 1");
+				failures.add("The vanilla data pack has " + found.size() + " unlock advancements for recipe " + recipe + " " + found + ", expected 1");
 				continue;
 			}
 			Identifier advancement = found.getFirst();
@@ -166,7 +165,7 @@ final class MorePerCraft {
 				failures.add("Advancement " + advancement + " is not loaded");
 			}
 		}
-		report(helper, scope.idea(), "unlock advancements", checked, failures);
+		report(helper, idea, "unlock advancements", checked, failures);
 	}
 
 	// A craft costs its planks, and its sticks at what vanilla's stick recipe takes for them. Each item that burned in
@@ -268,8 +267,8 @@ final class MorePerCraft {
 		report(helper, scope.idea(), scope.what() + " fuel checks", checked, failures);
 	}
 
-	// Every vanilla crafting recipe whose result is a block in the scope's tag, sorted by id, found by decoding the vanilla
-	// data pack. Each must be shaped.
+	// Every vanilla crafting recipe whose result is a block in one of the scope's tags, sorted by id, found by decoding the
+	// vanilla data pack. Each must be shaped.
 	static List<Replaced> vanillaRecipes(GameTestHelper helper, Scope scope) {
 		ContextMap display = SlotDisplayContext.fromLevel(helper.getLevel());
 		RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, helper.getLevel().getServer().registryAccess());
@@ -283,7 +282,8 @@ final class MorePerCraft {
 				throw helper.assertionException(Component.literal(id + " in the vanilla data pack makes a " + scope.what() + " and is not a shaped recipe"));
 			}
 			List<ItemStack> cells = filled(shaped);
-			found.add(new Replaced(id, file, shaped, cells, shaped.assemble(CraftingInput.of(shaped.getWidth(), shaped.getHeight(), cells)), scope.timesVanilla()));
+			ItemStack vanillaResult = shaped.assemble(CraftingInput.of(shaped.getWidth(), shaped.getHeight(), cells));
+			found.add(new Replaced(id, file, shaped, cells, vanillaResult, scope.count().applyAsInt(vanillaResult.getCount())));
 		});
 		return found;
 	}
@@ -307,7 +307,7 @@ final class MorePerCraft {
 	}
 
 	private static boolean inScope(Scope scope, ItemStack stack) {
-		return stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock().defaultBlockState().is(scope.blocks());
+		return stack.getItem() instanceof BlockItem blockItem && scope.blocks().stream().anyMatch(blockItem.getBlock().defaultBlockState()::is);
 	}
 
 	// What vanilla's minecraft:stick recipe takes per stick, in planks: filled with the first item each ingredient accepts,

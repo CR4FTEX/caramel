@@ -1,5 +1,7 @@
 package io.github.cr4ftex.caramel.gametest;
 
+import java.util.List;
+
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -9,7 +11,7 @@ import net.minecraft.tags.BlockTags;
 public class FencesRecipeGameTest {
 	// C-004's scope in Minecraft 26.3, from docs/DESIGN.md: the 13 wooden fences and the nether brick fence. The owner's
 	// rule: 12 wooden fences instead of 3, and 24 nether brick fences instead of 6.
-	static final MorePerCraft.Scope SCOPE = new MorePerCraft.Scope("C-004", "fence", BlockTags.FENCES, 14, 4);
+	static final MorePerCraft.Scope SCOPE = new MorePerCraft.Scope("C-004", "fence", "fences", List.of(BlockTags.FENCES), 14, count -> 4 * count);
 
 	@GameTest
 	public void vanillaFencesAreAllFound(GameTestHelper helper) {
