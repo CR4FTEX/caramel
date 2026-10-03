@@ -2,7 +2,7 @@
 
 The passdown between sessions: where the project stands, what you decided, and what comes next. Part 1 is the current state and is rewritten each session. Part 2 is the record of the first review of the docs and how each finding was handled.
 
-Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built and playtested on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01. The sixth, C-006, was built, playtested and committed on 2026-10-01.
+Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built and playtested on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01. The sixth, C-006, was built, playtested and committed on 2026-10-01. The third gold pass on `caramel-vault/` ran on 2026-10-03, and its edits are not committed yet. The seventh, C-007, was built and playtested on 2026-10-03, and is not committed yet.
 
 ---
 
@@ -67,6 +67,7 @@ Choices I made that you can change:
 - **C-004, more fences per craft: Done.** You playtested all 8 checks and they all worked as intended. Every fence recipe gives 4 times as many: 12 wooden fences, 24 nether brick fences (your answer). Wooden fences burn 125 ticks, matching their cost (your answer). Committed and pushed to `main`. The entry in `docs/DESIGN.md` has the decisions.
 - **C-005, more fence gates per craft: Done.** You playtested all 7 checks and they all worked as intended. Every fence gate recipe gives 4 instead of 1. Fence gates keep their burn time, since 4 cost exactly 4 planks. Committed and pushed to `main`, with the gold pass on `caramel-vault/`.
 - **C-006, more doors and trapdoors per craft: Done.** You playtested all 10 checks and they all worked as intended. Every door and trapdoor recipe gives 16. The iron and copper ones take 6 Blocks of Iron or Copper in the wooden shapes (your pitch); only the plain Block of Copper works (your answer). Wooden doors and trapdoors burn 112 ticks, matching their cost (your answer). Waxing stays 1 for 1. Committed and pushed to `main`, with the second gold pass on `caramel-vault/`.
+- **C-007, more buttons per craft: Done.** You playtested all 8 checks and they all worked as intended. Every button recipe, all 15 (13 wooden, stone, polished blackstone), gives 20 instead of 1. Wooden buttons burn 15 ticks, matching their cost (your answer). Not committed yet, together with the third gold pass on `caramel-vault/`; the entry in `docs/DESIGN.md` has the decisions.
 
 ### Open suggestions (your call)
 
@@ -90,7 +91,7 @@ None of these is started. Say the word for any of them.
 
 ### Next step
 
-Send me the next idea. You have said the next few ideas are small ones about how much a recipe gives, and that dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
+Say when to commit C-007 and the third gold pass. Then send me the next idea. You have said the next few ideas are small ones about how much a recipe gives, and that dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
 
 ---
 

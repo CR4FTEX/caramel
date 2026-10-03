@@ -51,6 +51,7 @@ No ideas yet.
 - C-004: More fences per craft
 - C-005: More fence gates per craft
 - C-006: More doors and trapdoors per craft, iron and copper from blocks
+- C-007: More buttons per craft
 
 ### Recipes
 
@@ -60,6 +61,7 @@ No ideas yet.
 - C-004: More fences per craft
 - C-005: More fence gates per craft
 - C-006: More doors and trapdoors per craft, iron and copper from blocks
+- C-007: More buttons per craft
 
 ### Blocks and Items
 
@@ -374,3 +376,33 @@ As pictured: 6 oak planks in 2 columns make 16 oak doors, 6 oak planks in 2 rows
 - Eight deliberate breaks each failed the build, then were undone: an oak door back to 3, the iron trapdoor back to 4 ingots in a 2x2, the copper door from ingots, the copper trapdoor from exposed copper, a waxing recipe overridden to give 16, the door burn time at 200, the trapdoor fuel mapping removed, and the iron door unlocking on iron blocks.
 - Review: four reviewers (datagen and fuel, tests, knock-ons, docs) and a skeptic per finding; the 8 findings that held were documentation, fixed here, in `caramel-vault/` and in one test comment.
 - Generated files: 1440 in `src/main/generated/data`, 62 new with C-006 and none changed.
+
+### C-007: More buttons per craft
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every crafted button, of every block family that has one (for example Stone, Dark Oak, Poplar, Jungle), gives 20 buttons instead of 1.
+- As pictured: the recipe keeps its shape, 1 oak plank in the grid, and makes 20 oak buttons.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 15 recipes make a button, each a shapeless recipe of 1 block for 1 button. 13 are wooden (oak, spruce, birch, jungle, acacia, dark oak, mangrove, cherry, pale oak, poplar, bamboo, crimson, warped), from 1 plank, in the `wooden_button` recipe book group. The stone button takes 1 stone and the polished blackstone button 1 polished blackstone, with no group. They are exactly the 15 buttons in `#minecraft:buttons`, and each is its block family's button.
+- No clash: 1 plank, 1 stone or 1 polished blackstone matches no other recipe, in the base game or in Caramel's pack.
+- No other recipe, furnace, stonecutter, villager trade or chest loot makes, uses or sells buttons.
+- Burn time, read from the game code: the 11 wooden buttons that burn (crimson and warped do not) burn 100 ticks, a third of a plank (`minecraft:cooking/time_wood_items_extra_small`, which the bowl also uses). Stone and polished blackstone buttons do not burn.
+- Furnace fuel (asked, owner's answer): at 20 per plank, one plank's 300 ticks would become 2,000, and the 4 planks from a log, 1,200 ticks, would become 8,000 as 80 buttons, five times a piece of coal. The owner chose to match the cost, as for stairs, pressure plates, fences, doors and trapdoors: a wooden button burns 15 ticks, 1/20 of a plank, so crafting never adds fuel. Blast furnaces and smokers halve it (7). A furnace now needs 14 wooden buttons to smelt one item, where the base game needed 2, and a blast furnace 15 (worked out from the furnace code).
+- Playtest (owner): all 8 in-game checks worked as intended: 20 oak buttons at every place in both grids, other woods including poplar, bamboo and crimson, 20 stone and 20 polished blackstone buttons with cobblestone and smooth stone refused, shift-click crafting, the recipe book, 13 buttons short of an ingot and 14 enough in a furnace, 14 short and 15 enough in a blast furnace, and the buttons that do not burn, with the bowl burning as before.
+
+**Implementation notes**
+
+- No mixin was needed. No placeholder textures.
+- Recipes: `CaramelRecipeProvider.buttons()` (datagen) writes the 15 button recipes at their base-game ids, each built as the base game's `buttonBuilder` builds it, 1 block in a shapeless recipe, with a count of 20. Each keeps the base-game group, category and unlock advancement, byte for byte. The walk covers the families' button variant; datagen stops if the number found (15) changes.
+- Fuel: `CraftedFuel` points the 11 wooden buttons that burned (the base game's `cooking/time_wood_items_extra_small`) at `caramel:cooking/time_wood_buttons` (15 ticks), written by `CaramelBurnTimeProvider`. It matches the button block as well as the key, so the bowl, which shares the key, keeps its 100 ticks.
+- Game tests: `ButtonsRecipeGameTest` runs `MorePerCraft`'s 6 checks over the 15 recipes, with expected values read from the base game's data pack and item components: all 15 found; the block at each of the 13 places in the 2x2 and 3x3 grids gives 20, with no other recipe matching (195 grids); each loaded recipe equals the base game's file but for the count; unlock advancements; fuel matching the cost; and fuel still burning where it burned. `MorePerCraft` took only shaped recipes and now takes shapeless ones too, their ingredients laid in one row. `CraftedFuelGameTest` and `VanillaOverridesGameTest` cover the buttons. `./gradlew build` runs 61 Caramel game tests.
+- Nine deliberate breaks each failed the build or datagen, then were undone: the oak button back to 1, the stone button in the wooden group, the birch button unlocking on sticks, the button burn time at 16, the polished blackstone button's files deleted, the spruce button made a shaped recipe, a second recipe matching 1 jungle plank, the button fuel mapping removed, and the button family count at 14 ("Expected 14 block families with buttons, found 15").
+- Review: four reviewers (datagen and fuel, tests, knock-ons, docs) and a skeptic per finding; the 2 findings that held were documentation, fixed here and in `caramel-vault/fuel.md`: the bowl also burns on the buttons' fuel key, and a log's burn time was misstated.
+- Generated files: 1471 in `src/main/generated/data`, 31 new with C-007 and none changed.

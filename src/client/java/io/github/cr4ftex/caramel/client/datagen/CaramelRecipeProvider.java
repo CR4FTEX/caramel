@@ -61,6 +61,8 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 	// made by name.
 	private static final int DOOR_FAMILIES = 13;
 	private static final int TRAPDOOR_FAMILIES = 13;
+	// C-007's: the families with a button, the 13 wooden ones, stone and polished blackstone.
+	private static final int BUTTON_FAMILIES = 15;
 
 	public CaramelRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
@@ -105,6 +107,7 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				fences();
 				fenceGates();
 				doorsAndTrapdoors();
+				buttons();
 			}
 
 			// C-001: 3 blocks in an L make 4 stairs, 4 stairs make 3 blocks, and the stonecutter makes no stairs.
@@ -263,6 +266,18 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 			private void fromBlocks(Item ingot, Block block, Block door, Block trapdoor) {
 				door(door, block, null, BlockFamily.Variant.DOOR).unlockedBy(getHasName(ingot), has(ingot)).save(output, vanillaKey(door));
 				trapdoor(trapdoor, block, null, BlockFamily.Variant.TRAPDOOR).unlockedBy(getHasName(ingot), has(ingot)).save(output, vanillaKey(trapdoor));
+			}
+
+			// C-007: every button recipe gives 20 instead of 1. The recipe is vanilla's otherwise, built as vanilla's
+			// buttonBuilder builds it, and replaces it at its id.
+			private void buttons() {
+				eachFamilyWith(List.of(BlockFamily.Variant.BUTTON), BUTTON_FAMILIES, "buttons", (family, variant) -> {
+					Block button = family.get(variant);
+					Block base = family.getBaseBlock();
+					inFamilyGroup(shapeless(RecipeCategory.REDSTONE, button, 20).requires(base), family, variant)
+							.unlockedBy(getCraftingCriterionName(family, variant, base), has(base))
+							.save(output, vanillaKey(button));
+				});
 			}
 
 			private ShapedRecipeBuilder door(ItemLike door, ItemLike material, @Nullable BlockFamily family, BlockFamily.Variant variant) {

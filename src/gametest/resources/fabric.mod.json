@@ -15,6 +15,7 @@
 			"io.github.cr4ftex.caramel.gametest.FencesRecipeGameTest",
 			"io.github.cr4ftex.caramel.gametest.FenceGatesRecipeGameTest",
 			"io.github.cr4ftex.caramel.gametest.DoorsAndTrapdoorsGameTest",
+			"io.github.cr4ftex.caramel.gametest.ButtonsRecipeGameTest",
 			"io.github.cr4ftex.caramel.gametest.CraftedFuelGameTest",
 			"io.github.cr4ftex.caramel.gametest.VanillaOverridesGameTest",
 			"io.github.cr4ftex.caramel.gametest.UnlockAdvancementsGameTest"

@@ -20,4 +20,4 @@ GitHub Free gives a personal account 2,000 Actions minutes a month and 500 MB of
 
 ## Commit identity
 
-The owner's clone sets the owner's GitHub noreply address in its local git config (`git config --local user.email`). `--local` writes to the clone's own `.git/config`, which `git clone` does not copy (git docs, `git-config`, "FILES"). A collaborator's commits carry the identity set in the collaborator's own git config.
+The owner's clone sets the owner's GitHub noreply address in its local git config (`git config --local user.email`). `--local` writes to the clone's own `.git/config` (git docs, `git-config`, `--local`), which `git clone` does not copy: in a clone of the owner's clone, `git config --local user.email` prints nothing and exits 1. A collaborator's commits carry the identity set in the collaborator's own git config.

@@ -32,18 +32,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.level.block.StairBlock;
 
-// C-001, C-003, C-004 and C-006 craft stairs, pressure plates, carpets, fences, doors and trapdoors from fewer blocks, so
-// those that burned burn for what they cost now. Which items burned comes from the item components vanilla builds,
+// C-001, C-003, C-004, C-006 and C-007 craft stairs, pressure plates, carpets, fences, doors, trapdoors and buttons from
+// fewer blocks, so those that burned burn for what they cost now. Which items burned comes from the item components vanilla builds,
 // before Caramel changes them, and which items the ideas craft from the vanilla data pack, through each idea's test
 // class.
 public class CraftedFuelGameTest {
-	private static final String IDEAS = "C-001, C-003, C-004 and C-006";
+	private static final String IDEAS = "C-001, C-003, C-004, C-006 and C-007";
 
-	// Of every item, only the vanilla stairs, pressure plates, wool carpets, fences, doors and trapdoors that burned have a
-	// new fuel: not
-	// the blocks they are made from, which the burn time checks measure them against, and not other mods' items, whose
-	// recipes the ideas leave alone. Caramel's data pack replaces none of vanilla's burn times, cooking speeds or the
-	// predicates they use either. C-005's fence gates already burned what they cost, a plank each, so they keep vanilla's.
+	// Of every item, only the vanilla stairs, pressure plates, wool carpets, fences, doors, trapdoors and buttons that
+	// burned have a new fuel: not the blocks they are made from, which the burn time checks measure them against, and not
+	// other mods' items, whose recipes the ideas leave alone. Caramel's data pack replaces none of vanilla's burn times,
+	// cooking speeds or the predicates they use either. C-005's fence gates already burned what they cost, a plank each,
+	// so they keep vanilla's.
 	@GameTest
 	public void onlyVanillaItemsCraftedCheaperThatBurnedHaveNewFuel(GameTestHelper helper) {
 		Map<Item, DataComponentMap> vanilla = vanillaComponents(helper);
@@ -54,11 +54,13 @@ public class CraftedFuelGameTest {
 		List<Item> woolCarpets = scope.woolCarpets().stream().map(Replaced::result).filter(burned).toList();
 		List<Item> fences = MorePerCraft.vanillaRecipes(helper, FencesRecipeGameTest.SCOPE).stream().map(MorePerCraft.Replaced::item).filter(burned).toList();
 		List<Item> doorsAndTrapdoors = MorePerCraft.vanillaRecipes(helper, DoorsAndTrapdoorsGameTest.WOODEN).stream().map(MorePerCraft.Replaced::item).filter(burned).toList();
+		List<Item> buttons = MorePerCraft.vanillaRecipes(helper, ButtonsRecipeGameTest.SCOPE).stream().map(MorePerCraft.Replaced::item).filter(burned).toList();
 		Set<Item> expected = new HashSet<>(stairs);
 		expected.addAll(pressurePlates);
 		expected.addAll(woolCarpets);
 		expected.addAll(fences);
 		expected.addAll(doorsAndTrapdoors);
+		expected.addAll(buttons);
 		// Without other mods' stairs that burn, nothing here would tell vanilla's items from any others.
 		Item otherModStairs = BuiltInRegistries.ITEM.getValue(OtherModStairs.ITEM);
 		if (!(otherModStairs instanceof BlockItem blockItem && blockItem.getBlock() instanceof StairBlock) || !burned.test(otherModStairs)) {
@@ -83,8 +85,8 @@ public class CraftedFuelGameTest {
 			checked++;
 			packFiles(helper, Caramel.MOD_ID, registry).keySet().forEach(id -> failures.add("Caramel's data pack replaces " + registry.identifier().getPath() + " " + id));
 		}
-		Caramel.LOGGER.info("{} game test: {} items have a new fuel: {} stairs, {} pressure plates, {} wool carpets, {} fences, {} doors and trapdoors",
-				IDEAS, expected.size(), stairs.size(), pressurePlates.size(), woolCarpets.size(), fences.size(), doorsAndTrapdoors.size());
+		Caramel.LOGGER.info("{} game test: {} items have a new fuel: {} stairs, {} pressure plates, {} wool carpets, {} fences, {} doors and trapdoors, {} buttons",
+				IDEAS, expected.size(), stairs.size(), pressurePlates.size(), woolCarpets.size(), fences.size(), doorsAndTrapdoors.size(), buttons.size());
 		report(helper, IDEAS, "item fuel checks", checked, failures);
 	}
 }

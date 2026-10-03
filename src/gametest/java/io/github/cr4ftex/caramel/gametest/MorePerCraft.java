@@ -54,11 +54,12 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.block.Block;
 
-// The checks shared by the ideas that keep a vanilla recipe and make it give more: C-004's fences, C-005's fence gates
-// and C-006's wooden doors and trapdoors. Which vanilla recipes are in scope, what each is crafted from and how many it
+// The checks shared by the ideas that keep a vanilla recipe and make it give more: C-004's fences, C-005's fence gates,
+// C-006's wooden doors and trapdoors and C-007's buttons. Which vanilla recipes are in scope, what each is crafted from and how many it
 // gave, are read from the vanilla data pack's own recipe files, never from Caramel's, so a wrong generated recipe cannot
 // also make its own expectation. Whether an item burned comes from the item components vanilla builds, before Caramel
 // changes them.
@@ -72,10 +73,10 @@ final class MorePerCraft {
 	record Scope(String idea, String what, String plural, List<TagKey<Block>> blocks, int vanillaRecipes, IntUnaryOperator count) {
 	}
 
-	// A vanilla recipe in a scope, its file in the vanilla data pack, and its grid, filled with the first item each of its
-	// ingredients accepts, row by row.
+	// A vanilla recipe in a scope, its file in the vanilla data pack, and its grid, width by height, filled with the first
+	// item each of its ingredients accepts, row by row. A shapeless recipe's ingredients lie in one row.
 	// Vanilla's recipe gives vanillaResult for that grid, and the idea's gives count.
-	record Replaced(Identifier id, JsonObject file, ShapedRecipe recipe, List<ItemStack> cells, ItemStack vanillaResult, int count) {
+	record Replaced(Identifier id, JsonObject file, int width, int height, List<ItemStack> cells, ItemStack vanillaResult, int count) {
 		Item item() {
 			return vanillaResult.getItem();
 		}
@@ -98,7 +99,7 @@ final class MorePerCraft {
 		List<String> failures = new ArrayList<>();
 		int checked = 0;
 		for (Replaced replaced : vanillaRecipes(helper, scope)) {
-			List<Grid> grids = placements(replaced.recipe().getWidth(), replaced.recipe().getHeight(), replaced.cells());
+			List<Grid> grids = placements(replaced.width(), replaced.height(), replaced.cells());
 			if (grids.isEmpty()) {
 				failures.add(replaced.id() + "'s vanilla grid fits no crafting grid");
 			}
@@ -268,7 +269,7 @@ final class MorePerCraft {
 	}
 
 	// Every vanilla crafting recipe whose result is a block in one of the scope's tags, sorted by id, found by decoding the
-	// vanilla data pack. Each must be shaped.
+	// vanilla data pack. Each must be shaped, or shapeless with 1 to 3 ingredients, which fit in one row.
 	static List<Replaced> vanillaRecipes(GameTestHelper helper, Scope scope) {
 		ContextMap display = SlotDisplayContext.fromLevel(helper.getLevel());
 		RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, helper.getLevel().getServer().registryAccess());
@@ -278,12 +279,22 @@ final class MorePerCraft {
 					|| recipe.display().stream().noneMatch(shown -> inScope(scope, shown.result().resolveForFirstStack(display)))) {
 				return;
 			}
-			if (!(recipe instanceof ShapedRecipe shaped)) {
-				throw helper.assertionException(Component.literal(id + " in the vanilla data pack makes a " + scope.what() + " and is not a shaped recipe"));
+			List<ItemStack> cells;
+			int width;
+			if (recipe instanceof ShapedRecipe shaped) {
+				cells = filled(shaped);
+				width = shaped.getWidth();
+			} else if (recipe instanceof ShapelessRecipe shapeless && !shapeless.placementInfo().ingredients().isEmpty()
+					&& shapeless.placementInfo().ingredients().size() <= 3) {
+				cells = shapeless.placementInfo().ingredients().stream().map(ingredient -> new ItemStack(accepted(ingredient).getFirst())).toList();
+				width = cells.size();
+			} else {
+				throw helper.assertionException(Component.literal(id + " in the vanilla data pack makes a " + scope.what()
+						+ " and is neither a shaped recipe nor a shapeless one with 1 to 3 ingredients"));
 			}
-			List<ItemStack> cells = filled(shaped);
-			ItemStack vanillaResult = shaped.assemble(CraftingInput.of(shaped.getWidth(), shaped.getHeight(), cells));
-			found.add(new Replaced(id, file, shaped, cells, vanillaResult, scope.count().applyAsInt(vanillaResult.getCount())));
+			int height = cells.size() / width;
+			ItemStack vanillaResult = recipe.assemble(CraftingInput.of(width, height, cells));
+			found.add(new Replaced(id, file, width, height, cells, vanillaResult, scope.count().applyAsInt(vanillaResult.getCount())));
 		});
 		return found;
 	}

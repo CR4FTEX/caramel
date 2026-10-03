@@ -30,10 +30,10 @@ import net.minecraft.world.item.crafting.StonecutterRecipe;
 // id and silently replaces that recipe. In the minecraft namespace, Caramel's pack may only hold the recipes the ideas
 // replace or remove and their unlock advancements, each worked out from the vanilla data pack: C-001's stairs recipes
 // and the stonecutter recipes that make stairs, C-002's slab recipes and the recipes 2 stacked slabs take over, and
-// C-003's pressure plate and carpet recipes, C-004's and C-005's fence and fence gate recipes, and C-006's door and
-// trapdoor recipes. Of vanilla's villager trades, it may only hold the shepherds' carpet trades.
+// C-003's pressure plate and carpet recipes, C-004's and C-005's fence and fence gate recipes, C-006's door and
+// trapdoor recipes, and C-007's button recipes. Of vanilla's villager trades, it may only hold the shepherds' carpet trades.
 public class VanillaOverridesGameTest {
-	private static final String IDEAS = "C-001 through C-006";
+	private static final String IDEAS = "C-001 through C-007";
 
 	@GameTest
 	public void onlyExpectedVanillaRecipesAreReplacedOrRemoved(GameTestHelper helper) {
@@ -68,8 +68,9 @@ public class VanillaOverridesGameTest {
 		Caramel.LOGGER.info("C-003 game test: {} recipes replaced: {} pressure plates, {} wool carpets, {} moss carpets",
 				scope.all().size(), scope.pressurePlates().size(), scope.woolCarpets().size(), scope.mossCarpets().size());
 
-		// C-004, C-005 and C-006: every fence, fence gate, wooden door and wooden trapdoor recipe is replaced.
-		for (MorePerCraft.Scope more : List.of(FencesRecipeGameTest.SCOPE, FenceGatesRecipeGameTest.SCOPE, DoorsAndTrapdoorsGameTest.WOODEN)) {
+		// C-004, C-005, C-006 and C-007: every fence, fence gate, wooden door, wooden trapdoor and button recipe is replaced.
+		for (MorePerCraft.Scope more : List.of(FencesRecipeGameTest.SCOPE, FenceGatesRecipeGameTest.SCOPE, DoorsAndTrapdoorsGameTest.WOODEN,
+				ButtonsRecipeGameTest.SCOPE)) {
 			List<MorePerCraft.Replaced> replaced = MorePerCraft.vanillaRecipes(helper, more);
 			replaced.forEach(recipe -> recipes.add(recipe.id()));
 			failures.addAll(MorePerCraft.scopeFailures(more, replaced));
