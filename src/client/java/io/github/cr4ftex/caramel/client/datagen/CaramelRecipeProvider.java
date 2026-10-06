@@ -39,6 +39,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.WeatheringCopperCollection;
 
 public class CaramelRecipeProvider extends FabricRecipeProvider {
@@ -63,6 +64,10 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 	private static final int TRAPDOOR_FAMILIES = 13;
 	// C-007's: the families with a button, the 13 wooden ones, stone and polished blackstone.
 	private static final int BUTTON_FAMILIES = 15;
+	// C-008's: the families with a wall, and the stonecutter recipes that cut a wall, 32 from the wall's own block and 25
+	// from another.
+	private static final int WALL_FAMILIES = 32;
+	private static final int STONECUTTER_WALL_RECIPES = 57;
 
 	public CaramelRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
@@ -97,6 +102,7 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 			// advancement: an advancement naming a missing recipe makes every world fail to load with "Unbound values in registry".
 			private RecipeOutput removed;
 			private int removedStonecutterStairs;
+			private int stonecutterWalls;
 
 			@Override
 			public void buildRecipes() {
@@ -108,9 +114,11 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				fenceGates();
 				doorsAndTrapdoors();
 				buttons();
+				walls();
+				stonecutter();
 			}
 
-			// C-001: 3 blocks in an L make 4 stairs, 4 stairs make 3 blocks, and the stonecutter makes no stairs.
+			// C-001: 3 blocks in an L make 4 stairs and 4 stairs make 3 blocks. stonecutter() removes the stonecutter's stairs.
 			private void replaceStairs() {
 				List<BlockFamily> families = BlockFamilies.getAllFamilies()
 						.filter(family -> family.getVariants().containsKey(BlockFamily.Variant.STAIRS))
@@ -120,15 +128,6 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 					throw new IllegalStateException("Expected " + STAIRS_FAMILIES + " block families with stairs, found " + families.size());
 				}
 				families.forEach(this::stairs);
-
-				BlockFamilies.getAllFamilies()
-						.filter(BlockFamily::shouldGenerateStonecutterRecipe)
-						.forEach(family -> family.getVariants().keySet().forEach(variant -> generateStonecutterRecipe(family, variant, family.getBaseBlock())));
-				WeatheringCopperCollection.zipApply(Blocks.CUT_COPPER_STAIRS, Blocks.COPPER_BLOCK,
-						(stairs, copper) -> stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, stairs, copper, 4));
-				if (removedStonecutterStairs != STONECUTTER_STAIRS_RECIPES) {
-					throw new IllegalStateException("Expected " + STONECUTTER_STAIRS_RECIPES + " stonecutter recipes that make stairs, found " + removedStonecutterStairs);
-				}
 			}
 
 			// C-002: 2 blocks in a row make 4 slabs and 2 stacked slabs make 1 block. The vanilla recipes 2 stacked slabs
@@ -280,6 +279,36 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				});
 			}
 
+			// C-008: every wall recipe gives 12 instead of 6. The recipe is vanilla's otherwise, built as vanilla's wallBuilder
+			// builds it, and replaces it at its id. stonecutter() makes the stonecutter's walls give 2 per block.
+			private void walls() {
+				eachFamilyWith(List.of(BlockFamily.Variant.WALL), WALL_FAMILIES, "walls", (family, variant) -> {
+					Block wall = family.get(variant);
+					Block base = family.getBaseBlock();
+					inFamilyGroup(shaped(RecipeCategory.DECORATIONS, wall, 12)
+							.define('#', base)
+							.pattern("###")
+							.pattern("###"), family, variant)
+							.unlockedBy(getCraftingCriterionName(family, variant, base), has(base))
+							.save(output, vanillaKey(wall));
+				});
+			}
+
+			// Vanilla's stonecutter walk, which reaches the recipes that cut a variant from another family's block too, such
+			// as stone into a stone brick wall. stonecutterResultFromBase below writes only the stairs (C-001) and walls
+			// (C-008), and datagen stops unless both counts are the ones in docs/DESIGN.md.
+			private void stonecutter() {
+				BlockFamilies.getAllFamilies()
+						.filter(BlockFamily::shouldGenerateStonecutterRecipe)
+						.forEach(family -> family.getVariants().keySet().forEach(variant -> generateStonecutterRecipe(family, variant, family.getBaseBlock())));
+				WeatheringCopperCollection.zipApply(Blocks.CUT_COPPER_STAIRS, Blocks.COPPER_BLOCK,
+						(stairs, copper) -> stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, stairs, copper, 4));
+				if (removedStonecutterStairs != STONECUTTER_STAIRS_RECIPES || stonecutterWalls != STONECUTTER_WALL_RECIPES) {
+					throw new IllegalStateException("Expected " + STONECUTTER_STAIRS_RECIPES + " stonecutter recipes that make stairs and " + STONECUTTER_WALL_RECIPES
+							+ " that make walls, found " + removedStonecutterStairs + " and " + stonecutterWalls);
+				}
+			}
+
 			private ShapedRecipeBuilder door(ItemLike door, ItemLike material, @Nullable BlockFamily family, BlockFamily.Variant variant) {
 				return inFamilyGroup(shaped(RecipeCategory.REDSTONE, door, 16)
 						.define('#', material)
@@ -394,14 +423,21 @@ public class CaramelRecipeProvider extends FabricRecipeProvider {
 				return builder.unlockedBy(family == null ? getHasName(base) : getCraftingCriterionName(family, variant, base), has(base));
 			}
 
-			// Vanilla's stonecutter walk calls this for every variant; only stairs are written, at their vanilla ids.
+			// Vanilla's stonecutter walk calls this for every variant; only stairs and walls are written, at their vanilla ids.
+			// C-001 removes the stairs; C-008's walls give twice vanilla's count, 2 per block.
 			@Override
 			public void stonecutterResultFromBase(RecipeCategory category, ItemLike result, ItemLike base, int count) {
+				ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.withDefaultNamespace(getConversionRecipeName(result, base) + "_stonecutting"));
 				if (result.asItem() instanceof BlockItem item && item.getBlock() instanceof StairBlock) {
 					SingleItemRecipeBuilder.stonecutting(Ingredient.of(base), category, result, count)
 							.unlockedBy(getHasName(base), has(base))
-							.save(removed, ResourceKey.create(Registries.RECIPE, Identifier.withDefaultNamespace(getConversionRecipeName(result, base) + "_stonecutting")));
+							.save(removed, key);
 					removedStonecutterStairs++;
+				} else if (result.asItem() instanceof BlockItem item && item.getBlock() instanceof WallBlock) {
+					SingleItemRecipeBuilder.stonecutting(Ingredient.of(base), category, result, 2 * count)
+							.unlockedBy(getHasName(base), has(base))
+							.save(output, key);
+					stonecutterWalls++;
 				}
 			}
 		};

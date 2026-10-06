@@ -52,6 +52,7 @@ No ideas yet.
 - C-005: More fence gates per craft
 - C-006: More doors and trapdoors per craft, iron and copper from blocks
 - C-007: More buttons per craft
+- C-008: More walls per craft
 
 ### Recipes
 
@@ -62,6 +63,7 @@ No ideas yet.
 - C-005: More fence gates per craft
 - C-006: More doors and trapdoors per craft, iron and copper from blocks
 - C-007: More buttons per craft
+- C-008: More walls per craft
 
 ### Blocks and Items
 
@@ -164,7 +166,7 @@ As pictured: 3 oak planks in a 2x2 L (top left, bottom left, bottom right) make 
 - Scope, checked in the Minecraft 26.3 game data: 97 stairs have a shaped crafting recipe, all 6 blocks to 4 stairs in the 3x3 staircase pattern, and they are exactly the 97 stairs in the `#minecraft:stairs` tag. 26.3 has wool stairs in all 16 colours, so Lime Wool is one of the families.
 - Four base-game stairs recipes accept more than one block: quartz stairs (quartz block, chiseled quartz block, quartz pillar), purpur stairs (purpur block, purpur pillar), sandstone and red sandstone stairs (plain, chiseled, cut). The new recipes keep those alternatives, since the pitch changes only the amount and the shape. Recycling gives the family's base block: quartz block, purpur block, sandstone, red sandstone.
 - No clash with existing recipes: nothing in the base game uses 3 of one item in a 2x2 L, or 4 stairs in a 2x2 square.
-- No duplication: crafting and recycling trade 3 blocks for 4 stairs both ways. The stonecutter's best case is 4 cut copper stairs from one copper block. Those recycle into 3 cut copper, fewer than the 4 cut copper the same block gives directly.
+- No duplication: crafting and recycling trade 3 blocks for 4 stairs both ways. With the stonecutter's stairs removed (below), the best case is a copper block cut into 4 cut copper on the stonecutter, crafted into 16/3 cut copper stairs, which recycle into exactly those 4 cut copper. A balance audit of C-001 to C-008 found no route that multiplies blocks.
 - Stonecutter (asked, owner's answer): crafting now gives 4 stairs for 3 blocks, which makes the stonecutter's 1 block to 1 stairs the worse way. The owner chose to remove every stonecutter recipe that makes stairs, 103 in the base game, the copper ones included. Crafting becomes the only way to make stairs.
 - Removing a stonecutter recipe also removes its unlock advancement: a removed recipe whose advancement stays makes every world fail to load (`caramel-vault/recipes.md`, "Traps").
 - Recipe ids. The first L (empty cell on top, and its mirror) keeps the base-game id, `minecraft:<stairs>`, so it replaces the old recipe. The second L (empty cell at the bottom, and its mirror) is `caramel:<stairs>_flipped`. Recycling is `caramel:<base>_from_<stairs>`. Shaped recipes already match their mirror image, so these two recipes cover all 4 rotations.
@@ -298,7 +300,7 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 - No clash: plank, stick, plank in 2 rows is still the only recipe with that shape. The fence gate puts the sticks on the outside.
 - Burn time, read from the game code: the 11 wooden fences that burn (crimson and warped do not) burn 300 ticks, as long as a plank (`minecraft:cooking/time_wood_blocks`). The nether brick fence does not burn.
 - Nether brick fence (asked, owner's answer): it gives 24, four times the base game's 6, the same increase the wooden fences get.
-- Furnace fuel (asked, owner's answer): at 12 per craft, one craft would burn 3,600 ticks from 5 planks' worth of wood (4 planks and 2 sticks; 2 planks make 4 sticks, so 2 sticks cost a plank), 1,500 ticks. The owner chose to match the cost, as for stairs and pressure plates: a wooden fence burns 125 ticks, 5/12 of a plank, so crafting never adds fuel. Blast furnaces and smokers halve it (62). The question put the cost at 4½ planks and 112 ticks, a miscount of the sticks, which the fuel game test caught.
+- Furnace fuel (asked, owner's answer): at 12 per craft, one craft would burn 3,600 ticks from 5 planks' worth of wood (4 planks and 2 sticks; 2 planks make 4 sticks, so 2 sticks cost a plank), 1,500 ticks. The owner chose to match the cost, as for stairs and pressure plates: a wooden fence burns 125 ticks, 5/12 of a plank, so crafting never adds fuel when sticks are counted at their cost in planks. Sticks from bamboo, leaves or elsewhere gain a little, as C-005 records: 12 fences burn 1,500 ticks against 1,400 for 4 planks and 2 sticks burned as they are. Blast furnaces and smokers halve it (62). The question put the cost at 4½ planks and 112 ticks, a miscount of the sticks, which the fuel game test caught.
 - Playtest (owner): all 8 in-game checks worked as intended: 12 oak fences in both rows of the grid, other woods including bamboo and crimson, 24 nether brick fences, mixed planks refused, the fence gate unchanged, the recipe book, 1 fence no longer smelting an item in a furnace or blast furnace where 2 do, and the fences that do not burn.
 
 **Implementation notes**
@@ -406,3 +408,33 @@ As pictured: 6 oak planks in 2 columns make 16 oak doors, 6 oak planks in 2 rows
 - Nine deliberate breaks each failed the build or datagen, then were undone: the oak button back to 1, the stone button in the wooden group, the birch button unlocking on sticks, the button burn time at 16, the polished blackstone button's files deleted, the spruce button made a shaped recipe, a second recipe matching 1 jungle plank, the button fuel mapping removed, and the button family count at 14 ("Expected 14 block families with buttons, found 15").
 - Review: four reviewers (datagen and fuel, tests, knock-ons, docs) and a skeptic per finding; the 2 findings that held were documentation, fixed here and in `caramel-vault/fuel.md`: the bowl also burns on the buttons' fuel key, and a log's burn time was misstated.
 - Generated files: 1471 in `src/main/generated/data`, 31 new with C-007 and none changed.
+
+### C-008: More walls per craft
+
+- **Status:** Done
+- **Area:** Recipes; Crafting and Smithing
+- **Spin-off source:** None
+
+**Pitch**
+
+- Every crafted wall, of every block family that has one (for example Sulfur, Andesite, Tuff, Diorite), gives 12 walls instead of 6.
+- As pictured: the recipe keeps its shape, 2 rows of 3 cobblestone, and makes 12 cobblestone walls.
+
+**Design notes and decisions**
+
+- Scope, checked in the Minecraft 26.3 game data: 32 crafting recipes make a wall, each 6 of its block in 2 rows of 3 for 6 walls, with no recipe book group: andesite, blackstone, brick, cinnabar, cinnabar brick, cobbled deepslate, cobblestone, deepslate brick, deepslate tile, diorite, end stone brick, granite, mossy cobblestone, mossy stone brick, mud brick, nether brick, polished blackstone, polished blackstone brick, polished cinnabar, polished deepslate, polished sulfur, polished tuff, prismarine, red nether brick, red sandstone, resin brick, sandstone, stone brick, sulfur, sulfur brick, tuff and tuff brick. They are exactly the 32 walls in `#minecraft:walls`.
+- No clash: 6 of a wall's block in 2 rows of 3 matches no other recipe, in the base game or in Caramel's pack.
+- Besides the stonecutter's (below), no other recipe, furnace, villager trade or chest loot makes, uses or sells walls. Walls do not burn.
+- Stonecutter (asked, owner's answer): 57 stonecutter recipes make walls, 1 block for 1 wall. 32 cut a wall from its own block, and 25 from another block, such as stone into a stone brick wall or deepslate into a deepslate tile wall. At 12 walls for 6 blocks, crafting gives 2 per block. The owner chose to make every stonecutter wall recipe give 2, the ones from other blocks included, so the stonecutter matches crafting, as it already does for slabs.
+- Playtest (owner): all 9 in-game checks worked as intended: 12 cobblestone walls in either pair of rows, sulfur, andesite, tuff, diorite and stone brick walls, mixed blocks refused, the recipe book, the stonecutter's 2 cobblestone walls, 2 stone brick walls from stone, 2 deepslate tile walls from deepslate and 2 tuff brick walls from tuff, its other options unchanged, and walls still not taken as fuel.
+
+**Implementation notes**
+
+- No mixin was needed. No placeholder textures.
+- Recipes: `CaramelRecipeProvider.walls()` (datagen) writes the 32 wall recipes at their base-game ids, each built as the base game's `wallBuilder` builds it with a count of 12, keeping the base-game category and unlock advancement, byte for byte. The walk covers the families' wall variant; datagen stops if the number found (32) changes.
+- Stonecutter: `CaramelRecipeProvider.stonecutter()` runs the base game's stonecutter walk, which C-001 already used to remove the stairs, and its `stonecutterResultFromBase` override now also writes every wall recipe at its base-game id with a count of 2, the cross-block ones included. Datagen stops unless it finds 103 stonecutter recipes that make stairs (95 from the walk, and the 8 cut copper stairs cut from a Block of Copper from a separate copper call) and 57 that make walls, all from the walk.
+- Game tests: `WallsRecipeGameTest` has 7 checks, with expected values read from the base game's data pack and item components: all 32 crafting and 57 stonecutter recipes found (25 of them from another block); the base-game grid at both places it fits in the 3x3 grid gives 12 with no other recipe matching (64 grids); each loaded crafting recipe equals the base game's file but for the count; each loaded stonecutter recipe equals the base game's file with a count of 2; the stonecutter, read as its menu lists its options, offers exactly one option of 2 for each wall each block cuts into; the 89 unlock advancements; and walls still not burning. `VanillaOverridesGameTest` covers the 89 recipes. `./gradlew build` runs 68 Caramel game tests.
+- Nine deliberate breaks each failed the build or datagen, then were undone. Seven shared one build, each on a different wall, and each check's failure count matched the one worked out beforehand: the andesite wall back to 6, the brick wall given a recipe group, the cobblestone wall unlocking on stone, stone into stone brick walls back to 1 on the stonecutter, the diorite wall's stonecutter files deleted, a second stonecutter recipe for granite walls, and a second recipe matching 6 tuff. Two were datagen's counts: walls at 31 ("Expected 31 block families with walls, found 32") and stonecutter walls at 56.
+- Review: four reviewers (datagen, tests, knock-ons, docs) and a skeptic per finding; the 8 findings that held were documentation and one test comment, fixed here and in `caramel-vault/recipes.md`.
+- Balance audit (asked by the owner): four auditors and a skeptic per issue checked C-001 to C-008 for any work block giving far more than another, and for loops in items, fuel, compost and emeralds. None multiplies anything. The crafting table and stonecutter give the same per block for stairs' sources, slabs and walls; the one gap is the base game's copper (4 cut copper per block on the stonecutter, 1 by crafting). The only gain left is the one C-005 records, sticks not made from planks in fences and fence gates.
+- Generated files: 1649 in `src/main/generated/data`, 178 new with C-008 (89 recipes, 89 advancements) and none changed.

@@ -59,7 +59,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.block.Block;
 
 // The checks shared by the ideas that keep a vanilla recipe and make it give more: C-004's fences, C-005's fence gates,
-// C-006's wooden doors and trapdoors and C-007's buttons. Which vanilla recipes are in scope, what each is crafted from and how many it
+// C-006's wooden doors and trapdoors, C-007's buttons and C-008's walls. Which vanilla recipes are in scope, what each is crafted from and how many it
 // gave, are read from the vanilla data pack's own recipe files, never from Caramel's, so a wrong generated recipe cannot
 // also make its own expectation. Whether an item burned comes from the item components vanilla builds, before Caramel
 // changes them.

@@ -31,9 +31,9 @@ import net.minecraft.world.item.crafting.StonecutterRecipe;
 // replace or remove and their unlock advancements, each worked out from the vanilla data pack: C-001's stairs recipes
 // and the stonecutter recipes that make stairs, C-002's slab recipes and the recipes 2 stacked slabs take over, and
 // C-003's pressure plate and carpet recipes, C-004's and C-005's fence and fence gate recipes, C-006's door and
-// trapdoor recipes, and C-007's button recipes. Of vanilla's villager trades, it may only hold the shepherds' carpet trades.
+// trapdoor recipes, C-007's button recipes, and C-008's wall recipes and the stonecutter recipes that cut walls. Of vanilla's villager trades, it may only hold the shepherds' carpet trades.
 public class VanillaOverridesGameTest {
-	private static final String IDEAS = "C-001 through C-007";
+	private static final String IDEAS = "C-001 through C-008";
 
 	@GameTest
 	public void onlyExpectedVanillaRecipesAreReplacedOrRemoved(GameTestHelper helper) {
@@ -68,9 +68,9 @@ public class VanillaOverridesGameTest {
 		Caramel.LOGGER.info("C-003 game test: {} recipes replaced: {} pressure plates, {} wool carpets, {} moss carpets",
 				scope.all().size(), scope.pressurePlates().size(), scope.woolCarpets().size(), scope.mossCarpets().size());
 
-		// C-004, C-005, C-006 and C-007: every fence, fence gate, wooden door, wooden trapdoor and button recipe is replaced.
+		// C-004 through C-008: every fence, fence gate, wooden door, wooden trapdoor, button and wall recipe is replaced.
 		for (MorePerCraft.Scope more : List.of(FencesRecipeGameTest.SCOPE, FenceGatesRecipeGameTest.SCOPE, DoorsAndTrapdoorsGameTest.WOODEN,
-				ButtonsRecipeGameTest.SCOPE)) {
+				ButtonsRecipeGameTest.SCOPE, WallsRecipeGameTest.SCOPE)) {
 			List<MorePerCraft.Replaced> replaced = MorePerCraft.vanillaRecipes(helper, more);
 			replaced.forEach(recipe -> recipes.add(recipe.id()));
 			failures.addAll(MorePerCraft.scopeFailures(more, replaced));
@@ -81,6 +81,11 @@ public class VanillaOverridesGameTest {
 		List<DoorsAndTrapdoorsGameTest.FromBlocks> fromIngots = DoorsAndTrapdoorsGameTest.vanillaFromIngots(helper);
 		fromIngots.forEach(recipe -> recipes.add(recipe.id()));
 		failures.addAll(DoorsAndTrapdoorsGameTest.scopeFailures(fromIngots, DoorsAndTrapdoorsGameTest.vanillaWaxing(helper)));
+
+		// C-008 also replaces every stonecutter recipe that cuts a wall.
+		List<WallsRecipeGameTest.Cut> cuts = WallsRecipeGameTest.vanillaStonecutterWalls(helper);
+		cuts.forEach(cut -> recipes.add(cut.id()));
+		failures.addAll(WallsRecipeGameTest.scopeFailures(helper, cuts));
 
 		// Each recipe's unlock advancement is the one vanilla file at recipes/<folder>/<recipe path>.
 		Map<Identifier, List<Identifier>> unlocks = vanillaUnlocks(helper);
