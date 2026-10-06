@@ -25,12 +25,12 @@ import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntPr
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 
-// Items that Caramel's recipes make cheaper burn for what they cost, so crafting never adds furnace fuel. C-001 makes
-// 4 stairs from 3 blocks, so stairs burn 3/4 of their block, as slabs burn 1/2. C-003 makes 16 pressure plates or
-// carpets from 2 slabs, one block, so they burn 1/16 of it, rounded down. C-004 makes 12 fences from 4 planks and 2
-// sticks, 5 planks, so they burn 5/12 of a plank. C-006 makes 16 doors or trapdoors from 6 planks, so they burn 6/16 of
-// a plank, rounded down. C-007 makes 20 buttons from 1 plank, so they burn 1/20 of it. The burn times themselves are
-// data, generated into data/caramel/context_int_provider/cooking/.
+// Items that Caramel's recipes make cheaper burn for what they cost, so crafting adds no furnace fuel when sticks are
+// counted at their cost in planks. C-001 makes 4 stairs from 3 blocks, so stairs burn 3/4 of their block, as slabs burn
+// 1/2. C-003 makes 16 pressure plates or carpets from 2 slabs, one block, so they burn 1/16 of it, rounded down. C-004
+// makes 12 fences from 4 planks and 2 sticks, 5 planks, so they burn 5/12 of a plank. C-006 makes 16 doors or
+// trapdoors from 6 planks, so they burn 6/16 of a plank, rounded down. C-007 makes 20 buttons from 1 plank, so they
+// burn 1/20 of it. The burn times themselves are data, generated into data/caramel/context_int_provider/cooking/.
 public final class CraftedFuel {
 	public static final ResourceKey<ContextIntProvider> COOKING_TIME_WOOD_STAIRS = key("cooking/time_wood_stairs");
 	public static final ResourceKey<ContextIntProvider> COOKING_TIME_WOOL_STAIRS = key("cooking/time_wool_stairs");
