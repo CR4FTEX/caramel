@@ -27,5 +27,5 @@
 - [ ] `./gradlew build` passes.
 - [ ] If recipes, loot tables, tags, models, blockstates or translations changed: I ran `./gradlew runDatagen` and committed the updated files in `src/main/generated/`.
 - [ ] I tested the change in a dev client (`./gradlew runClient`) and listed the steps above.
-- [ ] Any art in this pull request is original (not copied, ripped or traced from another game or mod), and I agree to license it under CC BY-NC-SA 4.0.
+- [ ] Any art in this pull request is original (not copied, ripped or traced from another game or mod, and not made with AI), and I agree to license it under CC BY-NC-SA 4.0.
 - [ ] I agree to license my code in this pull request under the MIT License, except entity model and animation code in `client/model/`, which is covered by CC BY-NC-SA 4.0 like art.

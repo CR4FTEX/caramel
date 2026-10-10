@@ -11,7 +11,7 @@
 
 ## Traps
 
-- **A dropdown option named "None" invalidates the form.** GitHub reserves the word to mean "no choice" and reports "options must not include the reserved word, none" (GitHub docs, "Common validation errors when creating issue forms"). The Idea form's vanilla option is "No spin-off (vanilla change)" for that reason.
+- **A dropdown option named "None" invalidates the form.** GitHub reserves the word to mean "no choice" and reports "options must not include the reserved word, none" (GitHub docs, "Common validation errors when creating issue forms"). The Idea form's vanilla option is "No outside source (vanilla change)" for that reason.
 - **`git pull origin main` stops when both sides have new commits.** Since git 2.33.1, with neither `pull.rebase` nor `pull.ff` configured, git ends with "fatal: Need to specify how to reconcile divergent branches." (`builtin/pull.c` at tag v2.33.1). `git pull --no-rebase --no-edit origin main` merges without opening an editor when the merge has no conflict. After a conflict is fixed, `git commit --no-edit` finishes the merge without an editor (git docs, `git-merge` and `git-commit`, `--no-edit`).
 
 ## Actions quota

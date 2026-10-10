@@ -6,10 +6,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        Caramel has two goals:
+        Caramel builds atop vanilla: it polishes the game, gives neglected features the attention they deserve, and takes parity with Bedrock Edition further, without steering too far from the game's core identity and gameplay loop. It has five goals:
 
-        1. Streamline and improve concepts and features the game already has (the Deep Dark, crafting and smithing, recipes, blocks and items, world generation, and so on) without steering too far from the game's core identity and gameplay loop.
-        2. Bring in content from the Minecraft spin-offs to improve barren areas and neglected established concepts of the original game, giving each dimension a fresh coat of paint and more incentives to explore and risk to be rewarded.
+        1. Optimize your workflow and craft your dreams: better crafting recipes and work blocks, new blocks, items and tools, and consistent block families, so building costs less of the player's resources and time.
+        2. Connect the world to create your stories: connect structures, mobs and lore with each other and with the player's progress, so each one is worth the journey.
+        3. Fill up the blanks and even out the world: give every biome of every dimension the same share of quality and its own substance.
+        4. Creating a living world: bring the world up to the spin-offs' world-building, audio and visual design, and bring in what was left out, from the spin-offs, the options that lost the yearly votes, and the biomes of the concept art.
+        5. Innovation and experimentation: expand what the game has, bring back scrapped content, and add ideas of Caramel's own.
 
         One idea per issue, please. A contributor's idea is only a suggestion until the owner takes it on. Ideas the owner pitches or takes on are logged in [docs/DESIGN.md](https://github.com/CR4FTEX/caramel/blob/main/docs/DESIGN.md).
   - type: dropdown
@@ -22,8 +25,14 @@ body:
         - The Deep Dark
         - Crafting and Smithing
         - Recipes
+        - Work Blocks
         - Blocks and Items
+        - Tools
         - World Generation
+        - Structures
+        - Mobs
+        - Biomes
+        - The Underground
         - Overworld
         - Nether
         - End
@@ -31,16 +40,22 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: spin-off
+    id: source
     attributes:
-      label: Spin-off source
-      description: Is this idea based on something from a spin-off game? Pick "No spin-off (vanilla change)" for a change to vanilla itself.
+      label: Source
+      description: Where does this idea come from? Pick all that apply. Pick "No outside source (vanilla change)" for a change to how existing content works, and "Caramel's own idea" for new content Caramel invents, such as a new block, item, mob or mechanic.
+      multiple: true
       options:
-        - No spin-off (vanilla change)
+        - No outside source (vanilla change)
         - Minecraft Dungeons
         - Minecraft Legends
         - Minecraft Earth
         - Minecraft Story Mode
+        - Bedrock Edition
+        - A yearly vote (an option that lost)
+        - Concept art
+        - Scrapped content
+        - Caramel's own idea
         - Other
     validations:
       required: true
@@ -55,7 +70,7 @@ body:
     id: vanilla-fit
     attributes:
       label: Why it fits vanilla's identity
-      description: How does it avoid steering too far from the game's core identity and gameplay loop? Which existing feature, barren area or neglected concept does it improve? If it adds risk or reward, describe it.
+      description: How does it avoid steering too far from the game's core identity and gameplay loop? Which of Caramel's goals does it serve, and which existing feature, blank area or neglected concept does it improve? If it gives players a reason to seek something out, describe the reward.
     validations:
       required: true
   - type: textarea

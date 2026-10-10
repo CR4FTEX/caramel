@@ -3,7 +3,7 @@
 	"id": "caramel",
 	"version": "${version}",
 	"name": "Caramel",
-	"description": "Streamlines and improves Minecraft's existing features, and brings content from the spin-off games to barren areas and neglected concepts in every dimension.",
+	"description": "Builds atop vanilla Minecraft: better crafting and building, structures and mobs worth seeking out, and content from the spin-offs, the yearly votes and concept art for every biome of every dimension.",
 	"authors": [
 		"CR4FTEX"
 	],
@@ -15,7 +15,6 @@
 		"MIT",
 		"CC-BY-NC-SA-4.0"
 	],
-	"icon": "assets/caramel/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

@@ -2,7 +2,7 @@
 
 The passdown between sessions: where the project stands, what you decided, and what comes next. Part 1 is the current state and is rewritten each session. Part 2 is the record of the first review of the docs and how each finding was handled.
 
-Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built, playtested and committed on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01. The sixth, C-006, was built, playtested and committed on 2026-10-01. The seventh, C-007, was built, playtested and committed on 2026-10-03, together with the third gold pass on `caramel-vault/`. A fourth gold pass was committed the same day. The eighth, C-008, was built and playtested on 2026-10-05, together with a balance audit of C-001 to C-008 you asked for, and is not committed yet.
+Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built, playtested and committed on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01. The sixth, C-006, was built, playtested and committed on 2026-10-01. The seventh, C-007, was built, playtested and committed on 2026-10-03, together with the third gold pass on `caramel-vault/`. A fourth gold pass was committed the same day. The eighth, C-008, was built, playtested and committed on 2026-10-05, together with a balance audit of C-001 to C-008 you asked for; a fifth gold pass was committed the same day. On 2026-10-09 the vision from your presentation replaced the two pillars in the docs, and the placeholder icon was removed. That update is not committed yet.
 
 ---
 
@@ -22,7 +22,10 @@ Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the re
 | Art license | CC BY-NC-SA 4.0 (`LICENSE-ASSETS`) |
 | Entity model code | Counts as art: the entity model and animation code in `client/model/` is CC BY-NC-SA 4.0, set in the `LICENSE-ASSETS` preamble |
 | Editable source art | `art-source/` at the repository root, never under `src/`, so it never ships in the jar |
-| Your pillar wording | Your exact words in every doc: "without steering too far from", "more incentives to explore and risk to be rewarded" |
+| Your vision | Your presentation, "Mod Presentation", quoted word for word in `docs/DESIGN.md`: the tagline, "What is Caramel?", the Mod, Expansion and Infrastructure slides, the five goals and "What you most need to know", with the guiding principles drawn only from them. The other docs summarize it and keep "without steering too far from" |
+| AI art | None, placeholders included: Caramel never generates or ships AI-generated assets. A block or item without art shows the game's missing-texture checkerboard until you or an artist provide it; a mob needs its artist's model first |
+| Bought or commissioned art | Ships only when its license, or the artist's written agreement, lets it ship under CC BY-NC-SA 4.0 like all other art |
+| Player choice and cross-compatibility | Long-term goals. Vanilla first stays the priority; a system to switch features off is built only when you pitch it |
 | AI commits | Only when you ask, and then straight to `main` |
 | Knowledge vault | `caramel-vault/` at the repository root, committed with the code. Not `docs/` |
 | Vault dates | None. A note says how Caramel works; git keeps the when |
@@ -45,7 +48,7 @@ Choices I made that you can change:
 - **Data generation set up.** Recipes, models, loot tables, tags and translations will be generated from Java code instead of written by hand.
 - **Build passes.** `./gradlew build` produces `build/libs/caramel-0.1.0+26.3.jar`, with both license files inside.
 - **The mod loads in Minecraft.** The data generator starts Minecraft 26.3 with Caramel and Fabric API, and Caramel prints its startup message ("Caramel is melting in.").
-- **Placeholder icon:** a 32x32 pixel-art caramel cube with drips. Replace it whenever you like.
+- **Mod icon: none.** The placeholder I drew during setup was removed under your no-AI-art rule, so the mod list shows its default icon. When you or an artist make one, it goes in `src/main/resources/assets/caramel/icon.png`, with an `"icon": "assets/caramel/icon.png"` line back in `fabric.mod.json`.
 - **Docs:** `README.md`, `CONTRIBUTING.md`, `docs/DESIGN.md` (your vision and the idea log), `docs/TEXTURES.md` (art guide), `CLAUDE.md` (rules for AI sessions), `art-source/README.md`, the two license files, and `.github/` (issue forms, pull request checklist, build workflow).
 - **All 28 review fixes applied** (Part 2). A second review of the fixed docs, through four lenses, found 21 more problems, all fixed; a skeptic rejected 9 others. The GitHub, git and Actions behaviour the fixes rely on was checked against official docs.
 - **Knowledge vault built:** `caramel-vault/`, open in Obsidian. Start at `_map.md`, which names one note per topic: build, datagen, recipes, game tests, fuel, trades, mixins, CI, licensing, GitHub. Every trap in it was reproduced in a scratch copy of the project or checked against a primary source.
@@ -68,7 +71,27 @@ Choices I made that you can change:
 - **C-005, more fence gates per craft: Done.** You playtested all 7 checks and they all worked as intended. Every fence gate recipe gives 4 instead of 1. Fence gates keep their burn time, since 4 cost exactly 4 planks. Committed and pushed to `main`, with the gold pass on `caramel-vault/`.
 - **C-006, more doors and trapdoors per craft: Done.** You playtested all 10 checks and they all worked as intended. Every door and trapdoor recipe gives 16. The iron and copper ones take 6 Blocks of Iron or Copper in the wooden shapes (your pitch); only the plain Block of Copper works (your answer). Wooden doors and trapdoors burn 112 ticks, matching their cost (your answer). Waxing stays 1 for 1. Committed and pushed to `main`, with the second gold pass on `caramel-vault/`.
 - **C-007, more buttons per craft: Done.** You playtested all 8 checks and they all worked as intended. Every button recipe, all 15 (13 wooden, stone, polished blackstone), gives 20 instead of 1. Wooden buttons burn 15 ticks, matching their cost (your answer). Committed and pushed to `main`, with the third gold pass on `caramel-vault/`. The entry in `docs/DESIGN.md` has the decisions.
-- **C-008, more walls per craft: Done.** You playtested all 9 checks and they all worked as intended. All 32 wall recipes give 12 instead of 6, and every stonecutter recipe that makes a wall gives 2 per block, the ones cut from another block included (your answer). The balance audit found no work block giving far more than another and nothing that multiplies; its findings are in the C-008 entry in `docs/DESIGN.md`. Not committed.
+- **C-008, more walls per craft: Done.** You playtested all 9 checks and they all worked as intended. All 32 wall recipes give 12 instead of 6, and every stonecutter recipe that makes a wall gives 2 per block, the ones cut from another block included (your answer). The balance audit found no work block giving far more than another and nothing that multiplies; its findings are in the C-008 entry in `docs/DESIGN.md`. Committed and pushed to `main`, followed by the fifth gold pass on `caramel-vault/`.
+
+### Vision update (not committed)
+
+You shared your presentation, "Mod Presentation", and chose all four recommended answers: no AI art at all, bought or commissioned art only under CC BY-NC-SA 4.0, player choice and cross-compatibility as long-term goals, and the slides replacing the two pillars.
+
+- `docs/DESIGN.md`: the Vision quotes the deck (see below for the final version), each quote with a short summary. The guiding principles are drawn again from it. Priorities records the long-term goals. New target areas: Work Blocks, Tools, Structures, Mobs, Biomes and the Underground. "Spin-off sources in scope" is now "Sources in scope" (spin-offs, Bedrock Edition, the yearly votes, concept art, scrapped content, Caramel's own ideas), and each entry's "Spin-off source" field is now "Source".
+- `README.md`, `CLAUDE.md`, the in-game description in `fabric.mod.json`, and the Idea issue form: the goals, the new areas and sources. The form's source question allows several answers.
+- `CLAUDE.md`, `docs/TEXTURES.md`, `CONTRIBUTING.md`, `README.md`: no AI-made art, and the rule for bought or commissioned art. People may still make placeholder art; I may not.
+- The placeholder icon is removed. The build passes with all 69 game tests, and neither jar carries an asset.
+- `caramel-vault/`: the notes that named the icon now use files that still exist, and `github.md` names the new form option. The duplicate-file trap was reproduced again with `caramel.mixins.json`. The vault lints clean.
+
+You then revised the deck three times, and I reviewed each version and gave you a list of fixes. The final version has 14 slides: the Mod, Expansion and Infrastructure definitions, five goals (the new Goal #1 is "Optimize your Workflow & Craft your Dreams"), credits and a disclaimer. The docs are now resynced to it, and every quote in `docs/DESIGN.md` matches the slides word for word. Your answers along the way:
+
+- **Bought art:** the rule stays. Bought art ships only when its license, or the artist's written agreement, lets it ship under CC BY-NC-SA 4.0. marketplace terms often forbid redistribution without the seller's permission and do not allow sublicensing, so slide 13 now reads "Bought from third-party artists who allow us to share it under our art license." Commissioning artists directly, with a written agreement, fits the rule.
+- **Target areas:** "Work Blocks" and "Tools" headings added, with options for them in the idea form. C-001 and C-008 are also listed under Work Blocks, since both change what the stonecutter offers.
+- **Source of an idea:** "Caramel's own idea" means new content Caramel invents (a new block, item, mob or mechanic); a change to how existing content works is "None". C-001 to C-008 stay "None".
+- **Code contributions:** welcome. Slide 13 says "contributors more than welcome to help", so the README and DESIGN.md say Claude writes most of the code and contributors are welcome to write code too.
+- **Resync:** done in one pass once you said the deck was finished. It covered `docs/DESIGN.md` (five goals; the Mod, Expansion and Infrastructure slides; principles drawn again; Bedrock parity under "What Caramel is"; goal cross-references; the version policy from slide 3; the Work Blocks and Tools headings), `README.md`, `CLAUDE.md`, the idea form, the in-game description, the art request form and the pull request art checkbox (both now carry the no-AI rule), and `docs/TEXTURES.md`'s originality line, which now allows bought and commissioned art under the license rule.
+- **GitHub description:** now your tagline, which you chose: "The Minecraft Mod that sticks everything and everyone together, to build atop Vanilla, and form a polished, cross-compatible, feature-complete experience." (`gh repo view`).
+- Before the deck is shared publicly: slide 5's "Get in touch with us" needs a contact route a reader can use, because the repo is private. On slide 8, the fix for "or even provide enough justification to them" went into the left column's "However, …" sentence instead. You restored that sentence's old ending ("…, or offer any lasting Goal that would leave a memorable mark on their journey.", which `docs/DESIGN.md` quotes) and moved the fix to the right column, where it now reads "…or even give enough reason to get them or travel to them." All 28 of the Vision's quotes match the final deck. The Glare sprite on slide 10 no longer overlaps the text.
 
 ### Open suggestions (your call)
 
@@ -92,7 +115,7 @@ None of these is started. Say the word for any of them.
 
 ### Next step
 
-Say when to commit C-008. Then send me the next idea. You have said the next few ideas are small ones about how much a recipe gives, and that dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
+Say when to commit the vision update. Then send me the next idea. You have said the next few ideas are small ones about how much a recipe gives, and that dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
 
 ---
 

@@ -4,28 +4,116 @@ This is the living design document for Caramel. It holds the vision, the princip
 
 ## Vision
 
-Caramel rests on two pillars, set by the owner (CR4FTEX).
+The owner (CR4FTEX) set out Caramel's vision in a presentation, "Mod Presentation", which replaced the two pillars this document first quoted. The owner's words are quoted below, each followed by a short summary. When the presentation changes, this section follows it.
 
-### Pillar 1: Streamline and improve what exists
+> "The Minecraft Mod that sticks everything and everyone together, to build atop Vanilla, and form a polished, cross-compatible, feature-complete experience."
 
-> "Streamline and improve every concepts and already implemented features (The Deep Dark, Crafting and Smithing, Recipes, Blocks and Items, World Generation, etc.), without steering too far to the core identity and gameplay loop of the game."
+In short: Caramel builds atop vanilla and brings the game together into a polished, feature-complete experience. Compatibility with other mods is a long-term goal (see "Priorities").
 
-In short: streamline and improve every existing concept and feature in the game without steering too far from its core identity and gameplay loop.
+### What Caramel is
 
-### Pillar 2: Bring in content from the spin-offs
+> "Caramel is a passion project made by devoted individuals to bring Minecraft to a higher level of polish, give proper attention to certain neglected, already-implemented features, expand parity beyond Mojang's usual simple tweaks from Bedrock and much more!"
+>
+> "We also make sure we don't steer too far from the core identity and gameplay loop of Minecraft."
+>
+> "It's a Mod first. It's an Expansion second. It's an Infrastructure third."
 
-> "Add content from the Minecraft spin-offs in order to improve barren areas and neglected established concepts of the original game, giving each dimension a fresh coat of paint and more incentives to explore and risk to be rewarded."
+In short: Caramel brings the game to a higher level of polish, gives neglected features the attention they deserve, and takes parity with Bedrock Edition further than Mojang's own tweaks, without steering too far from the game's core identity and gameplay loop. It is a mod first, an expansion second and an infrastructure third, each defined below.
 
-In short: use content from the Minecraft spin-off games to improve barren areas and neglected established concepts of the original game, giving each dimension a fresh coat of paint and more incentives to explore and risk to be rewarded.
+#### A mod
+
+> "Caramel is a Mod for the Fabric Mod Loader, and aims to be updated to the highest version of the game possible."
+>
+> "While we don't plan on porting Caramel back to previous versions, we hope we can provide reasons to stay on the latest one."
+
+In short: Caramel follows the newest version of the game it can, and is not ported back to older ones. How it moves to a new version is in `CLAUDE.md`, "Updating Minecraft".
+
+#### An expansion
+
+> "Caramel isn't just one idea: it's a collection of various improvements, additions and even some major gameplay alterations that will allow you and your friends to get the most out of what Minecraft can become."
+>
+> "It improves and expands on everything, including but not limited to the Blocks, the Mobs, the Biomes, the Dimensions, you name it!"
+
+In short: Caramel is many improvements and additions across the whole game, some of them major changes to how it plays.
+
+#### An infrastructure
+
+> "Caramel doesn't want to force you to accept unwanted features, or give you trouble trying to troubleshoot compatibility issues. It wants to establish itself as a base for all other Mods you wish to integrate, even those that contradict Caramel."
+>
+> "Don't like something? Disable it!"
+>
+> "Another important Mod isn't compatible with Caramel? Get in touch with us and we'll sort this out!"
+
+In short: players can switch off what they don't want, and Caramel aims to be a base that other mods work with, even mods that contradict it. "Priorities" says when this gets built.
+
+### Goal 1: Optimize your workflow and craft your dreams
+
+> "Caramel wants to help Players build their dreams. Minecraft is a Sandbox Game, after all."
+>
+> "Not only do we want to polish and alter the existing Crafting Recipes and redefine the various Work Blocks, we also want to expand your palette of creativity by adding new diverse and accessible Blocks, Items and Tools, and optimize your building efforts without sacrificing precious resources or time."
+>
+> "Block Sets, Chiseled Blocks, Cut Blocks, Blocks to Slabs to Blocks, anything you can name will be streamlined or added and give their respective Families of Blocks and each of their Members fresh new purposes. This allows for a consistent and more versatile set of Blocks across the board."
+
+In short: polish and change the crafting recipes, redefine the work blocks, add new blocks, items and tools, and let players build without wasting resources or time. Every block family becomes consistent, and each of its members gets a purpose. C-001 to C-008 serve this goal. The slide's examples, such as chiseled and cut blocks, are not pitches until the owner pitches them.
+
+### Goal 2: Connect the world to create your stories
+
+> "Minecraft is about punching your first Wood, adopting your first Pet, discovering ancient Structures and making your own Goal(s)."
+>
+> "However, the imposing Structures, mysterious Mobs and various lore pieces usually don't benefit the Players' progress, or offer any lasting Goal that would leave a memorable mark on their journey."
+>
+> "Caramel aims to streamline all of these concepts by connecting them with each other in versatile ways, improve them by adding or modifying content to justify their existence, and allow those to naturally help Players carve a path of their choosing."
+
+In short: connect structures, mobs and lore with each other and with the player's progress, add or change content until each one is worth seeking out, and let players carve their own path. The reward should justify "travelling so far away from home".
+
+### Goal 3: Fill up the blanks and even out the world
+
+> "Caramel wants to fill up those missing gaps that are everywhere in all Dimensions: from the rich but sometimes blank Biomes of the Overworld, the repetitive landscapes of the Nether and especially the barren wastelands of the End. We want to give every Biome of every Dimension the same share of quality and their own substance so that they all feel memorable in their own way, without having one feel left out."
+
+In short: every biome of every dimension, the End's above all, gets the same share of quality and its own substance, so that none feels left out. The owner also asks whether some of the Overworld's woods and the Underground's deepest caves feel a bit barren and repetitive.
+
+### Goal 4: Creating a living world
+
+> "No more bland Biomes, no more special treatment for the Spin-offs; let's bridge the gaps of visual quality and fidelity to form a living world!"
+>
+> "Many of the options that lost the yearly votes, and many exclusive features from the Spin-offs, get pushed aside without ever getting a chance to shine in the main game."
+>
+> "From the exclusive Mobs from Earth, the imposing Structures from Dungeons, and even the first ever Mob Vote, Caramel aims to bring those missing elements to fill up those previously mentioned blank areas and create a much more diverse and unique experience for every adventure."
+
+In short: bring the main game's world up to the world-building, audio and visual design of the spin-offs, and to the biomes of each update's concept art, almost all of which were left out of the game. Bring in what else was left out, the spin-offs' exclusives and the options that lost the yearly votes back to the first Mob Vote, to fill the blank areas of Goal 3.
+
+### Goal 5: Innovation and experimentation
+
+> "Caramel wants to bring its own spice, going as far as to expand on already introduced elements and ideas, bringing back scrapped content and re-adapting it, and even adding layers to give Players a much more interesting experience."
+>
+> "You don't like something? Don't fret! Caramel is also all about choices and being the Infrastructure for all of your needs. We want to give you a personalized feature-complete experience that helps raise Minecraft to a higher standard, or to your own."
+
+In short: Caramel adds ideas of its own. It expands what the game already has, brings back scrapped content in a new form, and adds layers. Players choose which parts they want.
+
+### How Caramel is made
+
+> "The Mod's source code is mostly written and coded with AI, specifically with Claude, with contributors more than welcome to help."
+>
+> "Every feature is first designed by people, coded with Claude, then playtested."
+>
+> "We will never generate, nor integrate AI-generated assets in the Mod."
+>
+> "Every custom asset is either: Made by one of our artists. Commissioned from third-party artists. Bought from third-party artists who allow us to share it under our art license."
+
+In short: people design every feature first, Claude writes most of the code, contributors are welcome to write code too, and every feature is playtested. Caramel never generates or ships AI-generated art, placeholders included. "Our art license" is CC BY-NC-SA 4.0 (`LICENSE-ASSETS`); the art rules are under "Sources in scope".
 
 ## Guiding principles
 
 These come only from the owner's words above. Check every idea against them.
 
-- **Keep the core identity and gameplay loop.** Caramel changes Minecraft without steering too far from what the game is and how it is played.
-- **Streamline and improve what exists.** Caramel streamlines and improves every concept and feature the game already has.
-- **Risk should be rewarded.** Caramel gives more incentives to explore, and risk is rewarded.
-- **Every dimension gets attention.** The Overworld, the Nether and the End each get a fresh coat of paint.
+- **Keep the core identity and gameplay loop.** Caramel builds atop vanilla without steering too far from what the game is and how it is played.
+- **Polish what exists.** Neglected features already in the game get proper attention and a higher level of polish, and parity with Bedrock Edition goes further than Mojang's own tweaks.
+- **Help players build their dreams.** Crafting recipes are polished and changed, work blocks are redefined, new blocks, items and tools widen the building palette, every block family is made consistent, and building costs players less of their resources and time.
+- **Make everything worth seeking out.** Structures, mobs and lore connect with each other and with the player's progress, and the reward justifies the journey.
+- **Every biome gets its share.** Every biome of every dimension gets the same share of quality and its own substance. None is left out, the End least of all.
+- **Bring in what was left out.** The spin-offs' exclusives, the options that lost the yearly votes, and the biomes of the concept art.
+- **Bring Caramel's own spice.** Caramel expands existing ideas, brings back scrapped content and adds layers of its own.
+- **Players choose.** Caramel is "all about choices": "Don't like something? Disable it!" This is a long-term goal (see "Priorities").
 
 ## Priorities
 
@@ -35,9 +123,11 @@ Set by the owner while playtesting C-001:
 
 In short: Caramel targets the base game first. Compatibility with other mods comes later.
 
+Decided with the owner when the presentation's vision was recorded here: switching features off and compatibility with other mods (the presentation's "cross-compatible" and its infrastructure slide) are long-term goals, in line with infrastructure coming third. Vanilla first stays the priority, and a system to switch Caramel's features off is built only when the owner pitches it as an idea.
+
 ## Target areas
 
-These are the areas the owner has named as targets. The owner's list ended with "etc.", so more areas will be added as ideas come in. Under each heading, list the IDs of the idea log entries that affect it.
+These are the areas the owner has named as targets. The Deep Dark, Crafting and Smithing, Recipes, Blocks and Items, and World Generation come from the owner's first vision statement, whose list ended with "etc."; Work Blocks, Tools, Structures, Mobs, Biomes and the Underground come from the presentation; the dimensions come from both. More areas will be added as ideas come in. Under each heading, list the IDs of the idea log entries that affect it.
 
 ### The Deep Dark
 
@@ -65,11 +155,36 @@ No ideas yet.
 - C-007: More buttons per craft
 - C-008: More walls per craft
 
+### Work Blocks
+
+- C-001: Cheaper stairs, and stairs back into blocks
+- C-008: More walls per craft
+
 ### Blocks and Items
 
 No ideas yet.
 
+### Tools
+
+No ideas yet.
+
 ### World Generation
+
+No ideas yet.
+
+### Structures
+
+No ideas yet.
+
+### Mobs
+
+No ideas yet.
+
+### Biomes
+
+No ideas yet.
+
+### The Underground
 
 No ideas yet.
 
@@ -87,18 +202,18 @@ No ideas yet.
 
 No ideas yet.
 
-## Spin-off sources in scope
+## Sources in scope
 
-- Minecraft Dungeons
-- Minecraft Legends
-- Minecraft Earth
-- Minecraft Story Mode
+- **The spin-offs:** Minecraft Dungeons, Minecraft Legends, Minecraft Earth and Minecraft Story Mode. The owner may add others.
+- **Bedrock Edition:** parity beyond Mojang's usual simple tweaks ("What Caramel is").
+- **The yearly votes:** the options that lost, back to the first Mob Vote (Goal 4).
+- **Concept art:** notably the biomes in each update's concept art (Goal 4).
+- **Scrapped content:** brought back and re-adapted (Goal 5).
+- **Caramel's own ideas:** new content Caramel invents, such as a new block, item, mob or mechanic, expanding on already introduced elements and ideas (Goal 5). A change to how existing content works has no source: its entry says None (owner's decision, recorded with the presentation's vision).
 
-The owner may add others.
+Per the owner, the spin-offs' exclusives and the options that lost the yearly votes fill the blank areas of every dimension (Goals 3 and 4).
 
-Per the owner, spin-off content is brought in to improve barren areas and neglected established concepts of the original game.
-
-All art must be original. Never copy or rip textures, models or sounds from any of these games, or from any other game or mod. Recreating a concept in new, original art is fine. Caramel is a fan project and is not affiliated with or endorsed by Mojang Studios or Microsoft.
+All art must be original. Never copy or rip textures, models or sounds from any of these sources, or from any other game or mod. Recreating a concept in new, original art is fine. Caramel never generates or ships AI-generated assets, placeholders included. Every custom asset is made by one of Caramel's artists (the owner and contributors), commissioned from third-party artists, or bought from third-party artists. Bought or commissioned art ships only when its license, or the artist's written agreement, lets it ship under CC BY-NC-SA 4.0 like all other Caramel art. A marketplace's standard license is often not enough: many forbid redistributing purchased files without the seller's permission and do not allow sublicensing, so check before buying. These are the owner's decisions, recorded with the presentation's vision. Caramel is a fan project and is not affiliated with or endorsed by Mojang Studios or Microsoft.
 
 ## Idea log
 
@@ -128,7 +243,7 @@ IDs are sequential (C-001, C-002, ...) and never reused. Entries are listed in I
 
 - **Status:** Pitched | Planned | In progress | Done | Dropped
 - **Area:** <one or more areas from "Target areas">
-- **Spin-off source:** <game, or None>
+- **Source:** <one or more from "Sources in scope", or None for a change to how existing content works>
 
 **Pitch**
 
@@ -140,7 +255,7 @@ IDs are sequential (C-001, C-002, ...) and never reused. Entries are listed in I
 
 **Implementation notes**
 
-- <Key classes and files, datagen providers, mixins (and why a mixin was needed), placeholder textures still to be replaced.>
+- <Key classes and files, datagen providers, mixins (and why a mixin was needed), art the idea still needs.>
 ```
 
 ### Entries
@@ -148,8 +263,8 @@ IDs are sequential (C-001, C-002, ...) and never reused. Entries are listed in I
 ### C-001: Cheaper stairs, and stairs back into blocks
 
 - **Status:** Done
-- **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Area:** Recipes; Crafting and Smithing; Work Blocks
+- **Source:** None
 
 **Pitch**
 
@@ -190,7 +305,7 @@ As pictured: 3 oak planks in a 2x2 L (top left, bottom left, bottom right) make 
 
 - **Status:** Done
 - **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Source:** None
 
 **Pitch**
 
@@ -243,7 +358,7 @@ As pictured: 2 oak planks side by side in the bottom row of the 2x2 grid make 4 
 
 - **Status:** Done
 - **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Source:** None
 
 **Pitch**
 
@@ -286,7 +401,7 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 
 - **Status:** Done
 - **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Source:** None
 
 **Pitch**
 
@@ -316,7 +431,7 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 
 - **Status:** Done
 - **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Source:** None
 
 **Pitch**
 
@@ -345,7 +460,7 @@ As pictured: 2 oak slabs side by side in the bottom row of the 2x2 grid make 16 
 
 - **Status:** Done
 - **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Source:** None
 
 **Pitch**
 
@@ -383,7 +498,7 @@ As pictured: 6 oak planks in 2 columns make 16 oak doors, 6 oak planks in 2 rows
 
 - **Status:** Done
 - **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Source:** None
 
 **Pitch**
 
@@ -412,8 +527,8 @@ As pictured: 6 oak planks in 2 columns make 16 oak doors, 6 oak planks in 2 rows
 ### C-008: More walls per craft
 
 - **Status:** Done
-- **Area:** Recipes; Crafting and Smithing
-- **Spin-off source:** None
+- **Area:** Recipes; Crafting and Smithing; Work Blocks
+- **Source:** None
 
 **Pitch**
 

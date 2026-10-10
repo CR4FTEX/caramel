@@ -4,11 +4,13 @@ How to make textures, models, animations and sounds for Caramel. For access, the
 
 ## Originality rule
 
-All art in Caramel must be original work made for this project. This rule is strict.
+All art in Caramel must be original work: made for this project, or bought from or commissioned from an artist under the license rule below. This rule is strict.
 
 - Never copy, rip, trace or edit textures, models or sounds from Minecraft Dungeons, Minecraft Legends, Minecraft Earth, Minecraft Story Mode, or any other game, mod or resource pack.
 - That includes vanilla Minecraft: match its style, but draw your own pixels instead of editing Mojang's files.
 - Recreating a concept from a spin-off in new, original art is fine. You may look at the original to understand the concept, but never reuse its pixels, geometry or audio.
+- No AI-generated art, placeholders included: Caramel never ships AI-generated assets. Never use AI tools to make art for Caramel.
+- Art bought from or commissioned from an artist ships only when its license, or the artist's written agreement, lets it ship under CC BY-NC-SA 4.0 like the rest of Caramel's art. Many stock asset licenses do not allow that, because they forbid redistributing purchased files without the seller's permission and do not allow sublicensing, so check before buying.
 - If you are unsure whether something counts, ask in the issue before you start.
 
 Why: art from other games and mods belongs to the people and studios who made it. Using it would put the project at risk of being taken down, and it would disrespect their work. Copied art is rejected, and removed if it is found later.
@@ -82,12 +84,12 @@ Stack the frames vertically in one PNG. Each frame is square and as wide as the 
 - **Without git, on the GitHub website:** upload your files and open a pull request from your browser.
   1. Open the repository on GitHub and go to `src/main/resources/assets/caramel/`, then into the folder your files belong in (see "Where files go"). If that folder does not exist yet, stop at the deepest folder that does. Upload only textures, models and sounds here; editable source files come in step 8.
   2. Click Add file > Upload files.
-  3. Drag your files onto the page. If some folders do not exist yet, create them on your computer with your files inside, then drag the top new folder onto the page. For example, if you stopped at `assets/caramel/` because there is no `textures` folder yet, make a `textures` folder with a `block` folder inside it, put `example_block.png` in `block`, and drag `textures` onto the page.
+  3. Drag your files onto the page. If some folders do not exist yet, create them on your computer with your files inside, then drag the top new folder onto the page. For example, if you stopped at `src/main/resources/` because there is no `assets` folder yet, make `assets/caramel/textures/block/` on your computer, put `example_block.png` in `block`, and drag `assets` onto the page.
   4. Below the commit message, choose to create a new branch for this commit and start a pull request, and name the branch `art/short-name`. Never commit directly to the `main` branch.
   5. Click Propose changes. On the next page, fill in the pull request template and click Create pull request.
   6. In the pull request, open the Files changed tab and check that each file is in the right folder. If one is not, say so in the pull request.
   7. To change a file after the pull request is open, pick your `art/short-name` branch in the branch menu above the file list, go to the file's folder, upload the new version with the same file name, and choose to commit directly to your `art/short-name` branch. The pull request updates by itself.
   8. Add your editable source files the same way: on your `art/short-name` branch, go to `art-source/`, click Add file > Upload files, and commit directly to your `art/short-name` branch.
 - Include your editable source files (`.bbmodel`, `.aseprite`, layered images), so the art can be adjusted later. They go in `art-source/` (see "Where files go"). On the issue route, put them in your `.zip` with the rest.
-- Placeholder art is welcome, because it lets features be tested before final art exists. Mark it as placeholder in the pull request title or description so it gets replaced later.
-- By submitting art, you license it under CC BY-NC-SA 4.0 (see [LICENSE-ASSETS](../LICENSE-ASSETS)) and confirm that it is your own original work. You keep the copyright.
+- Placeholder art is welcome, because it lets features be tested before final art exists. Like all Caramel art, it must be made by a person, not by AI. Mark it as placeholder in the pull request title or description so it gets replaced later.
+- By submitting art, you license it under CC BY-NC-SA 4.0 (see [LICENSE-ASSETS](../LICENSE-ASSETS)) and confirm that it is your own original work. You keep the copyright. For bought or commissioned art, name the artist and include the license or written agreement that lets it ship under CC BY-NC-SA 4.0 instead; the copyright stays with the artist unless they transferred it.

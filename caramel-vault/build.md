@@ -34,7 +34,7 @@ How `./gradlew build` turns the `main` and `client` source sets into one mod jar
 
 - `build/libs/` holds the mod jar and a `-sources` jar (`withSourcesJar()` in `build.gradle`).
 - The `jar` block copies `LICENSE` and `LICENSE-ASSETS` into the mod jar under new names; [[licensing]] covers what that protects and how it fails silently. Loom excludes datagen's `.cache/**` from the `jar` task.
-- The `-sources` jar carries `fabric.mod.json` and `assets/caramel/icon.png`, and no license file: the license copy and the `.cache/**` exclude apply to the `jar` task only. A local build's `-sources` jar also carries the gitignored `src/main/generated/.cache/`, which a CI checkout does not have (`unzip -l`). Only the mod jar goes in a `mods` folder.
+- The `-sources` jar carries the resource files, `fabric.mod.json` and both mixin configs among them, and no license file: the license copy and the `.cache/**` exclude apply to the `jar` task only. A local build's `-sources` jar also carries the gitignored `src/main/generated/.cache/`, which a CI checkout does not have (`unzip -l`). Only the mod jar goes in a `mods` folder.
 
 ## Scratch copies
 

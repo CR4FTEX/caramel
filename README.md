@@ -1,16 +1,45 @@
 # Caramel
 
-Caramel is a Minecraft: Java Edition mod for Fabric with two goals. First, it
-streamlines and improves concepts and features the game already has (the Deep
-Dark, crafting and smithing, recipes, blocks and items, world generation and
-more) without steering too far from the game's core identity and gameplay loop.
-Second, it brings in content from the Minecraft spin-off games (Minecraft
-Dungeons, Minecraft Legends, Minecraft Earth and Minecraft: Story Mode) to
-improve barren areas and neglected established concepts of the original game,
-giving each dimension a fresh coat of paint and more incentives to explore and
-risk to be rewarded.
+Caramel is a Minecraft: Java Edition mod for Fabric that builds atop vanilla. It
+brings the game to a higher level of polish, gives neglected features the
+attention they deserve, and takes parity with Bedrock Edition further than
+Mojang's own tweaks, without steering too far from the game's core identity and
+gameplay loop. It is a mod first, an expansion second and an infrastructure
+third: it follows the newest version of the game it can, it adds and improves
+across the whole game, and in the long run it aims to let you switch off what
+you don't want and to work alongside other mods.
+
+It has five goals:
+
+1. **Optimize your workflow and craft your dreams.** Better crafting recipes
+   and work blocks, new blocks, items and tools, and consistent block families,
+   so building costs less of your resources and time.
+2. **Connect the world to create your stories.** Structures, mobs and lore
+   connect with each other and with your progress, so each one is worth the
+   journey.
+3. **Fill up the blanks and even out the world.** Every biome of every
+   dimension gets the same share of quality and its own substance, the End
+   above all.
+4. **Creating a living world.** The world catches up with the world-building,
+   audio and visual design of the spin-offs, and content that was left out
+   comes in: from the spin-offs (Minecraft Dungeons, Minecraft Legends,
+   Minecraft Earth and Minecraft: Story Mode), the options that lost the yearly
+   votes, and the biomes of Minecraft's concept art.
+5. **Innovation and experimentation.** Caramel expands what the game has,
+   brings back scrapped content, and adds ideas of its own.
 
 **Status:** early development.
+
+## How Caramel is made
+
+- Every feature is designed by people first: the owner, CR4FTEX, pitches every
+  idea or takes it on from a contributor, and decides how it is built. Claude,
+  an AI, writes most of the code, contributors are welcome to write code too,
+  and every feature is playtested.
+- Caramel never generates or ships AI-generated art. Every texture, model,
+  animation and sound is made by one of Caramel's artists, commissioned from a
+  third-party artist, or bought from a third-party artist who allows it to be
+  shared under Caramel's art license (CC BY-NC-SA 4.0).
 
 ## Requirements
 
@@ -60,7 +89,8 @@ owner, CR4FTEX. Help with both code and textures is welcome.
 - [docs/TEXTURES.md](docs/TEXTURES.md): guidelines for textures and other art.
 
 All art must be original. Do not copy textures, models or sounds from any
-other game or mod, including the Minecraft spin-offs.
+other game or mod, including the Minecraft spin-offs, and do not use AI to make
+art.
 
 ## License
 

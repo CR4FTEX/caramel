@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        All art in Caramel must be original. Do not copy, rip or trace textures, models or sounds from Minecraft Dungeons, Legends, Earth, Story Mode or any other game or mod. Recreating a concept in new, original art is fine.
+        All art in Caramel must be original. Do not copy, rip or trace textures, models or sounds from Minecraft Dungeons, Legends, Earth, Story Mode or any other game or mod. Recreating a concept in new, original art is fine. Never use AI to make art: Caramel never ships AI-generated assets, placeholders included.
 
         Art contributed to Caramel is licensed under CC BY-NC-SA 4.0. Caramel is a fan project and is not affiliated with or endorsed by Mojang Studios or Microsoft.
   - type: textarea
@@ -57,5 +57,5 @@ body:
     attributes:
       label: Originality
       options:
-        - label: I understand that references are for inspiration only and that all art for Caramel must be original.
+        - label: I understand that references are for inspiration only and that all art for Caramel must be original and made without AI.
           required: true
