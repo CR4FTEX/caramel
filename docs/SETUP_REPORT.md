@@ -2,7 +2,7 @@
 
 The passdown between sessions: where the project stands, what you decided, and what comes next. Part 1 is the current state and is rewritten each session. Part 2 is the record of the first review of the docs and how each finding was handled.
 
-Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built, playtested and committed on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01. The sixth, C-006, was built, playtested and committed on 2026-10-01. The seventh, C-007, was built, playtested and committed on 2026-10-03, together with the third gold pass on `caramel-vault/`. A fourth gold pass was committed the same day. The eighth, C-008, was built, playtested and committed on 2026-10-05, together with a balance audit of C-001 to C-008 you asked for; a fifth gold pass was committed the same day. On 2026-10-09 the vision from your presentation replaced the two pillars in the docs, and the placeholder icon was removed. That update is not committed yet.
+Session 1 (2026-09-27) set up the project. Session 2 (2026-09-27) applied the review fixes, built the knowledge vault, installed the `/gold` skill and made the first commit. The first idea, C-001, was built, playtested and committed on 2026-09-28. The second, C-002, was built, playtested and committed on 2026-09-29. The third, C-003, was built, playtested and committed on 2026-09-30. The fourth, C-004, was built, playtested and committed on 2026-09-30. The fifth, C-005, was built, playtested and committed on 2026-10-01. The sixth, C-006, was built, playtested and committed on 2026-10-01. The seventh, C-007, was built, playtested and committed on 2026-10-03, together with the third gold pass on `caramel-vault/`. A fourth gold pass was committed the same day. The eighth, C-008, was built, playtested and committed on 2026-10-05, together with a balance audit of C-001 to C-008 you asked for; a fifth gold pass was committed the same day. On 2026-10-09 the vision from your presentation replaced the two pillars in the docs, and the placeholder icon was removed. That update was committed and pushed to `main` as `7756718`; CI passed with all 69 game tests.
 
 ---
 
@@ -73,7 +73,7 @@ Choices I made that you can change:
 - **C-007, more buttons per craft: Done.** You playtested all 8 checks and they all worked as intended. Every button recipe, all 15 (13 wooden, stone, polished blackstone), gives 20 instead of 1. Wooden buttons burn 15 ticks, matching their cost (your answer). Committed and pushed to `main`, with the third gold pass on `caramel-vault/`. The entry in `docs/DESIGN.md` has the decisions.
 - **C-008, more walls per craft: Done.** You playtested all 9 checks and they all worked as intended. All 32 wall recipes give 12 instead of 6, and every stonecutter recipe that makes a wall gives 2 per block, the ones cut from another block included (your answer). The balance audit found no work block giving far more than another and nothing that multiplies; its findings are in the C-008 entry in `docs/DESIGN.md`. Committed and pushed to `main`, followed by the fifth gold pass on `caramel-vault/`.
 
-### Vision update (not committed)
+### Vision update (committed as `7756718`)
 
 You shared your presentation, "Mod Presentation", and chose all four recommended answers: no AI art at all, bought or commissioned art only under CC BY-NC-SA 4.0, player choice and cross-compatibility as long-term goals, and the slides replacing the two pillars.
 
@@ -115,7 +115,7 @@ None of these is started. Say the word for any of them.
 
 ### Next step
 
-Say when to commit the vision update. Then send me the next idea. You have said the next few ideas are small ones about how much a recipe gives, and that dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
+Send me the next idea. You have said the next few ideas are small ones about how much a recipe gives, and that dyeing wool and items, and bamboo mosaic, the chiseled blocks and the pillars, will be future ideas.
 
 ---
 
