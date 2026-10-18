@@ -64,8 +64,8 @@ Caramel (mod id `caramel`) is a Fabric mod for Minecraft Java Edition, owned by 
 
 ## Repository
 
-- Private GitHub repo `CR4FTEX/caramel`, branch `main`. Contributors are collaborators invited by the owner.
-- Collaborators work on branches and open pull requests into `main`. The owner may commit to `main` directly. Only commit when the owner asks you to, and then commit straight to `main`.
+- Public GitHub repo `CR4FTEX/caramel`, branch `main`. Contributors open pull requests from forks; the owner may invite regular ones as collaborators.
+- Contributors work on branches and open pull requests into `main`. The owner may commit to `main` directly. Only commit when the owner asks you to, and then commit straight to `main`.
 - CI: `.github/workflows/build.yml` must pass on every pull request and push to `main`. When it runs, what it caches and what it uploads is in `caramel-vault/ci.md`.
 - Commits use the owner's GitHub noreply email, set in the repo's local git config (`git config user.email`). Never replace it with another email.
 

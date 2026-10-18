@@ -4,7 +4,7 @@ This is the living design document for Caramel. It holds the vision, the princip
 
 ## Vision
 
-The owner (CR4FTEX) set out Caramel's vision in a presentation, "Mod Presentation", which replaced the two pillars this document first quoted. The owner's words are quoted below, each followed by a short summary. When the presentation changes, this section follows it.
+The owner (CR4FTEX) set out Caramel's vision in a presentation, which replaced the two pillars this document first quoted. The owner's words are quoted below, each followed by a short summary. When the presentation changes, this section follows it.
 
 > "The Minecraft Mod that sticks everything and everyone together, to build atop Vanilla, and form a polished, cross-compatible, feature-complete experience."
 

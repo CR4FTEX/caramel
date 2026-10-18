@@ -1,21 +1,21 @@
 # Contributing to Caramel
 
-Thanks for helping. This guide is for both coders and artists. Artists do not need git, Java or IntelliJ: after accepting the collaborator invite (see [Getting access](#getting-access)), read [docs/TEXTURES.md](docs/TEXTURES.md), which explains how to submit art through a GitHub issue or the GitHub website.
+Thanks for helping. This guide is for both coders and artists. Artists do not need git, Java or IntelliJ: after reading [Getting access](#getting-access), read [docs/TEXTURES.md](docs/TEXTURES.md), which explains how to submit art through a GitHub issue or the GitHub website.
 
 The owner, CR4FTEX, pitches ideas one at a time. [docs/DESIGN.md](docs/DESIGN.md) logs every idea the owner pitches or takes on. That file decides what gets built and how.
 
 ## Getting access
 
-The repository, https://github.com/CR4FTEX/caramel, is private. You need a GitHub account (a free one is enough). Ask CR4FTEX for a collaborator invite, giving your GitHub username, then accept it from the invite email or your GitHub notifications. Collaborators push branches to this repository directly; there are no forks.
+The repository, https://github.com/CR4FTEX/caramel, is public, and anyone can clone it. To send changes you need a GitHub account (a free one is enough). Fork the repository, push your branches to your fork, and open pull requests from it into `main`. CR4FTEX may invite regular contributors as collaborators, who push branches to this repository directly.
 
-Because the repository is private, git has to be signed in to your GitHub account. Use an SSH key, the GitHub CLI (`gh auth login`, and choose HTTPS when asked), or Git Credential Manager (included with Git for Windows). Then clone:
+To clone, use your fork's address (or `https://github.com/CR4FTEX/caramel.git` to only build it):
 
 ```sh
-git clone https://github.com/CR4FTEX/caramel.git
+git clone https://github.com/<your-username>/caramel.git
 cd caramel
 ```
 
-With SSH, clone `git@github.com:CR4FTEX/caramel.git` instead.
+To push, git has to be signed in to your GitHub account. Use an SSH key, the GitHub CLI (`gh auth login`, and choose HTTPS when asked), or Git Credential Manager (included with Git for Windows). With SSH, clone `git@github.com:<your-username>/caramel.git` instead.
 
 ## Development setup
 
@@ -105,7 +105,7 @@ caramel-vault/                                      How the build and tooling wo
 1. Start from an up-to-date `main`: `git switch main`, then `git pull`.
 2. Create one branch per feature or fix: `git switch -c feature/short-name` (or `fix/...`, `art/...`).
 3. Make your changes. Test them in `./gradlew runClient`, and in `./gradlew runServer` if you changed common code. Run `./gradlew build` before pushing.
-4. Push the branch: `git push -u origin feature/short-name`.
+4. Push the branch to your fork (or to this repository, if you are a collaborator): `git push -u origin feature/short-name`.
 5. Open a pull request into `main` and fill in the template: what changed, how you tested it, screenshots for anything visual, and the related issue (`Closes #12`).
 6. The `build` workflow (`.github/workflows/build.yml`) runs `./gradlew build` on every pull request and on every push to `main`, and it must pass. It does not run when a change only touches Markdown (`.md`) files. Each run uploads the built jars and keeps them for 14 days: open the run in the repository's Actions tab and download `caramel-jar` under Artifacts. It is a `.zip` with two jars. Install the mod jar (currently `caramel-0.1.0+26.3.jar`), not the one ending in `-sources.jar`.
 7. CR4FTEX reviews, playtests and merges. Collaborators always go through a branch and a pull request: do not push to `main` directly and do not merge your own pull request. Only the owner may commit to `main` directly.

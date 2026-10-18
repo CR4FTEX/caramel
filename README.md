@@ -53,10 +53,6 @@ It has five goals:
 You need JDK 25. Gradle is provided by the wrapper, so you do not need to
 install it.
 
-The repository is private, so cloning it needs a collaborator invite and git
-signed in to your GitHub account. See
-[Getting access](CONTRIBUTING.md#getting-access) in CONTRIBUTING.md.
-
 ```sh
 git clone https://github.com/CR4FTEX/caramel.git
 cd caramel
@@ -78,8 +74,9 @@ starts a development server instead.
 
 ## Contributing
 
-The repository is private. Contributors are invited as collaborators by the
-owner, CR4FTEX. Help with both code and textures is welcome.
+Help with both code and textures is welcome. Send changes as pull requests from
+a fork; regular contributors may be invited as collaborators by the owner,
+CR4FTEX. See [Getting access](CONTRIBUTING.md#getting-access).
 
 - [CONTRIBUTING.md](CONTRIBUTING.md): how to set up, code style, and how to
   submit changes.

@@ -1,7 +1,7 @@
 # Build the mod on every push to main and on every pull request, and upload
 # the jar so it can be downloaded from the workflow run and playtested.
 #
-# The repository is private, so Actions minutes are limited:
+# Keep runs cheap, so contributors get quick feedback:
 # - push runs only on main; pull request branches are built once, through the
 #   pull_request trigger, not a second time on push.
 # - changes that only touch Markdown files skip the build.
@@ -45,8 +45,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
         with:
           # 'basic' is the open-source (MIT) cache provider built on the GitHub
-          # Actions cache. It is free for private repositories; the default
-          # 'enhanced' provider is only a free preview for private repositories.
+          # Actions cache.
           cache-provider: basic
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
@@ -58,5 +57,5 @@ jobs:
           name: caramel-jar
           path: build/libs/
           if-no-files-found: error
-          # Artifacts count against the private repository's storage quota.
+          # Artifacts count against the repository's storage quota.
           retention-days: 14

@@ -1,6 +1,6 @@
 # CI
 
-`.github/workflows/build.yml` runs `./gradlew build` on GitHub Actions and keeps the jars as a downloadable artifact. The repository is private, so its runs and artifacts count against the owner's quota (see [[github]]), and the workflow is shaped to spend little of it.
+`.github/workflows/build.yml` runs `./gradlew build` on GitHub Actions and keeps the jars as a downloadable artifact. The workflow is shaped to spend little of the repository's Actions allowance (see [[github]]).
 
 ## When it runs
 
