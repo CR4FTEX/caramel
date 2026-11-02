@@ -677,7 +677,7 @@ The Chisel:
 
 ### C-010: The Stone family, the first consistent block set
 
-- **Status:** In progress
+- **Status:** Done
 - **Area:** Blocks and Items; Recipes; Crafting and Smithing; Work Blocks; Tools
 - **Source:** Caramel's own ideas
 
@@ -768,3 +768,4 @@ The owner's Block Sets idea: every family of blocks gets a consistent set, recip
 - Review of these additions: an independent reviewer enumerated the rules against these notes, ran the click paths through the server's game mode in a scratch copy (off hand, adventure, shield, each with and without sneaking), and searched crafting, cutting, cooking, drops and the Chisel's rules together for a gain: none in 1818 edges. Stone Brick items stay at what each piece is worth. It found the refusal of pressed pieces also stopping axes on powered copper, the moss particles not yet in, particles floating off thin pieces, and that no test saw the listeners: with both unregistered every test still passed. All four are fixed, the last by the packet test. Route gains have no test of their own, and multi-ingredient recipes and villager trades were outside the search. Client-side sound playing was reasoned from the code and left to the playtest, which passed.
 - Deliberate breaks, one build, worked out beforehand, then undone with the generated files back byte for byte: moss showing the block's own particles (9 in the particle walk, 6 in the packet test), the extra-sound listener removed (3 in the packet test), the refusal not limited to the Chisel (3 of 3 copper checks), and particles placed as on a full block (2 in the particle walk): 11 of 3355, 9 of 32 and 3 of 3, 3 of 111 tests, as worked out. An earlier break by the builder, with the button rule and the refusal both off, failed 4 tests as it predicted, and its pressed-piece test proved the stuck piece before the fix.
 - Playtest of these additions (owner, 2026-11-01): the 11-step checklist all worked as intended, the moss sounds, which the tests could not hear, included.
+- Committed with C-009 as `43bd6bd` on 2026-11-02; CI passed with 111 tests. The owner marked C-010 Done the same day.
