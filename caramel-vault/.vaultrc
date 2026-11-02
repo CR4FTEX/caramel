@@ -2,7 +2,7 @@
 # the topics. Read by the /gold skill and its vault_lint.py.
 #
 # dates = forbidden. The owner's ruling: a note says how Caramel works for anyone building it,
-# so it has no date. A claim bound to a version names the version (Minecraft 26.3, Loom 1.18.2);
+# so it has no date. A claim bound to a version names the version (Minecraft 26.3, Loom 1.18.4);
 # git keeps the when. The owner's quoted words stay in docs/DESIGN.md, where they are the reason
 # for a choice.
 #

@@ -7,7 +7,7 @@ Caramel's JSON data is generated from Java into `src/main/generated/` by the pro
 ## How it runs
 
 - `fabric.mod.json` registers `io.github.cr4ftex.caramel.client.datagen.CaramelDataGenerator` as the `fabric-datagen` entrypoint, and providers are added to the pack in its `onInitializeDataGenerator`. In this Fabric API version, registry-dependent providers such as `FabricLanguageProvider` and `FabricRecipeProvider` take a `FabricPackOutput` and a `CompletableFuture<HolderLookup.Provider>`, `FabricModelProvider` takes only a `FabricPackOutput`, and `Pack.addProvider` accepts both shapes (`javap` on the `fabric-data-generation-api-v1` jar).
-- `configureDataGeneration { client = true }` in `build.gradle` makes the `datagen` run inherit Loom's `client` run config: client environment, `KnotClient`, and the client source set's classpath. That is what lets the generator live in `src/client` and use client-only classes. It creates no separate datagen source set. Sources: `FabricApiDataGeneration` in Loom 1.18.2 (`javap`), and the run configs printed in a scratch copy with `client` set each way.
+- `configureDataGeneration { client = true }` in `build.gradle` makes the `datagen` run inherit Loom's `client` run config: client environment, `KnotClient`, and the client source set's classpath. That is what lets the generator live in `src/client` and use client-only classes. It creates no separate datagen source set. Sources: `FabricApiDataGeneration` in Loom 1.18.4 (`javap`), and the run configs printed in a scratch copy with `client` set each way.
 - `./gradlew runDatagen` logs no window creation, works in `run/datagen`, and exits when the providers finish: Fabric API's datagen `MinecraftMixin` calls `System.exit(0)` inside Minecraft's constructor. The main entrypoint runs first; the log shows "Caramel is melting in." before "Running data generator for caramel", and a crash in `Caramel.onInitialize` fails `runDatagen` (reproduced with a thrown exception). Which broken mixins the run catches is in [[mixins]].
 - `src/main/generated` is a main resource directory beside `src/main/resources` (see [[build]]), so generated files reach the mod jar through normal resource processing.
 
@@ -15,7 +15,7 @@ Caramel's JSON data is generated from Java into `src/main/generated/` by the pro
 
 - `CaramelItemTagProvider` (a `FabricTagsProvider.ItemTagsProvider`) writes `data/caramel/tags/item/` and, for the vanilla tags it adds to, `data/minecraft/tags/item/`. `builder(tag).addTag(other)` works for a tag the same provider defines.
 - `CaramelBlockTransformerProvider` is a `FabricCodecDataProvider` over `Registries.BLOCK_TRANSFORMER` with `BlockTransformer.DIRECT_CODEC`, like the burn time and compost providers over theirs. A provider's registry lookup holds vanilla's own entries of that registry; [[tools]], "Right-click block changes", says what this one takes from them.
-- `CaramelModelProvider` is a `FabricModelProvider`, a client class, and `CaramelLanguageProvider` a `FabricLanguageProvider`. Theirs are the first generated files outside `data/`; [[tools]], "Assets", lists them and says where textures come from.
+- `CaramelModelProvider` is a `FabricModelProvider`, a client class, and `CaramelLanguageProvider` a `FabricLanguageProvider`. [[tools]], "Assets", lists their files and says where textures come from.
 - `CaramelSoundsProvider` is a `FabricSoundsProvider`, also a client class, and writes `assets/caramel/sounds.json`; [[tools]], "Sounds", says what it holds.
 
 ## What a run does to src/main/generated

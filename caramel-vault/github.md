@@ -1,11 +1,11 @@
 # GitHub repository
 
-`CR4FTEX/caramel` on GitHub is public. How people get access and submit work is in `CONTRIBUTING.md`; this note covers how the repository's forms, labels, Actions allowance and git setup behave. Each fact names the GitHub docs page or git source it was checked against.
+`CR4FTEX/caramel` on GitHub; `gh repo view CR4FTEX/caramel --json visibility` reads its visibility, and `docs/SETUP_REPORT.md` says whether it is about to change. How people get access and submit work is in `CONTRIBUTING.md`; this note covers how the repository's forms, labels, Actions allowance and git setup behave. Each fact names the GitHub docs page or git source it was checked against.
 
 ## Issue forms
 
 - `.github/ISSUE_TEMPLATE/config.yml` sets `blank_issues_enabled: false`. That hides the blank issue only from read and triage roles; write access or above still sees "Blank issue", marked "Maintainers only" (GitHub docs, "Configuring issue templates for your repository").
-- In a repository owned by a personal account, collaborators can only have write access (GitHub docs, "Permission levels for a personal account repository"), so every collaborator keeps the blank issue. Contributors who are not collaborators get the forms only.
+- In a repository owned by a personal account, collaborators can only have write access (GitHub docs, "Permission levels for a personal account repository"), so every collaborator keeps the blank issue. Anyone with the Read or Triage role gets the forms only (GitHub docs, "Configuring issue templates for your repository").
 - A form's `labels` apply only when the label already exists in the repository (GitHub docs, "Syntax for issue forms"). `bug` is one of GitHub's default labels (GitHub docs, "Managing labels"); `idea` and `art` are not, and exist here because they were created in the repository (`gh label list`). A form whose label is renamed or deleted no longer adds it (same page).
 - Issue attachments take only the file types GitHub lists: `.zip` is on the list, and `.ogg` and `.mcmeta` are not (GitHub docs, "Attaching files"). Art sent through an issue goes in one `.zip`.
 
@@ -16,7 +16,7 @@
 
 ## Actions allowance
 
-Standard GitHub-hosted runners are free and unlimited in a public repository. Artifact storage (500 MB on GitHub Free, shared with GitHub Packages) and the Actions cache (10 GB per repository) still have allowances (https://docs.github.com/en/billing/concepts/product-billing/github-actions). [[ci]] covers how the workflow spends little of either.
+Standard GitHub-hosted runners are free in a public repository. In a private one they draw from the owner's included compute, $12 USD a month on GitHub Free, and the owner is billed for usage beyond it. Artifact storage (500 MB on GitHub Free, shared with GitHub Packages) and the Actions cache (10 GB per repository) have allowances of their own (https://docs.github.com/en/billing/concepts/product-billing/github-actions). [[ci]] covers how the workflow spends little of them.
 
 ## Commit identity
 

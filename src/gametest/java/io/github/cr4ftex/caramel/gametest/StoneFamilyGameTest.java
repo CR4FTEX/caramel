@@ -91,7 +91,7 @@ public class StoneFamilyGameTest {
 	private static final String IDEA = "C-010";
 	private static final BlockPos POS = new BlockPos(1, 1, 1);
 
-	// The 11 vanilla blocks the owner renamed, by translation key. The ids stay vanilla's.
+	// The 9 vanilla blocks the owner renamed, by translation key. The ids stay vanilla's.
 	private static final Map<String, String> RENAMED = new LinkedHashMap<>();
 	// The English name of each new block, by id path, and of the Stone Brick item.
 	private static final Map<String, String> NEW_BLOCK_NAMES = new LinkedHashMap<>();

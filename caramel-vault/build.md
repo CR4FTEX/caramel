@@ -27,19 +27,20 @@ How `./gradlew build` turns the `main` and `client` source sets into one mod jar
 
 ## Resources and the jar name
 
-- Main resources come from `src/main/resources` and `src/main/generated` (`sourceSets.main.resources.srcDirs`). Loom adds the generated directory through a `HashSet` (`FabricApiDataGeneration`, Loom 1.18.2), so the printed order follows the checkout's absolute path and means nothing. The same path in both fails the build; see [[datagen]].
+- `loom_version=1.18-SNAPSHOT` floats, so the Loom that runs moves on its own: `./gradlew buildEnvironment` prints it, and the configure log says "Fabric Loom: <version>". A claim here names the patch it was checked on.
+- Main resources come from `src/main/resources` and `src/main/generated` (`sourceSets.main.resources.srcDirs`). Loom adds the generated directory through a `HashSet` (`FabricApiDataGeneration`, Loom 1.18.4), so the printed order follows the checkout's absolute path and means nothing. The same path in both fails the build; see [[datagen]].
 - `processResources` expands `${version}` in `fabric.mod.json` to the project version, `mod_version+minecraft_version` (`build.gradle`). The jar in `build/libs/` is named `caramel-<mod_version>+<minecraft_version>.jar` from the same values.
 
 ## The jars
 
 - `build/libs/` holds the mod jar and a `-sources` jar (`withSourcesJar()` in `build.gradle`).
 - The `jar` block copies `LICENSE` and `LICENSE-ASSETS` into the mod jar under new names; [[licensing]] covers what that protects and how it fails silently. Loom excludes datagen's `.cache/**` from the `jar` task.
-- The `-sources` jar carries the resource files, `fabric.mod.json` and both mixin configs among them, and no license file: the license copy and the `.cache/**` exclude apply to the `jar` task only. A local build's `-sources` jar also carries the gitignored `src/main/generated/.cache/`, which a CI checkout does not have (`unzip -l`). Only the mod jar goes in a `mods` folder.
+- The `-sources` jar carries the resource files, `fabric.mod.json` and both mixin configs among them; the license copy ([[licensing]]) and the `.cache/**` exclude apply to the `jar` task only. A local build's `-sources` jar also carries the gitignored `src/main/generated/.cache/`, which a CI checkout does not have (`unzip -l`). Only the mod jar goes in a `mods` folder.
 
 ## Scratch copies
 
 Reproducing a trap happens in a copy of the project, never in the project itself. `gradle.properties` turns on Gradle's configuration cache, and its entries in `.gradle/configuration-cache` hold absolute paths.
 
-- **A copy that includes `.gradle/` builds the real project.** Gradle in the copy reuses the real entries ("Reusing configuration cache."). Reproduced with two scratch copies: in the copy that kept `.gradle/`, `compileJava` rebuilt the original's `build/classes` and created no `build/` of its own.
+- **A copy that includes `.gradle/` builds the real project.** Gradle in the copy reuses the real entries ("Reusing configuration cache."). Reproduced with two scratch copies: in the copy that kept `.gradle/`, `compileJava` rebuilt the original's `build/classes` and created no `build/classes` of its own.
 - Copy without it, and pass `--no-configuration-cache` in the copy: `tar --exclude=./build --exclude=./.gradle --exclude=./run --exclude=./.git -C <project> -cf - . | tar -xf - -C <copy>`.
 - **`./gradlew --stop` in a copy stops the real project's daemons too.** It terminates every daemon started with the same Gradle version, whichever project it serves (Gradle docs, "Gradle Daemon"). Each stopped daemon stores the stop event "stop command received" in the shared daemon registry, and for an hour the real project's next build prints "Starting a Gradle Daemon, 1 stopped Daemon could not be reused, use --status for details" (`HandleStop`, `DefaultDaemonConnector.handleStopEvents`, `DaemonStartupMessage`, Gradle 9.7.1). Leave a copy's daemons to exit on their own.

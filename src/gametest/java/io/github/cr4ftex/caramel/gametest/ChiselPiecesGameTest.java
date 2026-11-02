@@ -133,7 +133,7 @@ public class ChiselPiecesGameTest {
 			Blocks.BAMBOO_PRESSURE_PLATE, Blocks.BAMBOO_FENCE, Blocks.STONE_STAIRS, Blocks.STONE_SLAB, StoneFamily.STONE_WALL, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE,
 			Blocks.COBBLESTONE, Blocks.COBBLESTONE_STAIRS, Blocks.COBBLESTONE_SLAB, Blocks.COBBLESTONE_WALL, StoneFamily.COBBLESTONE_BUTTON, StoneFamily.COBBLESTONE_PRESSURE_PLATE);
 
-	// Looked up when a test runs: the Chisels are registered after this class is loaded.
+	// Looked up when a test runs: whether the Chisels are registered when this class loads depends on the mod order.
 	private static Item ironChisel() {
 		return ChiselGameTest.TIERS.get(3).chisel();
 	}

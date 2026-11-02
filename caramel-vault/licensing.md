@@ -15,7 +15,7 @@ Caramel has two licenses: code is MIT (`LICENSE`), and art is CC BY-NC-SA 4.0 (`
 
 - `fabric.mod.json` declares `"license": ["MIT", "CC-BY-NC-SA-4.0"]`.
 - The `jar` block in `build.gradle` copies both files into the mod jar as `LICENSE_caramel` and `LICENSE-ASSETS_caramel`.
-- The `-sources` jar carries no license file (see [[build]]). CI uploads it next to the mod jar (see [[ci]]).
+- The `-sources` jar carries no license file: the `jar` block applies to the `jar` task only. CI uploads it next to the mod jar (see [[ci]]).
 
 ## Traps
 

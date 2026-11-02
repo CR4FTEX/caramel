@@ -15,16 +15,13 @@ Both configs set `"injectors": { "defaultRequire": 1 }`. That setting turns a de
 
 After a Minecraft update, these crashes are the signal that a target moved or was renamed. The first message also says "Scanned 0 target(s)": in Mixin 0.8.7 that count is always 0 (`InjectionInfo` writes `targetCount` only once, as 0, in its constructor; `javap -c` on sponge-mixin 0.17.4+mixin.0.8.7), so it says nothing about whether the target method exists.
 
+The MixinExtras injectors that `CONTRIBUTING.md` prefers crash the same way: `@WrapOperation`, `@ModifyExpressionValue` and `@ModifyReturnValue` whose target matches nothing each failed `runDatagen` with the first message (scratch copy).
+
 ## Where a broken mixin surfaces
 
 - **Every `./gradlew build`, locally and in CI**, boots the game test server (`runGameTest`, see [[gametest]]). It crashes on a broken common mixin whose target loads on it: with a dead injector into `MinecraftServer.tickServer` or `ServerLevel.tick`, `:runGameTest` failed with "InjectionError: Critical injection failure" (scratch copy). It is a server environment, so it never applies `caramel.client.mixins.json`.
-- **`./gradlew runDatagen`** crashes on a broken mixin whose target loads during the run: `Bootstrap`, and server classes such as `ServerLevel` and `MinecraftServer` (reproduced). A target that first loads later, such as on a screen, is not checked, because the run ends inside Minecraft's constructor (see [[datagen]]). The datagen run is a client environment.
+- **`./gradlew runDatagen`** crashes on a broken mixin whose target loads during the run: `Bootstrap`, and server classes such as `ServerLevel` and `MinecraftServer` (reproduced). A target that first loads later, such as on a screen, is not checked, because the run ends inside Minecraft's constructor (see [[datagen]]). The datagen run is a client environment. The client config fails the same way: a dead `@Inject` into `Minecraft.tick`, listed in `client`, failed `runDatagen` with InjectionError: Critical injection failure (scratch copy).
 
 ## Traps
 
 - **A mixin class that its config's array does not list is ignored completely**, even when broken: no crash and no log line, whatever `defaultRequire` says. The debug log (`logs/debug.log` in the run directory) prints "Preparing caramel.mixins.json (N)", where N is the number of class names the config lists in its `mixins`, `client` and `server` arrays (`MixinProcessor.prepareConfigs` in Mixin 0.8.7).
-
-## What is still unknown, and what would settle it
-
-- Whether the client mixin config fails the same way as the common one: every reproduction above used the common config. The same broken `@Inject`, listed in the `client` array of `caramel.client.mixins.json` against a client-only class that loads during `./gradlew runDatagen`, settles it.
-- Whether the MixinExtras injectors that `CONTRIBUTING.md` prefers (`@WrapOperation`, `@ModifyExpressionValue`, `@ModifyReturnValue`) crash under `defaultRequire: 1` like `@Inject`. A `@WrapOperation` into `Bootstrap` whose target matches nothing, booted by `./gradlew runDatagen` in a scratch copy, settles it.
