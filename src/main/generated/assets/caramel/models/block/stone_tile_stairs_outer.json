@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "caramel:block/stone_tiles",
+    "side": "caramel:block/stone_tiles",
+    "top": "caramel:block/stone_tiles"
+  }
+}

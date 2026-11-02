@@ -25,15 +25,21 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.level.block.Block;
 
 // With the provider's identity recipe ids, a recipe saved without an explicit key lands on its result item's vanilla
-// id and silently replaces that recipe. In the minecraft namespace, Caramel's pack may only hold the recipes the ideas
-// replace or remove and their unlock advancements, each worked out from the vanilla data pack: C-001's stairs recipes
+// id and silently replaces that recipe. Of the recipes and advancements in the minecraft namespace, Caramel's pack may
+// only hold the recipes the ideas replace or remove and their unlock advancements, each worked out from the vanilla data pack: C-001's stairs recipes
 // and the stonecutter recipes that make stairs, C-002's slab recipes and the recipes 2 stacked slabs take over, and
 // C-003's pressure plate and carpet recipes, C-004's and C-005's fence and fence gate recipes, C-006's door and
-// trapdoor recipes, C-007's button recipes, and C-008's wall recipes and the stonecutter recipes that cut walls. Of vanilla's villager trades, it may only hold the shepherds' carpet trades.
+// trapdoor recipes, C-007's button recipes, C-008's wall recipes and the stonecutter recipes that cut walls, and C-009's
+// recipes that crafted or smelted a cracked, cut, chiseled or pillar block, and C-010's two recipes the Stone chain
+// replaces. Of vanilla's villager trades, it may only hold the shepherds' carpet trades, and of its loot tables only the
+// Stone family's variants' (C-010). The item and block tag files C-009 and C-010 add to vanilla's tags are not checked
+// here: a tag file adds to a tag and replaces nothing, and ChiselGameTest and StoneFamilyGameTest check what the Chisels
+// and the new blocks are tagged for.
 public class VanillaOverridesGameTest {
-	private static final String IDEAS = "C-001 through C-008";
+	private static final String IDEAS = "C-001 through C-010";
 
 	@GameTest
 	public void onlyExpectedVanillaRecipesAreReplacedOrRemoved(GameTestHelper helper) {
@@ -87,6 +93,15 @@ public class VanillaOverridesGameTest {
 		cuts.forEach(cut -> recipes.add(cut.id()));
 		failures.addAll(WallsRecipeGameTest.scopeFailures(helper, cuts));
 
+		// C-009 removes every recipe that crafted or cooked a cracked, cut, chiseled or pillar block. C-002 had already
+		// removed the chiseled blocks' and the purpur pillar's.
+		Map<Identifier, Block> carved = ChiselRecipesGameTest.vanillaCarvedRecipes(helper);
+		recipes.addAll(carved.keySet());
+		failures.addAll(ChiselRecipesGameTest.scopeFailures(helper, carved));
+
+		// C-010 replaces the 4 Stone that made Stone Bricks.
+		recipes.addAll(StoneFamilyGameTest.REPLACED_RECIPES);
+
 		// Each recipe's unlock advancement is the one vanilla file at recipes/<folder>/<recipe path>.
 		Map<Identifier, List<Identifier>> unlocks = vanillaUnlocks(helper);
 		Set<Identifier> advancements = new TreeSet<>();
@@ -102,9 +117,14 @@ public class VanillaOverridesGameTest {
 		// C-003 also replaces the shepherds' carpet trades, and no other trade.
 		Set<Identifier> trades = PressurePlatesAndCarpetsGameTest.vanillaCarpetTrades(helper).keySet();
 
+		// C-010 also replaces the loot tables of the Stone family's variants, and no other: Stone itself already drops
+		// cobblestone in vanilla.
+		Set<Identifier> lootTables = StoneFamilyGameTest.vanillaStoneLootTables();
+
 		compare(failures, IDEAS, "recipe", recipes, packFiles(helper, Caramel.MOD_ID, Registries.RECIPE).keySet());
 		compare(failures, IDEAS, "advancement", advancements, packFiles(helper, Caramel.MOD_ID, Registries.ADVANCEMENT).keySet());
 		compare(failures, IDEAS, "villager trade", trades, packFiles(helper, Caramel.MOD_ID, Registries.VILLAGER_TRADE).keySet());
-		report(helper, IDEAS, "vanilla recipe, advancement and trade overrides", recipes.size() + advancements.size() + trades.size(), failures);
+		compare(failures, IDEAS, "loot table", lootTables, packFiles(helper, Caramel.MOD_ID, Registries.LOOT_TABLE).keySet());
+		report(helper, IDEAS, "vanilla recipe, advancement, trade and loot table overrides", recipes.size() + advancements.size() + trades.size() + lootTables.size(), failures);
 	}
 }

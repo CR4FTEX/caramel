@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "caramel:stone_brick",
+    "W": "caramel:stone_tiles"
+  },
+  "pattern": [
+    "W#W",
+    "W#W"
+  ],
+  "result": {
+    "count": 24,
+    "id": "caramel:stone_tile_fence"
+  }
+}

@@ -23,10 +23,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerAdvancementManager;
 
 // A recipe with no unlock advancement still crafts, so nothing else notices when one goes missing: the recipe book just
-// never shows it. Every recipe in the caramel namespace (C-001's second L and stairs recycling, C-002's slab recycling)
-// has exactly one loaded advancement, caramel:recipes/<folder>/<recipe path>, that unlocks it and nothing else.
+// never shows it. Every recipe in the caramel namespace (C-001's second L and stairs recycling, C-002's slab recycling,
+// C-009's Chisel recipes) has exactly one loaded advancement, caramel:recipes/<folder>/<recipe path>, that unlocks it and nothing else.
 public class UnlockAdvancementsGameTest {
-	private static final String IDEAS = "C-001 and C-002";
+	private static final String IDEAS = "C-001, C-002 and C-009";
 
 	@GameTest
 	public void everyCaramelRecipeHasOneUnlockAdvancement(GameTestHelper helper) {

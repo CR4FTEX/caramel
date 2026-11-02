@@ -4,18 +4,20 @@ How Caramel works, for a reader who was not there, and the traps each part hides
 
 ## Owning notes
 
-| Topic                                              | Note          |
-| -------------------------------------------------- | ------------- |
-| Gradle, Loom, source sets, what goes in the jar    | [[build]]     |
-| Data generation and `src/main/generated/`          | [[datagen]]   |
-| Replacing, adding and removing recipes             | [[recipes]]   |
-| Server game tests and the EULA                     | [[gametest]]  |
-| Furnace fuel, burn times and compost chances       | [[fuel]]      |
-| Villager trades                                    | [[trades]]    |
-| Mixin configs and how they fail                    | [[mixins]]    |
-| The GitHub Actions build                           | [[ci]]        |
-| Code and art licenses, and how the jars carry them | [[licensing]] |
-| Repository, issue forms, labels, git               | [[github]]    |
+| Topic                                                                    | Note          |
+| ------------------------------------------------------------------------ | ------------- |
+| Gradle, Loom, source sets, what goes in the jar                          | [[build]]     |
+| Data generation and `src/main/generated/`                                | [[datagen]]   |
+| Replacing, adding and removing recipes                                   | [[recipes]]   |
+| Server game tests and the EULA                                           | [[gametest]]  |
+| Furnace fuel, burn times and compost chances                             | [[fuel]]      |
+| Villager trades                                                          | [[trades]]    |
+| Items, tools, mining speed, right-click changes, cooldowns, sound events | [[tools]]     |
+| Blocks, block items, block models, loot tables, block tags, names        | [[blocks]]    |
+| Mixin configs and how they fail                                          | [[mixins]]    |
+| The GitHub Actions build                                                 | [[ci]]        |
+| Code and art licenses, and how the jars carry them                       | [[licensing]] |
+| Repository, issue forms, labels, git                                     | [[github]]    |
 
 ## What lives outside the vault
 

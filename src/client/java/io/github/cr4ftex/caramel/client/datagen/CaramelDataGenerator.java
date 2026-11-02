@@ -11,5 +11,13 @@ public class CaramelDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(CaramelBurnTimeProvider::new);
 		pack.addProvider(CaramelCompostProvider::new);
 		pack.addProvider(CaramelTradeProvider::new);
+		CaramelBlockTagProvider blockTags = pack.addProvider(CaramelBlockTagProvider::new);
+		pack.addProvider((output, registries) -> new CaramelItemTagProvider(output, registries, blockTags));
+		pack.addProvider(CaramelBlockLootProvider::new);
+		pack.addProvider(CaramelBlockTransformerProvider::new);
+		pack.addProvider(CaramelModelProvider::new);
+		pack.addProvider(CaramelLanguageProvider::new);
+		pack.addProvider(CaramelVanillaNamesProvider::new);
+		pack.addProvider(CaramelSoundsProvider::new);
 	}
 }

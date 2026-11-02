@@ -1,0 +1,13 @@
+{
+  "item.chisel.carve_stone": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.anvil.use",
+        "pitch": 1.5,
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "subtitles.caramel.item.chisel.carve_stone"
+  }
+}

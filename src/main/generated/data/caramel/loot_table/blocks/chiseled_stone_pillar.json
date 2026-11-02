@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "caramel:chiseled_stone_pillar"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "caramel:blocks/chiseled_stone_pillar"
+}

@@ -17,6 +17,10 @@
 			"io.github.cr4ftex.caramel.gametest.DoorsAndTrapdoorsGameTest",
 			"io.github.cr4ftex.caramel.gametest.ButtonsRecipeGameTest",
 			"io.github.cr4ftex.caramel.gametest.WallsRecipeGameTest",
+			"io.github.cr4ftex.caramel.gametest.ChiselGameTest",
+			"io.github.cr4ftex.caramel.gametest.ChiselPiecesGameTest",
+			"io.github.cr4ftex.caramel.gametest.ChiselRecipesGameTest",
+			"io.github.cr4ftex.caramel.gametest.StoneFamilyGameTest",
 			"io.github.cr4ftex.caramel.gametest.CraftedFuelGameTest",
 			"io.github.cr4ftex.caramel.gametest.VanillaOverridesGameTest",
 			"io.github.cr4ftex.caramel.gametest.UnlockAdvancementsGameTest"

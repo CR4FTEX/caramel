@@ -89,6 +89,14 @@ All art must be original. Do not copy textures, models or sounds from any
 other game or mod, including the Minecraft spin-offs, and do not use AI to make
 art.
 
+## Credits
+
+Everyone who made something for Caramel, and what they made:
+
+- **Lorenzo N.** ([l_n_dr on Fiverr](https://www.fiverr.com/l_n_dr)): the
+  textures of Smooth Stone, Stone Tiles, Cracked Stone Tiles and the Chiseled
+  Stone Pillar, the Stone Brick item, and the seven Chisels.
+
 ## License
 
 - Code is licensed under the MIT License. See [LICENSE](LICENSE).

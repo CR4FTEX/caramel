@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "caramel:polished_stone_slab"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "count": 16,
+    "id": "caramel:polished_stone_pressure_plate"
+  }
+}

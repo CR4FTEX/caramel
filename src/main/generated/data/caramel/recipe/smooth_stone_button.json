@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "minecraft:smooth_stone"
+  ],
+  "result": {
+    "count": 20,
+    "id": "caramel:smooth_stone_button"
+  }
+}

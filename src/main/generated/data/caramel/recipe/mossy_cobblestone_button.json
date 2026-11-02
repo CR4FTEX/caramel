@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "minecraft:mossy_cobblestone"
+  ],
+  "result": {
+    "count": 20,
+    "id": "caramel:mossy_cobblestone_button"
+  }
+}

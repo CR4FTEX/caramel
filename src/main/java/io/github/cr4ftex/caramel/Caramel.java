@@ -1,7 +1,10 @@
 package io.github.cr4ftex.caramel;
 
+import io.github.cr4ftex.caramel.block.StoneFamily;
 import io.github.cr4ftex.caramel.compost.CraftedCompost;
 import io.github.cr4ftex.caramel.fuel.CraftedFuel;
+import io.github.cr4ftex.caramel.item.CarvingParticles;
+import io.github.cr4ftex.caramel.item.Chisels;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -20,6 +23,9 @@ public class Caramel implements ModInitializer {
 		LOGGER.info("Caramel is melting in.");
 		CraftedFuel.register();
 		CraftedCompost.register();
+		Chisels.register();
+		StoneFamily.register();
+		CarvingParticles.register();
 	}
 
 	public static Identifier id(String path) {

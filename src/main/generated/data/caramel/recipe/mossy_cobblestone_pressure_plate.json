@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "minecraft:mossy_cobblestone_slab"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "count": 16,
+    "id": "caramel:mossy_cobblestone_pressure_plate"
+  }
+}

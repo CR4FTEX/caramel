@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "caramel:polished_stone"
+  ],
+  "result": {
+    "count": 20,
+    "id": "caramel:polished_stone_button"
+  }
+}

@@ -1,8 +1,8 @@
 # Data generation
 
-Caramel's JSON data is generated from Java into `src/main/generated/` by the providers registered in `CaramelDataGenerator`, and that output is committed. They write recipes and their unlock advancements ([[recipes]]), burn times and compost chances ([[fuel]]), and villager trades ([[trades]]).
+Caramel's JSON data is generated from Java into `src/main/generated/` by the providers registered in `CaramelDataGenerator`, and that output is committed. They write recipes and their unlock advancements ([[recipes]]), burn times and compost chances ([[fuel]]), villager trades ([[trades]]), for items, tags, block transformers, item definitions, models, names and sounds ([[tools]]), and for blocks, blockstates, models, loot tables, tags and names ([[blocks]]).
 
-`CLAUDE.md` requires every other generated JSON, such as models, blockstates, loot tables, tags and translations, to come from datagen too. The rule for people is in `CONTRIBUTING.md`, "Where things go"; this note is how it works and what breaks. The behaviour below was reproduced in scratch copies on Loom 1.18.2 and Fabric API 0.161.0+26.3.
+`CLAUDE.md` requires every other generated JSON, such as blockstates and loot tables, to come from datagen too. The rule for people is in `CONTRIBUTING.md`, "Where things go"; this note is how it works and what breaks. The behaviour below was reproduced in scratch copies on Loom 1.18.2 and Fabric API 0.161.0+26.3.
 
 ## How it runs
 
@@ -11,11 +11,19 @@ Caramel's JSON data is generated from Java into `src/main/generated/` by the pro
 - `./gradlew runDatagen` logs no window creation, works in `run/datagen`, and exits when the providers finish: Fabric API's datagen `MinecraftMixin` calls `System.exit(0)` inside Minecraft's constructor. The main entrypoint runs first; the log shows "Caramel is melting in." before "Running data generator for caramel", and a crash in `Caramel.onInitialize` fails `runDatagen` (reproduced with a thrown exception). Which broken mixins the run catches is in [[mixins]].
 - `src/main/generated` is a main resource directory beside `src/main/resources` (see [[build]]), so generated files reach the mod jar through normal resource processing.
 
+## What the item providers write
+
+- `CaramelItemTagProvider` (a `FabricTagsProvider.ItemTagsProvider`) writes `data/caramel/tags/item/` and, for the vanilla tags it adds to, `data/minecraft/tags/item/`. `builder(tag).addTag(other)` works for a tag the same provider defines.
+- `CaramelBlockTransformerProvider` is a `FabricCodecDataProvider` over `Registries.BLOCK_TRANSFORMER` with `BlockTransformer.DIRECT_CODEC`, like the burn time and compost providers over theirs. A provider's registry lookup holds vanilla's own entries of that registry; [[tools]], "Right-click block changes", says what this one takes from them.
+- `CaramelModelProvider` is a `FabricModelProvider`, a client class, and `CaramelLanguageProvider` a `FabricLanguageProvider`. Theirs are the first generated files outside `data/`; [[tools]], "Assets", lists them and says where textures come from.
+- `CaramelSoundsProvider` is a `FabricSoundsProvider`, also a client class, and writes `assets/caramel/sounds.json`; [[tools]], "Sounds", says what it holds.
+
 ## What a run does to src/main/generated
 
 - `.cache/` holds one file per provider, whose first line ends with the mod name and the provider's `getName()`, such as `Caramel/Caramel burn times`, listing the hash of each file that provider wrote. `.gitignore` excludes it, so a fresh clone has none. Two providers can write into one registry folder, as the burn-time and compost providers both write `context_int_provider/`, when their names differ; each keeps its own cache file (`src/main/generated/.cache/`).
 - A file is rewritten only when the provider's new output hash differs from the hash in `.cache`, or when the file is missing. The content on disk is not compared.
 - Every file in `src/main/generated` that the current run did not produce is deleted: hand-placed files, and the output of providers no longer registered. Empty directories stay, and the jar packages them as empty directory entries.
+- The sweep skips only the `.cache` files of the providers that ran, so a provider taken out of `CaramelDataGenerator` loses its cache file too, and the log's `removed stale` counts it: unregistering `CaramelSoundsProvider` logged `removed stale: 2`, for `sounds.json` and that file (`HashCache.purgeStaleAndWrite`, reproduced).
 
 ## Traps
 

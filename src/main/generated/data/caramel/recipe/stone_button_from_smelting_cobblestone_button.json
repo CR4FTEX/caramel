@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 10,
+  "experience": 0.005,
+  "ingredient": "caramel:cobblestone_button",
+  "result": {
+    "id": "minecraft:stone_button"
+  }
+}

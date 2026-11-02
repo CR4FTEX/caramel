@@ -109,9 +109,10 @@ final class RecipeTestSupport {
 		}
 	}
 
-	// Each item in the tag that has a vanilla recipe at its own id, sorted by id, with the blocks that recipe accepts.
-	// Recycling gives the one block it accepts, or, for a recipe that accepts more, the family's base block from
-	// baseOfAlternatives. When every item needs a recipe, one without fails the test; otherwise it is left out.
+	// Each vanilla item in the tag that has a vanilla recipe at its own id, sorted by id, with the blocks that recipe
+	// accepts. Recycling gives the one block it accepts, or, for a recipe that accepts more, the family's base block from
+	// baseOfAlternatives. When every item needs a recipe, one without fails the test; otherwise it is left out. Caramel
+	// adds its own blocks to vanilla's tags (C-010), and its own tests check them.
 	static List<Variant> vanillaVariants(GameTestHelper helper, TagKey<Item> tag, Map<Item, Item> baseOfAlternatives, boolean everyItemHasARecipe) {
 		MinecraftServer server = helper.getLevel().getServer();
 		RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, server.registryAccess());
@@ -120,6 +121,9 @@ final class RecipeTestSupport {
 			try (PackResources vanilla = packs.findFirst().orElseThrow()) {
 				for (Holder<Item> holder : BuiltInRegistries.ITEM.getTagOrEmpty(tag)) {
 					Item item = holder.value();
+					if (!BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
+						continue;
+					}
 					Identifier recipeFile = BuiltInRegistries.ITEM.getKey(item).withPath(path -> "recipe/" + path + ".json");
 					IoSupplier<InputStream> resource = vanilla.getResource(PackType.SERVER_DATA, recipeFile);
 					if (resource == null) {

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "caramel:stone_tiles",
+  "result": {
+    "count": 2,
+    "id": "caramel:stone_tile_wall"
+  }
+}

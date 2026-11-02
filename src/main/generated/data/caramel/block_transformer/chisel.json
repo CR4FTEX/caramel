@@ -1,0 +1,1781 @@
+[
+  {
+    "block_state_provider": {
+      "type": "minecraft:rule_based",
+      "rules": [
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:oak_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_oak_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:oak_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_oak_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:dark_oak_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_dark_oak_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:dark_oak_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_dark_oak_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:pale_oak_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_pale_oak_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:pale_oak_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_pale_oak_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:poplar_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_poplar_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:poplar_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_poplar_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:acacia_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_acacia_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:acacia_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_acacia_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cherry_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_cherry_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cherry_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_cherry_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:birch_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_birch_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:birch_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_birch_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:jungle_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_jungle_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:jungle_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_jungle_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:spruce_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_spruce_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:spruce_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_spruce_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:warped_stem"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_warped_stem",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:warped_hyphae"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_warped_hyphae",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:crimson_stem"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_crimson_stem",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:crimson_hyphae"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_crimson_hyphae",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mangrove_wood"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_mangrove_wood",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mangrove_log"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_mangrove_log",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:bamboo_block"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stripped_bamboo_block",
+              "properties": {
+                "axis": "y"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "item_damage_per_use": 1,
+    "sound": "minecraft:item.axe.strip"
+  },
+  {
+    "block_state_provider": {
+      "type": "minecraft:rule_based",
+      "rules": [
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:polished_stone"
+          },
+          "then": {
+            "id": "minecraft:stone_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:stone_bricks"
+          },
+          "then": {
+            "id": "minecraft:cracked_stone_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cracked_stone_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_stone_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_stone_bricks"
+          },
+          "then": {
+            "id": "caramel:chiseled_stone_pillar",
+            "properties": {
+              "axis": "y"
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:chiseled_stone_pillar"
+          },
+          "then": {
+            "id": "caramel:stone_tiles"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:stone_tiles"
+          },
+          "then": {
+            "id": "caramel:cracked_stone_tiles"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:cracked_stone_tiles"
+          },
+          "then": {
+            "id": "caramel:polished_stone"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_deepslate"
+          },
+          "then": {
+            "id": "minecraft:deepslate_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_bricks"
+          },
+          "then": {
+            "id": "minecraft:cracked_deepslate_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cracked_deepslate_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_deepslate"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_deepslate"
+          },
+          "then": {
+            "id": "minecraft:deepslate_tiles"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_tiles"
+          },
+          "then": {
+            "id": "minecraft:cracked_deepslate_tiles"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cracked_deepslate_tiles"
+          },
+          "then": {
+            "id": "minecraft:polished_deepslate"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone"
+          },
+          "then": {
+            "id": "minecraft:polished_blackstone_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone_bricks"
+          },
+          "then": {
+            "id": "minecraft:cracked_polished_blackstone_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cracked_polished_blackstone_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_polished_blackstone"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_polished_blackstone"
+          },
+          "then": {
+            "id": "minecraft:polished_blackstone"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_tuff"
+          },
+          "then": {
+            "id": "minecraft:tuff_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:tuff_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_tuff_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_tuff_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_tuff"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_tuff"
+          },
+          "then": {
+            "id": "minecraft:polished_tuff"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_sulfur"
+          },
+          "then": {
+            "id": "minecraft:sulfur_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:sulfur_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_sulfur"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_sulfur"
+          },
+          "then": {
+            "id": "minecraft:polished_sulfur"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_cinnabar"
+          },
+          "then": {
+            "id": "minecraft:cinnabar_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cinnabar_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_cinnabar"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_cinnabar"
+          },
+          "then": {
+            "id": "minecraft:polished_cinnabar"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:nether_bricks"
+          },
+          "then": {
+            "id": "minecraft:cracked_nether_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cracked_nether_bricks"
+          },
+          "then": {
+            "id": "minecraft:chiseled_nether_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:chiseled_nether_bricks"
+          },
+          "then": {
+            "id": "minecraft:nether_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:smooth_stone"
+          },
+          "then": {
+            "id": "caramel:polished_stone"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:polished_stone_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stone_brick_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:stone_brick_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:stone_tile_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:stone_tile_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:polished_stone_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stone_brick_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:stone_brick_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:stone_tile_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:stone_tile_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:polished_stone_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stone_brick_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:stone_brick_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:stone_tile_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:stone_tile_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_deepslate_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:deepslate_brick_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_brick_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:deepslate_tile_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_tile_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_deepslate_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_deepslate_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:deepslate_brick_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_brick_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:deepslate_tile_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_tile_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_deepslate_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_deepslate_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:deepslate_brick_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_brick_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:deepslate_tile_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:deepslate_tile_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_deepslate_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_blackstone_brick_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone_brick_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_blackstone_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_blackstone_brick_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone_brick_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_blackstone_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_blackstone_brick_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_blackstone_brick_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_blackstone_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_tuff_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:tuff_brick_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:tuff_brick_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_tuff_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_tuff_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:tuff_brick_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:tuff_brick_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_tuff_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_tuff_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:tuff_brick_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:tuff_brick_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_tuff_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_sulfur_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:sulfur_brick_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:sulfur_brick_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_sulfur_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_sulfur_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:sulfur_brick_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:sulfur_brick_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_sulfur_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_sulfur_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:sulfur_brick_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:sulfur_brick_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_sulfur_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_cinnabar_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:cinnabar_brick_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cinnabar_brick_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_cinnabar_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_cinnabar_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:cinnabar_brick_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cinnabar_brick_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_cinnabar_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:polished_cinnabar_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:cinnabar_brick_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:cinnabar_brick_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:polished_cinnabar_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:smooth_stone_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:smooth_stone_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:smooth_stone_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:smooth_stone_button"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_button",
+              "properties": {
+                "face": "wall",
+                "facing": "north",
+                "powered": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:smooth_stone_pressure_plate"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:polished_stone_pressure_plate",
+              "properties": {
+                "powered": "false"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "item_damage_per_use": 1,
+    "sound": "caramel:item.chisel.carve_stone"
+  },
+  {
+    "block_state_provider": {
+      "type": "minecraft:rule_based",
+      "rules": [
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:bamboo_planks"
+          },
+          "then": {
+            "id": "minecraft:bamboo_mosaic"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:bamboo_mosaic"
+          },
+          "then": {
+            "id": "minecraft:bamboo_planks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:bamboo_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:bamboo_mosaic_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:bamboo_mosaic_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:bamboo_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:bamboo_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:bamboo_mosaic_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:bamboo_mosaic_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:bamboo_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "item_damage_per_use": 1,
+    "sound": "minecraft:item.axe.strip"
+  },
+  {
+    "block_state_provider": {
+      "type": "minecraft:rule_based",
+      "rules": [
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_cobblestone"
+          },
+          "then": {
+            "id": "minecraft:cobblestone"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_stone_bricks"
+          },
+          "then": {
+            "id": "minecraft:stone_bricks"
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_cobblestone_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:cobblestone_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_cobblestone_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:cobblestone_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_cobblestone_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:cobblestone_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:mossy_cobblestone_button"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:cobblestone_button",
+              "properties": {
+                "face": "wall",
+                "facing": "north",
+                "powered": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "caramel:mossy_cobblestone_pressure_plate"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "caramel:cobblestone_pressure_plate",
+              "properties": {
+                "powered": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_stone_brick_stairs"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stone_brick_stairs",
+              "properties": {
+                "facing": "north",
+                "half": "bottom",
+                "shape": "straight",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_stone_brick_slab"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stone_brick_slab",
+              "properties": {
+                "type": "bottom",
+                "waterlogged": "false"
+              }
+            }
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:mossy_stone_brick_wall"
+          },
+          "then": {
+            "type": "minecraft:copy_properties",
+            "source": {
+              "id": "minecraft:stone_brick_wall",
+              "properties": {
+                "east": "none",
+                "north": "none",
+                "south": "none",
+                "up": "true",
+                "waterlogged": "false",
+                "west": "none"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "item_damage_per_use": 1,
+    "sound": "minecraft:block.moss.break"
+  }
+]

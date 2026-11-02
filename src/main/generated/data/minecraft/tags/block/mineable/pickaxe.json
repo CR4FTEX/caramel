@@ -1,0 +1,26 @@
+{
+  "values": [
+    "caramel:stone_wall",
+    "caramel:cobblestone_button",
+    "caramel:cobblestone_pressure_plate",
+    "caramel:mossy_cobblestone_button",
+    "caramel:mossy_cobblestone_pressure_plate",
+    "caramel:smooth_stone_stairs",
+    "caramel:smooth_stone_wall",
+    "caramel:smooth_stone_button",
+    "caramel:smooth_stone_pressure_plate",
+    "caramel:polished_stone",
+    "caramel:polished_stone_stairs",
+    "caramel:polished_stone_slab",
+    "caramel:polished_stone_wall",
+    "caramel:polished_stone_button",
+    "caramel:polished_stone_pressure_plate",
+    "caramel:chiseled_stone_pillar",
+    "caramel:stone_tiles",
+    "caramel:cracked_stone_tiles",
+    "caramel:stone_tile_stairs",
+    "caramel:stone_tile_slab",
+    "caramel:stone_tile_wall",
+    "caramel:stone_tile_fence"
+  ]
+}
