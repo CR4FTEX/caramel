@@ -14,6 +14,13 @@
 - **A dropdown option named "None" invalidates the form.** GitHub reserves the word to mean "no choice" and reports "options must not include the reserved word, none" (GitHub docs, "Common validation errors when creating issue forms"). The Idea form's vanilla option is "No outside source (vanilla change)" for that reason.
 - **`git pull origin main` stops when both sides have new commits.** Since git 2.33.1, with neither `pull.rebase` nor `pull.ff` configured, git ends with "fatal: Need to specify how to reconcile divergent branches." (`builtin/pull.c` at tag v2.33.1). `git pull --no-rebase --no-edit upstream main` (`upstream` is the main repository, as `CONTRIBUTING.md` adds it to a fork's clone) merges without opening an editor when the merge has no conflict. After a conflict is fixed, `git commit --no-edit` finishes the merge without an editor (git docs, `git-merge` and `git-commit`, `--no-edit`).
 
+## Protecting `main`
+
+- A ruleset named "Protect main" (`gh api repos/CR4FTEX/caramel/rulesets`) targets the default branch and has four rules: `deletion`, `non_fast_forward`, `pull_request` (0 approvals) and `required_status_checks` with the context `build`, which is the job's name as `gh pr checks` prints it. The Admin role (actor id 5) bypasses it "always", so the owner can still commit to `main` directly.
+- **Rulesets and branch protection are unavailable on a private repository on GitHub Free.** Reading either through the API returns HTTP 403, "Upgrade to GitHub Pro or make this repository public to enable this feature."
+- A required check that a path filter skips never reports, so the pull request trigger in `build.yml` has no `paths-ignore` ([[ci]]).
+- **Workflows of outside contributors** wait for the owner's approval: `PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval` with `approval_policy=all_external_contributors`. The default, `first_time_contributors`, lets a contributor whose earlier pull request was merged run workflows unapproved.
+
 ## Actions allowance
 
 Standard GitHub-hosted runners are free in a public repository. In a private one they draw from the owner's included compute, $12 USD a month on GitHub Free, and the owner is billed for usage beyond it. Artifact storage (500 MB on GitHub Free, shared with GitHub Packages) and the Actions cache (10 GB per repository) have allowances of their own (https://docs.github.com/en/billing/concepts/product-billing/github-actions). [[ci]] covers how the workflow spends little of them.

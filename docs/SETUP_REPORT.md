@@ -12,7 +12,7 @@ Timeline: the project was set up on 2026-09-27. C-001 to C-008 were built, playt
 | Mod loader | Fabric |
 | Minecraft version | 26.3 |
 | Java | 25 |
-| GitHub repository | `CR4FTEX/caramel`, private until the owner makes it public; the docs are already worded for a public repository |
+| GitHub repository | `CR4FTEX/caramel`, public since 2026-11-03. A ruleset protects `main` (pull request required, the `build` check required, no deletion or force-push, the owner may bypass), workflows of outside contributors need the owner's approval, and secret scanning with push protection and private vulnerability reporting are on |
 | Code license | MIT (`LICENSE`) |
 | Art license | CC BY-NC-SA 4.0 (`LICENSE-ASSETS`) |
 | Entity model code | Counts as art: the entity model and animation code in `client/model/` is CC BY-NC-SA 4.0, set in the `LICENSE-ASSETS` preamble |
@@ -86,4 +86,4 @@ None of these is started; each is the owner's call.
 
 ## Next step
 
-C-009 and C-010 are Done and committed (`eed8f18`). The repository is ready to go public: the files and the history were scanned for private details and unrelated mentions, the issue and pull request lists are empty, the old build artifacts are deleted, and the build and datagen pass on a clean tree. The owner decides when to switch it. Then: protect `main` (pull requests and the `build` check required, no force-pushes, the owner able to bypass), require approval before workflows run for outside contributors, turn on secret scanning and private vulnerability reporting, add topics, and publish the wiki (GitHub creates the wiki repository once the repository is public and a first page is saved; the pages are drafted outside this repository and wait for the owner's go-ahead). The base stone rework continues family by family after Stone (Sandstone, Red Sandstone, Slate, Prismarine, Netherrack, End Stone), each pitched by the owner; open questions for those families are listed in C-010's design notes. Dyeing wool and items is another future idea of the owner's.
+C-009 and C-010 are Done and committed (`eed8f18`). The repository is public and protected (see Decisions). Still to do: the repository's topics, and the wiki, whose pages are drafted outside this repository: GitHub creates the wiki repository when the owner saves its first page in the web UI, and the pages are pushed after that. The base stone rework continues family by family after Stone (Sandstone, Red Sandstone, Slate, Prismarine, Netherrack, End Stone), each pitched by the owner; open questions for those families are listed in C-010's design notes. Dyeing wool and items is another future idea of the owner's.
