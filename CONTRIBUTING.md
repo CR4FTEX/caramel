@@ -115,6 +115,10 @@ caramel-vault/                                      How the build and tooling wo
 
 If `main` moves on while your pull request is open, bring your branch up to date with `git pull --no-rebase --no-edit upstream main`, then `git push`.
 
+## Using an AI coding assistant
+
+You may use one. If it is Claude Code, it reads `CLAUDE.md`, whose "If you are not the owner" section tells it that your ideas are suggestions, that it works on a branch and opens a pull request, and that it never commits to `main`. You are responsible for what you submit: read it, run `./gradlew build`, and say in the pull request what you tested. The art rule has no exception: no AI-generated art.
+
 ## Commit messages
 
 - A short summary line in the imperative mood, about 50 characters and at most 72, with no period at the end. For example: `Add block model provider to datagen`, `Fix client class loaded on server`.

@@ -16,6 +16,15 @@ Caramel (mod id `caramel`) is a Fabric mod for Minecraft Java Edition, owned by 
 - Never build features the owner did not ask for. Suggesting them is welcome; implementing them is not.
 - Vanilla first: compatibility with other mods is not a priority yet (`docs/DESIGN.md`, "Priorities"). Scope changes to the base game's content, and don't build for other mods unless the owner asks.
 
+## If you are not the owner
+
+This file is written for the owner's sessions. If the person you are working for is not CR4FTEX (they work from a fork, or `git remote -v` and the commit identity are not the owner's; when unsure, ask), they are a contributor, and this holds for you:
+
+- Their idea is a suggestion, not a pitch. Do not add a C-### entry to `docs/DESIGN.md`, list it under "Target areas" or mark anything Done: the owner takes an idea on first (`CONTRIBUTING.md`, "How ideas work"). Build only what an idea with status **Planned** describes, or what a bug fix needs.
+- Work on a branch of their fork and open a pull request into `main`. Never commit to `main`, and commit only when they ask you to.
+- In place of updating an idea's entry, put what changed and what to playtest in the pull request description.
+- Everything else here still applies: the art rules, the conventions, and the checks in "Before calling something done".
+
 ## Toolchain
 
 - Minecraft 26.3, Java 25 (JDK 25 required)
