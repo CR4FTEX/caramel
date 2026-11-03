@@ -50,6 +50,14 @@ jobs:
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
+      - name: check the generated files are up to date
+        run: |
+          ./gradlew runDatagen
+          if [ -n "$(git status --porcelain -- src/main/generated)" ]; then
+            git status --short -- src/main/generated
+            echo "::error::src/main/generated does not match the datagen providers. Run ./gradlew runDatagen and commit the result."
+            exit 1
+          fi
       - name: capture build artifacts
         uses: actions/upload-artifact@v7
         with:
