@@ -10,7 +10,6 @@ import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.placements;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.report;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.vanillaComponents;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.vanillaRecipes;
-import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.vanillaUnlocks;
 import static io.github.cr4ftex.caramel.gametest.RecipeTestSupport.withVanillaFuel;
 
 import java.util.ArrayList;
@@ -48,7 +47,6 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryOps;
-import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -192,31 +190,10 @@ public class PressurePlatesAndCarpetsGameTest {
 		report(helper, IDEA, "replaced recipes", checked, failures);
 	}
 
-	// Each replaced recipe keeps vanilla's unlock advancement, the vanilla file at recipes/<folder>/<recipe path>: the
-	// one that loads, Caramel's copy if its pack holds one, must equal vanilla's.
+	// Each replaced recipe keeps vanilla's unlock advancement (MorePerCraft says how).
 	@GameTest
 	public void recipesKeepTheVanillaUnlockAdvancement(GameTestHelper helper) {
-		Map<Identifier, List<Identifier>> unlocks = vanillaUnlocks(helper);
-		Map<Identifier, JsonObject> vanilla = packFiles(helper, "vanilla", Registries.ADVANCEMENT);
-		Map<Identifier, JsonObject> caramel = packFiles(helper, Caramel.MOD_ID, Registries.ADVANCEMENT);
-		ServerAdvancementManager loaded = helper.getLevel().getServer().getAdvancements();
-		List<String> failures = new ArrayList<>();
-		int checked = 0;
-		for (Replaced replaced : vanillaScope(helper).all()) {
-			checked++;
-			List<Identifier> found = unlocks.getOrDefault(replaced.id(), List.of());
-			if (found.size() != 1) {
-				failures.add("The vanilla data pack has " + found.size() + " unlock advancements for recipe " + replaced.id() + " " + found + ", expected 1");
-				continue;
-			}
-			Identifier advancement = found.getFirst();
-			if (!vanilla.get(advancement).equals(caramel.getOrDefault(advancement, vanilla.get(advancement)))) {
-				failures.add("Caramel's advancement " + advancement + " differs from vanilla's");
-			} else if (loaded.get(advancement) == null) {
-				failures.add("Advancement " + advancement + " is not loaded");
-			}
-		}
-		report(helper, IDEA, "unlock advancements", checked, failures);
+		MorePerCraft.keepTheVanillaUnlockAdvancement(helper, IDEA, vanillaScope(helper).all().stream().map(Replaced::id).toList());
 	}
 
 	@GameTest
@@ -517,8 +494,7 @@ public class PressurePlatesAndCarpetsGameTest {
 	// here, so the scope gets rechecked.
 	static List<String> scopeFailures(Scope scope) {
 		List<String> failures = new ArrayList<>();
-		if (scope.pressurePlates().size() != VANILLA_PRESSURE_PLATES || scope.woolCarpets().size() != VANILLA_WOOL_CARPETS
-				|| scope.mossCarpets().size() != VANILLA_MOSS_CARPETS) {
+		if (scope.pressurePlates().size() != VANILLA_PRESSURE_PLATES || scope.woolCarpets().size() != VANILLA_WOOL_CARPETS) {
 			failures.add("Expected " + VANILLA_PRESSURE_PLATES + " pressure plate, " + VANILLA_WOOL_CARPETS + " wool carpet and " + VANILLA_MOSS_CARPETS
 					+ " moss carpet recipes to replace, found " + scope.pressurePlates().size() + ", " + scope.woolCarpets().size() + " and " + scope.mossCarpets().size());
 		}

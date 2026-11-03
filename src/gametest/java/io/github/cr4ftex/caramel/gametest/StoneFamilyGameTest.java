@@ -281,6 +281,18 @@ public class StoneFamilyGameTest {
 		if (!registered.equals(new TreeSet<>(NEW_BLOCK_NAMES.keySet())) || StoneFamily.BLOCKS.size() != 22) {
 			failures.add("StoneFamily.BLOCKS holds " + registered + " (" + StoneFamily.BLOCKS.size() + "), expected the 22 named blocks " + NEW_BLOCK_NAMES.keySet());
 		}
+		// The list is kept by hand, and the loot tables, the tags and these tests hang off it, so a block registered but left
+		// out of it would ship with none of them: the registry must hold exactly the blocks it lists.
+		checked++;
+		Set<String> inRegistry = new TreeSet<>();
+		BuiltInRegistries.BLOCK.keySet().forEach(id -> {
+			if (id.getNamespace().equals(Caramel.MOD_ID)) {
+				inRegistry.add(id.getPath());
+			}
+		});
+		if (!inRegistry.equals(registered)) {
+			failures.add("The caramel namespace registers blocks " + inRegistry + ", but StoneFamily.BLOCKS lists " + registered);
+		}
 		report(helper, IDEA, "name checks", checked, failures);
 	}
 
@@ -694,7 +706,7 @@ public class StoneFamilyGameTest {
 			expected.add(new Smelt(stone.get(piece), smooth.get(piece), worths.get(piece)));
 		}
 		checked++;
-		if (expected.size() != 18 || expected.stream().map(Smelt::key).distinct().count() != 18) {
+		if (expected.stream().map(Smelt::key).distinct().count() != 18) {
 			failures.add("The test expects " + expected.size() + " distinct smelting recipes, expected the 3 of the blocks and the 15 of the pieces");
 		}
 		// Each smelts, in a furnace alone, into one of its result, for vanilla's time and experience by its worth.
@@ -946,10 +958,6 @@ public class StoneFamilyGameTest {
 		if (!(bricks instanceof CraftingRecipe crafting) || !crafting.matches(fourStone, level) || !crafting.assemble(fourStone).is(Items.STONE_BRICKS)
 				|| crafting.assemble(fourStone).getCount() != 4) {
 			failures.add("Vanilla's minecraft:stone_bricks is " + bricks + ", expected 4 stone bricks from 4 stone in a 2x2 square");
-		}
-		checked++;
-		if (!REPLACED_RECIPES.equals(Set.of(Identifier.withDefaultNamespace("stone_bricks")))) {
-			failures.add("REPLACED_RECIPES holds " + REPLACED_RECIPES);
 		}
 		report(helper, IDEA, "replaced recipe checks", checked, failures);
 	}

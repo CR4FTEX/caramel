@@ -25,6 +25,8 @@ public class CaramelLanguageProvider extends FabricLanguageProvider {
 		translations.add(Chisels.GOLDEN_CHISEL.item(), "Golden Chisel");
 		translations.add(Chisels.DIAMOND_CHISEL.item(), "Diamond Chisel");
 		translations.add(Chisels.NETHERITE_CHISEL.item(), "Netherite Chisel");
+		translations.add(Chisels.CHISELS, "Chisels");
+		translations.add(Chisels.FLINT_TOOL_MATERIALS, "Flint Tool Materials");
 		// The owner's words, in British spelling.
 		translations.add(CaramelSoundsProvider.CARVE_STONE_SUBTITLE, "Block chiselled");
 		// C-010, by the owner's names. Pieces of the base game's blocks take those blocks' names, cobblestone's its new one

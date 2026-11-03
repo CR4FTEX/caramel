@@ -95,11 +95,6 @@ public final class CarvingParticles {
 		return Math.max(2, (int) Math.ceil(Math.min(1.0, width) / 0.25));
 	}
 
-	// Whether the click is about to make a Chisel's change or an axe's stripping.
-	public static boolean throwsParticles(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
-		return carving(player, level, hand, hit).isPresent();
-	}
-
 	private static Optional<BlockTransformer.BlockTransformData> carving(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(hand);
 		Holder<BlockTransformer> transformer = stack.get(DataComponents.BLOCK_TRANSFORMER);

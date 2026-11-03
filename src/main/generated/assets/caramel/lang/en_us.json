@@ -29,5 +29,7 @@
   "item.caramel.netherite_chisel": "Netherite Chisel",
   "item.caramel.stone_brick": "Stone Brick",
   "item.caramel.stone_chisel": "Stone Chisel",
-  "subtitles.caramel.item.chisel.carve_stone": "Block chiselled"
+  "subtitles.caramel.item.chisel.carve_stone": "Block chiselled",
+  "tag.item.caramel.chisels": "Chisels",
+  "tag.item.caramel.flint_tool_materials": "Flint Tool Materials"
 }

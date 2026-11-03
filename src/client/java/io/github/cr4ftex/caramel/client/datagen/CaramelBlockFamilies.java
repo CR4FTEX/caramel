@@ -59,7 +59,8 @@ final class CaramelBlockFamilies {
 			Blocks.MOSSY_COBBLESTONE, Blocks.MOSSY_COBBLESTONE_SLAB,
 			Blocks.SMOOTH_STONE, Blocks.SMOOTH_STONE_SLAB);
 
-	// The kinds of piece that C-001 to C-008, the smelting of the pieces and the Chisel's pieces (C-010) all walk.
+	// The five kinds of piece the Chisel carries across a cycle (C-010). CaramelRecipeProvider.SMELTED_PIECES lists the same five,
+	// with what each smelts like.
 	static final List<BlockFamily.Variant> PIECES = List.of(BlockFamily.Variant.STAIRS, BlockFamily.Variant.SLAB, BlockFamily.Variant.WALL, BlockFamily.Variant.BUTTON,
 			BlockFamily.Variant.PRESSURE_PLATE);
 

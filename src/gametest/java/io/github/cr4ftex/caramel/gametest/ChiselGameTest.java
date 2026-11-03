@@ -71,6 +71,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 // C-009: the Chisel, one per tier, is an axe and a pickaxe in one that takes twice as long. Each expected value is
 // worked out from vanilla's own tools of the same tier, as the game builds them, and from the owner's rules in
@@ -750,7 +751,7 @@ public class ChiselGameTest {
 		helper.setBlock(POS, Blocks.POLISHED_DEEPSLATE);
 		checked++;
 		Player waiting = waiting(helper, ironChisel, InteractionHand.MAIN_HAND);
-		if (CarvingParticles.throwsParticles(waiting, level, InteractionHand.MAIN_HAND, hit)) {
+		if (CarvingParticles.burst(waiting, level, InteractionHand.MAIN_HAND, hit).isPresent()) {
 			failures.add("A waiting " + name(ironChisel) + " throws particles");
 		}
 		helper.setBlock(POS, Blocks.OAK_LOG);
@@ -759,7 +760,7 @@ public class ChiselGameTest {
 			Player shielded = helper.makeMockPlayer(GameType.SURVIVAL);
 			shielded.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(tool));
 			shielded.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.SHIELD));
-			if (CarvingParticles.throwsParticles(shielded, level, InteractionHand.MAIN_HAND, hit)) {
+			if (CarvingParticles.burst(shielded, level, InteractionHand.MAIN_HAND, hit).isPresent()) {
 				failures.add("A " + name(tool) + " whose click a shield takes throws particles");
 			}
 		}
@@ -775,7 +776,7 @@ public class ChiselGameTest {
 
 	// How many particles breaking a block of this shape makes: per box, at least 2 a side, one per quarter block
 	// (ClientLevel.addDestroyBlockEffect).
-	private static int breakParticles(net.minecraft.world.phys.shapes.VoxelShape shape) {
+	private static int breakParticles(VoxelShape shape) {
 		int[] count = {0};
 		shape.forAllBoxes((x1, y1, z1, x2, y2, z2) -> count[0] += side(x2 - x1) * side(y2 - y1) * side(z2 - z1));
 		return count[0];

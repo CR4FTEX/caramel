@@ -5,7 +5,7 @@
 ## When it runs
 
 - On a push to `main`, and on every pull request (`on.push.branches` and `on.pull_request`). A pull request branch is built through `pull_request` only; its pushes do not start a second run.
-- Both triggers set `paths-ignore: '**.md'`. GitHub checks the files changed by the whole push, or by the whole pull request against its base, not commit by commit (GitHub docs, "Workflow syntax for GitHub Actions"). A push to `main` that changes only Markdown starts no run. A pull request that changes any other file runs the full build on every push to it, including a push that changes only Markdown.
+- Only the push trigger sets `paths-ignore: '**.md'`. GitHub checks the files changed by the whole push, not commit by commit (GitHub docs, "Workflow syntax for GitHub Actions"). A push to `main` that changes only Markdown starts no run. A pull request always runs the full build, a docs-only one included.
 - `concurrency` with `cancel-in-progress: true` cancels the older run when a newer run starts for the same branch or pull request.
 
 ## What it does
@@ -21,3 +21,4 @@
 ## Traps
 
 - CI builds only what is committed and does not run datagen; its game tests check only the data they cover (see [[gametest]]). See [[datagen]] for what that misses.
+- **A required check must come from a workflow that no path filter can skip.** A workflow skipped by `paths-ignore` reports nothing, so a branch protection rule that requires `build` leaves a pull request "Waiting for status to be reported" for ever (GitHub docs, "Troubleshooting required status checks"). That is why the pull request trigger has no `paths-ignore`.

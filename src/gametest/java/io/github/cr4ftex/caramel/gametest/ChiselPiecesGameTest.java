@@ -343,7 +343,7 @@ public class ChiselPiecesGameTest {
 				player.getCooldowns().addCooldown(player.getMainHandItem(), 20);
 				InteractionResult result = UseBlockCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, hit);
 				InteractionResult expected = button && !sneaking ? InteractionResult.PASS : InteractionResult.FAIL;
-				if (result != expected || Chisels.extraSound(player, level, InteractionHand.MAIN_HAND, hit).isPresent() || CarvingParticles.throwsParticles(player, level, InteractionHand.MAIN_HAND, hit)) {
+				if (result != expected || Chisels.extraSound(player, level, InteractionHand.MAIN_HAND, hit).isPresent() || CarvingParticles.burst(player, level, InteractionHand.MAIN_HAND, hit).isPresent()) {
 					failures.add("A waiting Chisel " + (sneaking ? "sneaking " : "") + "on " + name(change.getKey().asItem()) + " gives " + result + " (or particles or a sound), expected " + expected + " with neither");
 				}
 			}
@@ -623,7 +623,7 @@ public class ChiselPiecesGameTest {
 			press(level, pos, pressed.get(i));
 			ServerPlayer player = player(helper, ironChisel(), true);
 			BlockHitResult hit = hit(pos);
-			boolean particles = CarvingParticles.throwsParticles(player, level, InteractionHand.MAIN_HAND, hit);
+			boolean particles = CarvingParticles.burst(player, level, InteractionHand.MAIN_HAND, hit).isPresent();
 			boolean extra = Chisels.extraSound(player, level, InteractionHand.MAIN_HAND, hit).isPresent();
 			InteractionResult result = player.gameMode.useItemOn(player, level, player.getMainHandItem(), InteractionHand.MAIN_HAND, hit);
 			if (result != InteractionResult.FAIL || !level.getBlockState(pos).is(pressed.get(i)) || !level.getBlockState(pos).getValue(BlockStateProperties.POWERED)

@@ -4,7 +4,8 @@
 # Keep runs cheap, so contributors get quick feedback:
 # - push runs only on main; pull request branches are built once, through the
 #   pull_request trigger, not a second time on push.
-# - changes that only touch Markdown files skip the build.
+# - a push to main that only touches Markdown files skips the build. Pull requests always build, so
+#   branch protection can require the check: a workflow a path filter skips never reports.
 # - a newer commit on the same branch or pull request cancels the older run.
 # - setup-gradle's basic cache restores ~/.gradle/caches and ~/.gradle/wrapper when
 #   an entry for the current Gradle build files exists; see caramel-vault/ci.md.
@@ -17,8 +18,6 @@ on:
     paths-ignore:
       - '**.md'
   pull_request:
-    paths-ignore:
-      - '**.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

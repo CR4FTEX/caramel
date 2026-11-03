@@ -13,7 +13,10 @@ To clone, use your fork's address (or `https://github.com/CR4FTEX/caramel.git` t
 ```sh
 git clone https://github.com/<your-username>/caramel.git
 cd caramel
+git remote add upstream https://github.com/CR4FTEX/caramel.git
 ```
+
+`upstream` is the main repository: it is where you pull the latest `main` from, because your fork's own `main` does not move by itself. (If you cloned `CR4FTEX/caramel` directly, `upstream` and `origin` are the same repository, so the extra remote does no harm.)
 
 To push, git has to be signed in to your GitHub account. Use an SSH key, the GitHub CLI (`gh auth login`, and choose HTTPS when asked), or Git Credential Manager (included with Git for Windows). With SSH, clone `git@github.com:<your-username>/caramel.git` instead.
 
@@ -102,15 +105,15 @@ caramel-vault/                                      How the build and tooling wo
 
 ## Git workflow
 
-1. Start from an up-to-date `main`: `git switch main`, then `git pull`.
+1. Start from an up-to-date `main`: `git switch main`, then `git pull upstream main`.
 2. Create one branch per feature or fix: `git switch -c feature/short-name` (or `fix/...`, `art/...`).
 3. Make your changes. Test them in `./gradlew runClient`, and in `./gradlew runServer` if you changed common code. Run `./gradlew build` before pushing.
 4. Push the branch to your fork (or to this repository, if you are a collaborator): `git push -u origin feature/short-name`.
 5. Open a pull request into `main` and fill in the template: what changed, how you tested it, screenshots for anything visual, and the related issue (`Closes #12`).
-6. The `build` workflow (`.github/workflows/build.yml`) runs `./gradlew build` on every pull request and on every push to `main`, and it must pass. It does not run when a change only touches Markdown (`.md`) files. Each run uploads the built jars and keeps them for 14 days: open the run in the repository's Actions tab and download `caramel-jar` under Artifacts. It is a `.zip` with two jars. Install the mod jar (currently `caramel-0.1.0+26.3.jar`), not the one ending in `-sources.jar`.
+6. The `build` workflow (`.github/workflows/build.yml`) runs `./gradlew build` on every pull request and on every push to `main`, and it must pass. A push to `main` that only touches Markdown (`.md`) files does not start it; a pull request always does. Each run uploads the built jars and keeps them for 14 days: open the run in the repository's Actions tab and download `caramel-jar` under Artifacts. It is a `.zip` with two jars. Install the mod jar (currently `caramel-0.1.0+26.3.jar`), not the one ending in `-sources.jar`.
 7. CR4FTEX reviews, playtests and merges. Collaborators always go through a branch and a pull request: do not push to `main` directly and do not merge your own pull request. Only the owner may commit to `main` directly.
 
-If `main` moves on while your pull request is open, bring your branch up to date with `git pull --no-rebase --no-edit origin main`, then `git push`.
+If `main` moves on while your pull request is open, bring your branch up to date with `git pull --no-rebase --no-edit upstream main`, then `git push`.
 
 ## Commit messages
 
