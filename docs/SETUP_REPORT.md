@@ -15,6 +15,7 @@ Timeline: the project was set up on 2026-09-27. C-001 to C-008 were built, playt
 | GitHub repository | `CR4FTEX/caramel`, public since 2026-11-03. A ruleset protects `main` (pull request required, the `build` check required, no deletion or force-push, the owner may bypass), workflows of outside contributors need the owner's approval, and secret scanning with push protection and private vulnerability reporting are on |
 | Code license | MIT (`LICENSE`) |
 | Art license | CC BY-NC-SA 4.0 (`LICENSE-ASSETS`) |
+| License files in the jars | The mod jar and the `-sources` jar both carry `LICENSE_caramel` and `LICENSE-ASSETS_caramel` (owner's decision, 2026-11-04) |
 | Entity model code | Counts as art: the entity model and animation code in `client/model/` is CC BY-NC-SA 4.0, set in the `LICENSE-ASSETS` preamble |
 | Editable source art | `art-source/` at the repository root, never under `src/`, so it never ships in the jar |
 | Vision | Quoted word for word in `docs/DESIGN.md`: the tagline, "What is Caramel?", the Mod, Expansion and Infrastructure definitions, the five goals and how Caramel is made, with the guiding principles drawn only from them. The other docs summarize it and keep "without steering too far from" |
@@ -73,7 +74,7 @@ None of these is started; each is the owner's call.
 - **Merge conflicts.** When `git pull --no-rebase --no-edit upstream main` hits a conflict, `git commit --no-edit` finishes it without opening an editor. CONTRIBUTING could say so.
 - **CI action versions.** `actions/checkout@v7` and `actions/setup-java@v6` exist. `build.yml` uses `@v6` and `@v5`, which still work.
 - **CI runs.** Only a Markdown-only push to `main` skips the build, and a pull request always builds. A push under `art-source/`, or to `caramel-vault/.vaultrc`, still starts one. Both could go in the push trigger's `paths-ignore`.
-- **The `-sources` jar.** It carries no license files, and a local build's copy carries `src/main/generated/.cache/`. CI uploads it next to the mod jar, where any GitHub account can now download it. It could be left out of the artifact, or given the license files.
+- **The `-sources` jar.** A local build's copy carries `src/main/generated/.cache/`, and CI's does not. It could exclude that folder, as the mod jar does.
 - **Generated art and the art license.** The `LICENSE-ASSETS` preamble covers art under `src/main/resources/assets/caramel/`, but datagen writes item definitions, models and names into `src/main/generated/assets/caramel/`, which it does not name. Since C-009 that folder holds the Chisels' files, which only name a base-game parent model and a texture path. Should the preamble name that folder too?
 - **A scope line in `LICENSE`.** `LICENSE` is the plain MIT text; only `LICENSE-ASSETS` says the entity model code is not MIT. One line above the MIT text would make both files say the same thing.
 - **A contact route.** The Infrastructure text says "Get in touch with us"; with a public repository, GitHub issues are the route, and the docs could say so.

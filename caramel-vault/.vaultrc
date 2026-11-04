@@ -17,8 +17,7 @@
 #                                           passed"); rebuild before trusting a jar in build/libs/
 #   ./gradlew runDatagen && git status --porcelain src/main/generated
 #                                           only the changes you expect
-#   unzip -l build/libs/caramel-*[0-9].jar  the mod jar (not -sources) lists LICENSE_caramel
-#                                           and LICENSE-ASSETS_caramel
+#   unzip -l on each jar in build/libs/     lists LICENSE_caramel and LICENSE-ASSETS_caramel
 # Beyond those, verification is reading build.gradle, gradle.properties, fabric.mod.json, the
 # mixin configs and .github/, and reproducing a trap in a scratch copy of the project before
 # writing its error message down.

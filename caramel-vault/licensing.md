@@ -9,14 +9,14 @@ Caramel has two licenses: code is MIT (`LICENSE`), and art is CC BY-NC-SA 4.0 (`
 - The preamble does not name `src/main/generated/assets/caramel/`, where datagen writes block and item models and blockstates (`docs/TEXTURES.md`, "Where files go").
 - The legal code below the preamble is the official text, copied exactly: it matches https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.txt byte for byte. A change of scope is a change to the preamble.
 - Entity model and animation code counts as art. Minecraft entity models and animations are Java code, and a coder turns the artist's Blockbench model into that code (`docs/TEXTURES.md`, "Where files go", the Models paragraph). Without this rule that code would fall under the MIT `LICENSE`, which permits selling copies (`LICENSE`).
-- Editable source art (`.bbmodel`, `.aseprite`, layered images) lives in `art-source/` at the repository root (`art-source/README.md`). The mod jar takes its files from `src/`, plus the two license files at the root that the `jar` block adds; the `-sources` jar takes its files from `src/` only (see [[build]]). Nothing in `art-source/` ships (`unzip -l`).
+- Editable source art (`.bbmodel`, `.aseprite`, layered images) lives in `art-source/` at the repository root (`art-source/README.md`). Both jars take their files from `src/`, plus the two license files at the root that `build.gradle` adds (see [[build]]). Nothing in `art-source/` ships (`unzip -l`).
 
 ## How the jars carry them
 
 - `fabric.mod.json` declares `"license": ["MIT", "CC-BY-NC-SA-4.0"]`.
-- The `jar` block in `build.gradle` copies both files into the mod jar as `LICENSE_caramel` and `LICENSE-ASSETS_caramel`.
-- The `-sources` jar carries no license file: the `jar` block applies to the `jar` task only. CI uploads it next to the mod jar, where any GitHub account can download it (see [[ci]]).
+- `build.gradle` configures the `jar` and `sourcesJar` tasks alike: each copies both files into its jar as `LICENSE_caramel` and `LICENSE-ASSETS_caramel`.
+- CI uploads the `-sources` jar next to the mod jar, where any GitHub account can download either (see [[ci]]).
 
 ## Traps
 
-- **A missing license file drops out of the jar without an error.** `from("LICENSE-ASSETS")` adds nothing when the file does not exist, and the build still passes: a scratch copy built without `LICENSE-ASSETS` produced a jar holding only `LICENSE_caramel`. After a change to the license files or the `jar` block, `unzip -l` on a freshly built mod jar must list both (see [[build]]).
+- **A missing license file drops out of the jars without an error.** `from("LICENSE-ASSETS")` adds nothing when the file does not exist, and the build still passes: a scratch copy built without `LICENSE-ASSETS` produced two jars holding only `LICENSE_caramel`. After a change to the license files or those tasks, `unzip -l` on each freshly built jar must list both (see [[build]]).
