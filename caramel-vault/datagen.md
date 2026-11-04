@@ -2,7 +2,7 @@
 
 Caramel's JSON data is generated from Java into `src/main/generated/` by the providers registered in `CaramelDataGenerator`, and that output is committed. They write recipes and their unlock advancements ([[recipes]]), burn times and compost chances ([[fuel]]), villager trades ([[trades]]), for items, tags, block transformers, item definitions, models, names and sounds ([[tools]]), and for blocks, blockstates, models, loot tables, tags and names ([[blocks]]).
 
-`CLAUDE.md` requires every other generated JSON, such as blockstates and loot tables, to come from datagen too. The rule for people is in `CONTRIBUTING.md`, "Where things go"; this note is how it works and what breaks. The behaviour below was reproduced in scratch copies on Loom 1.18.2 and Fabric API 0.161.0+26.3.
+The rule is in `CLAUDE.md`, "Layout and conventions", and for people in `CONTRIBUTING.md`, "Where things go"; this note is how it works and what breaks. The behaviour below was reproduced in scratch copies on Loom 1.18.2 and Fabric API 0.161.0+26.3.
 
 ## How it runs
 
@@ -27,7 +27,7 @@ Caramel's JSON data is generated from Java into `src/main/generated/` by the pro
 
 ## Traps
 
-- **A hand edit to a generated file survives on the machine that made it and vanishes elsewhere.** With `.cache` present and the provider unchanged, the edited file is left alone and the log reports `written: 0`. A clone without `.cache` rewrites it, and so does a provider change that alters that file's output. A change that alters only other files leaves it alone. Change the provider instead.
-- **A hand-written file placed in `src/main/generated` is deleted by the next run, silently.** The log's `Caching:` line counts it under `removed stale: N`. Hand-written files belong in `src/main/resources`.
+- **A hand edit to a generated file passes a local `runDatagen` and fails CI.** With `.cache` present and the provider unchanged, the edited file is left alone and the log reports `written: 0`. A checkout without `.cache` rewrites it, so CI fails on the difference ([[ci]]). A provider change that alters that file's output rewrites it too, and one that alters only other files leaves it alone. Change the provider instead.
+- **A hand-written file placed in `src/main/generated` is deleted by the next run, silently.** The log's `Caching:` line counts it under `removed stale: N`, and once committed it fails CI ([[ci]]). Hand-written files belong in `src/main/resources`.
 - **A file in both `src/main/generated/` and `src/main/resources/` fails the build.** `processResources` stops with "Entry caramel.mixins.json is a duplicate but no duplicate handling strategy has been set", reproduced by copying `caramel.mixins.json` into `src/main/generated/`.
 - **A provider change committed without its regenerated files fails CI.** `.github/workflows/build.yml` runs `./gradlew runDatagen` after the build and fails on any difference in `src/main/generated` ([[ci]]). Locally, after `./gradlew runDatagen`, `git status src/main/generated` lists what must be committed.

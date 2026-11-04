@@ -5,7 +5,7 @@ How `./gradlew build` turns the `main` and `client` source sets into one mod jar
 ## Toolchain
 
 - Minecraft, Fabric Loader, Loom, Fabric API and the mod version are set in `gradle.properties`. Gradle's own version is the `distributionUrl` in `gradle/wrapper/gradle-wrapper.properties`.
-- The Loom plugin id is `net.fabricmc.fabric-loom` (`build.gradle`). It is requested as a snapshot (`loom_version` in `gradle.properties`), so the Loom that runs can change with no file changing. The configure log names the one that ran on its `Fabric Loom:` line; when a build breaks with no local change, compare that line first.
+- The Loom plugin id is `net.fabricmc.fabric-loom` (`build.gradle`). It is requested as a snapshot (`loom_version` in `gradle.properties`), so the Loom that runs can change with no file changing. `./gradlew buildEnvironment` prints the one that runs, and the configure log names it on its `Fabric Loom:` line; when a build breaks with no local change, compare that line first. A claim in this vault names the patch it was checked on.
 - `build.gradle` declares `minecraft` with no `mappings` line: Minecraft 26.x ships unobfuscated, with Mojang's names, and Fabric Loader logs "Mappings not present!" at startup (`runGameTest` log).
 - The Java version is declared in several files that must move together. `CLAUDE.md`, "Updating Minecraft", lists them.
 
@@ -27,7 +27,6 @@ How `./gradlew build` turns the `main` and `client` source sets into one mod jar
 
 ## Resources and the jar name
 
-- `loom_version=1.18-SNAPSHOT` floats, so the Loom that runs moves on its own: `./gradlew buildEnvironment` prints it, and the configure log says "Fabric Loom: <version>". A claim here names the patch it was checked on.
 - Main resources come from `src/main/resources` and `src/main/generated` (`sourceSets.main.resources.srcDirs`). Loom adds the generated directory through a `HashSet` (`FabricApiDataGeneration`, Loom 1.18.4), so the printed order follows the checkout's absolute path and means nothing. The same path in both fails the build; see [[datagen]].
 - `processResources` expands `${version}` in `fabric.mod.json` to the project version, `mod_version+minecraft_version` (`build.gradle`). The jar in `build/libs/` is named `caramel-<mod_version>+<minecraft_version>.jar` from the same values.
 

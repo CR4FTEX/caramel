@@ -20,7 +20,7 @@ The MixinExtras injectors that `CONTRIBUTING.md` prefers crash the same way: `@W
 ## Where a broken mixin surfaces
 
 - **Every `./gradlew build`, locally and in CI**, boots the game test server (`runGameTest`, see [[gametest]]). It crashes on a broken common mixin whose target loads on it: with a dead injector into `MinecraftServer.tickServer` or `ServerLevel.tick`, `:runGameTest` failed with "InjectionError: Critical injection failure" (scratch copy). It is a server environment, so it never applies `caramel.client.mixins.json`.
-- **`./gradlew runDatagen`** crashes on a broken mixin whose target loads during the run: `Bootstrap`, and server classes such as `ServerLevel` and `MinecraftServer` (reproduced). A target that first loads later, such as on a screen, is not checked, because the run ends inside Minecraft's constructor (see [[datagen]]). The datagen run is a client environment. The client config fails the same way: a dead `@Inject` into `Minecraft.tick`, listed in `client`, failed `runDatagen` with InjectionError: Critical injection failure (scratch copy).
+- **`./gradlew runDatagen`, locally and in CI** ([[ci]]), crashes on a broken mixin whose target loads during the run: `Bootstrap`, and server classes such as `ServerLevel` and `MinecraftServer` (reproduced). A target that first loads later, such as on a screen, is not checked, because the run ends inside Minecraft's constructor (see [[datagen]]). The datagen run is a client environment. The client config fails the same way: a dead `@Inject` into `Minecraft.tick`, listed in `client`, failed `runDatagen` with InjectionError: Critical injection failure (scratch copy).
 
 ## Traps
 

@@ -17,7 +17,7 @@ How Caramel works, for a reader who was not there, and the traps each part hides
 | Mixin configs and how they fail                                                     | [[mixins]]    |
 | The GitHub Actions build                                                            | [[ci]]        |
 | Code and art licenses, and how the jars carry them                                  | [[licensing]] |
-| Repository, issue forms, labels, git                                                | [[github]]    |
+| Repository, issue forms, labels, protecting `main`, Actions allowance, git          | [[github]]    |
 
 ## What lives outside the vault
 
@@ -36,4 +36,4 @@ The vault links to those files and does not restate them.
 
 ## Open questions
 
-An open question closes the note that owns its topic, with the test that settles it.
+Each open question closes the note that owns its topic, with the test that settles it: [[blocks]], [[fuel]], [[tools]].

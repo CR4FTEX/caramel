@@ -1,11 +1,11 @@
 # GitHub repository
 
-`CR4FTEX/caramel` on GitHub; `gh repo view CR4FTEX/caramel --json visibility` reads its visibility, and `docs/SETUP_REPORT.md` says whether it is about to change. How people get access and submit work is in `CONTRIBUTING.md`; this note covers how the repository's forms, labels, Actions allowance and git setup behave. Each fact names the GitHub docs page or git source it was checked against.
+`CR4FTEX/caramel` on GitHub; `gh repo view CR4FTEX/caramel --json visibility` reads its visibility. How people get access and submit work is in `CONTRIBUTING.md`; this note covers how the repository's forms, labels, protection of `main`, Actions allowance and git setup behave. Each fact names the GitHub docs page or git source it was checked against.
 
 ## Issue forms
 
 - `.github/ISSUE_TEMPLATE/config.yml` sets `blank_issues_enabled: false`. That hides the blank issue only from read and triage roles; write access or above still sees "Blank issue", marked "Maintainers only" (GitHub docs, "Configuring issue templates for your repository").
-- In a repository owned by a personal account, collaborators can only have write access (GitHub docs, "Permission levels for a personal account repository"), so every collaborator keeps the blank issue. Anyone with the Read or Triage role gets the forms only (GitHub docs, "Configuring issue templates for your repository").
+- In a repository owned by a personal account, collaborators can only have write access (GitHub docs, "Permission levels for a personal account repository"), so every collaborator keeps the blank issue. Everyone else has the read access a public repository gives, and gets the forms only (GitHub docs, "Configuring issue templates for your repository").
 - A form's `labels` apply only when the label already exists in the repository (GitHub docs, "Syntax for issue forms"). `bug` is one of GitHub's default labels (GitHub docs, "Managing labels"); `idea` and `art` are not, and exist here because they were created in the repository (`gh label list`). A form whose label is renamed or deleted no longer adds it (same page).
 - Issue attachments take only the file types GitHub lists: `.zip` is on the list, and `.ogg` and `.mcmeta` are not (GitHub docs, "Attaching files"). Art sent through an issue goes in one `.zip`.
 
@@ -16,14 +16,13 @@
 
 ## Protecting `main`
 
-- A ruleset named "Protect main" (`gh api repos/CR4FTEX/caramel/rulesets`) targets the default branch and has four rules: `deletion`, `non_fast_forward`, `pull_request` (0 approvals) and `required_status_checks` with the context `build`, which is the job's name as `gh pr checks` prints it. The Admin role (actor id 5) bypasses it "always", so the owner can still commit to `main` directly.
-- **Rulesets and branch protection are unavailable on a private repository on GitHub Free.** Reading either through the API returns HTTP 403, "Upgrade to GitHub Pro or make this repository public to enable this feature."
-- A required check that a path filter skips never reports, so the pull request trigger in `build.yml` has no `paths-ignore` ([[ci]]).
+- A ruleset named "Protect main" (`gh api repos/CR4FTEX/caramel/rulesets`) targets the default branch and has four rules: `deletion`, `non_fast_forward`, `pull_request` (0 approvals) and `required_status_checks` with the context `build`, which is the job's name as `gh pr checks` prints it ([[ci]], "Traps", says why no path filter may skip it). The Admin role (actor id 5) bypasses it "always", so the owner can still commit to `main` directly.
+- The ruleset holds only while the repository is public: on GitHub Free a private repository has neither rulesets nor branch protection, and reading either with `gh api` returns HTTP 403, "Upgrade to GitHub Pro or make this repository public to enable this feature."
 - **Workflows of outside contributors** wait for the owner's approval: `PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval` with `approval_policy=all_external_contributors`. The default, `first_time_contributors`, lets a contributor whose earlier pull request was merged run workflows unapproved.
 
 ## Actions allowance
 
-Standard GitHub-hosted runners are free in a public repository. In a private one they draw from the owner's included compute, $12 USD a month on GitHub Free, and the owner is billed for usage beyond it. Artifact storage (500 MB on GitHub Free, shared with GitHub Packages) and the Actions cache (10 GB per repository) have allowances of their own (https://docs.github.com/en/billing/concepts/product-billing/github-actions). [[ci]] covers how the workflow spends little of them.
+Standard GitHub-hosted runners are free in a public repository. GitHub's page gives artifact storage (500 MB on GitHub Free, shared with GitHub Packages) and the Actions cache (10 GB per repository) as separate allowances, and frames its breakdown around private repositories (https://docs.github.com/en/billing/concepts/product-billing/github-actions).
 
 ## Commit identity
 
